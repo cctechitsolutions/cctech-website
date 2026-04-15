@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - CC Tech</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --primary: #0d4a6b; --accent: #ff9800; --success: #25d366; --light: #f5f9fc; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: var(--light); }
+    .login-screen { position: fixed; inset: 0; background: var(--primary); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .login-box { background: white; padding: 2.5rem; border-radius: 15px; text-align: center; width: 350px; }
+    .login-box input { width: 100%; padding: 0.9rem; margin: 1rem 0; border: 2px solid #ddd; border-radius: 8px; }
+    .login-box button { width: 100%; padding: 0.9rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    .dashboard { display: none; max-width: 1400px; margin: 0 auto; padding: 2rem; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab { padding: 0.8rem 1.5rem; background: white; border-radius: 8px; cursor: pointer; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .tab.active { background: var(--primary); color: white; }
+    .panel { display: none; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .panel.active { display: block; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #555; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 6px; }
+    .btn { padding: 0.8rem 1.5rem; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+    .btn:hover { background: #e68900; }
+    .btn-green { background: var(--success); }
+    .btn-green:hover { background: #128c7e; }
+    .item-list { margin-top: 1.5rem; max-height: 400px; overflow-y: auto; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #eee; }
+    .item-row img { width: 40px; height: 40px; object-fit: contain; border-radius: 4px; }
+    .actions { display: flex; gap: 0.5rem; }
+    .actions button { padding: 0.4rem 0.8rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+    .edit { background: #2196f3; color: white; }
+    .del { background: #f44336; color: white; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card { background: white; padding: 1.5rem; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .stat-card h3 { font-size: 2rem; color: var(--primary); }
+    .whatsapp-preview { background: #e8f5e9; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="login-screen" id="login">
+    <div class="login-box">
+      <h2><i class="fas fa-lock"></i> Admin Access</h2>
+      <input type="password" id="pass" placeholder="Enter Admin Password">
+      <button onclick="login()">Login</button>
+      <p style="margin-top:1rem; color:#666; font-size:0.9rem;">Default: cctech2026</p>
+    </div>
+  </div>
+
+  <div class="dashboard" id="dash">
+    <div class="admin-header">
+      <h2><i class="fas fa-cogs"></i> CC Tech Admin Panel</h2>
+      <button class="btn" onclick="exportDB()"><i class="fas fa-download"></i> Export Database</button>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('products')">Products</div>
+      <div class="tab" onclick="showTab('services')">Services</div>
+      <div class="tab" onclick="showTab('categories')">Categories</div>
+      <div class="tab" onclick="showTab('export')">Backup/Restore</div>
+    </div>
+
+    <!-- Products Panel -->
+    <div class="panel active" id="products">
+      <h3>Add New Product</h3>
+      <div class="form-group"><label>Product Name</label><input type="text" id="pName"></div>
+      <div class="form-group"><label>Category</label><select id="pCat"></select></div>
+      <div class="form-group"><label>Price (₹)</label><input type="number" id="pPrice"></div>
+      <div class="form-group"><label>Image URL</label><input type="text" id="pImg" placeholder="https://... or leave blank for default"></div>
+      <div class="form-group"><label>Description</label><textarea id="pDesc" rows="2"></textarea></div>
+      <div class="form-group"><label>Versions (comma separated, e.g., Home, Pro)</label><input type="text" id="pVers"></div>
+      <button class="btn" onclick="addProduct()">Add Product</button>
+      <div class="item-list" id="pList"></div>
+    </div>
+
+    <!-- Services Panel -->
+    <div class="panel" id="services">
+      <h3>Add New Service</h3>
+      <div class="form-group"><label>Service Name</label><input type="text" id="sName"></div>
+      <div class="form-group"><label>Category</label><select id="sCat"></select></div>
+      <div class="form-group"><label>Price (₹)</label><input type="number" id="sPrice"></div>
+      <div class="form-group"><label>Image URL</label><input type="text" id="sImg" placeholder="https://..."></div>
+      <div class="form-group"><label>Description</label><textarea id="sDesc" rows="2"></textarea></div>
+      <button class="btn btn-green" onclick="addService()">Add Service</button>
+      <div class="item-list" id="sList"></div>
+    </div>
+
+    <!-- Categories Panel -->
+    <div class="panel" id="categories">
+      <h3>Manage Categories</h3>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:2rem;">
+        <div>
+          <h4>Sales Categories</h4>
+          <input type="text" id="newSCat" placeholder="e.g., Printers, CCTV, Servers" style="margin:1rem 0;">
+          <button class="btn" onclick="addCat('sales')">Add</button>
+          <div id="salesCats" style="margin-top:1rem;"></div>
+        </div>
+        <div>
+          <h4>Service Categories</h4>
+          <input type="text" id="newSVCCat" placeholder="e.g., Server Config, Mac Repair" style="margin:1rem 0;">
+          <button class="btn btn-green" onclick="addCat('service')">Add</button>
+          <div id="serviceCats" style="margin-top:1rem;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Export Panel -->
+    <div class="panel" id="export">
+      <h3>Backup & Restore</h3>
+      <p style="color:#666; margin:1rem 0;">Since this runs on GitHub Pages, download the updated JSON and replace <code>database.js</code> content in your repo.</p>
+      <button class="btn" onclick="exportJSON()">Download JSON</button>
+      <div class="form-group" style="margin-top:1.5rem;"><label>Paste JSON to Restore</label><textarea id="importJSON" rows="5"></textarea></div>
+      <button class="btn btn-green" onclick="importJSON()">Restore Database</button>
+    </div>
+  </div>
+
+  <script>
+    const PASS = "cctech2026";
+    let DB = JSON.parse(JSON.stringify(CCData));
+
+    function login() {
+      if(document.getElementById('pass').value === PASS) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('dash').style.display = 'block';
+        init();
+      } else alert("Wrong password");
+    }
+
+    function init() {
+      updateStats();
+      populateCats();
+      renderLists();
+      renderCats();
+    }
+
+    function showTab(id) {
+      document.querySelectorAll('.panel, .tab').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    function updateStats() {
+      document.getElementById('stats').innerHTML = `
+        <div class="stat-card"><h3>${DB.products.length}</h3><p>Products</p></div>
+        <div class="stat-card"><h3>${DB.services.length}</h3><p>Services</p></div>
+        <div class="stat-card"><h3>${DB.salesCategories.length}</h3><p>Sales Categories</p></div>
+        <div class="stat-card"><h3>${DB.serviceCategories.length}</h3><p>Service Categories</p></div>
+      `;
+    }
+
+    function populateCats() {
+      document.getElementById('pCat').innerHTML = DB.salesCategories.map(c=>`<option value="${c}">${c}</option>`).join('');
+      document.getElementById('sCat').innerHTML = DB.serviceCategories.map(c=>`<option value="${c}">${c}</option>`).join('');
+    }
+
+    function addProduct() {
+      const p = {
+        id: Date.now(),
+        name: document.getElementById('pName').value.trim(),
+        category: document.getElementById('pCat').value,
+        price: Number(document.getElementById('pPrice').value),
+        type: document.getElementById('pVers').value ? "Multi-version" : "Fixed",
+        image: document.getElementById('pImg').value.trim() || "https://cdn-icons-png.flaticon.com/512/2920/2920277.png",
+        desc: document.getElementById('pDesc').value.trim(),
+        versions: document.getElementById('pVers').value.split(',').map(v=>v.trim()).filter(Boolean)
+      };
+      if(!p.name || !p.price) return alert("Name & Price required");
+      DB.products.push(p); save(); renderLists(); updateStats();
+      document.getElementById('pName').value = '';
+      alert("Product added!");
+    }
+
+    function addService() {
+      const s = {
+        id: Date.now(),
+        name: document.getElementById('sName').value.trim(),
+        category: document.getElementById('sCat').value,
+        price: Number(document.getElementById('sPrice').value),
+        image: document.getElementById('sImg').value.trim() || "https://cdn-icons-png.flaticon.com/512/3067/3067258.png",
+        desc: document.getElementById('sDesc').value.trim()
+      };
+      if(!s.name || !s.price) return alert("Name & Price required");
+      DB.services.push(s); save(); renderLists(); updateStats();
+      document.getElementById('sName').value = '';
+      alert("Service added!");
+    }
+
+    function addCat(type) {
+      const inp = type === 'sales' ? document.getElementById('newSCat') : document.getElementById('newSVCCat');
+      const val = inp.value.trim();
+      if(!val) return;
+      if(type === 'sales') DB.salesCategories.push(val);
+      else DB.serviceCategories.push(val);
+      inp.value = '';
+      save(); populateCats(); renderCats();
+    }
+
+    function renderCats() {
+      document.getElementById('salesCats').innerHTML = DB.salesCategories.map((c,i)=>`<span style="display:inline-block; background:#e3f2fd; padding:0.3rem 0.8rem; border-radius:15px; margin:0.3rem;">${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:5px;" onclick="delCat('sales',${i})"></i></span>`).join('');
+      document.getElementById('serviceCats').innerHTML = DB.serviceCategories.map((c,i)=>`<span style="display:inline-block; background:#e8f5e9; padding:0.3rem 0.8rem; border-radius:15px; margin:0.3rem;">${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:5px;" onclick="delCat('service',${i})"></i></span>`).join('');
+    }
+
+    function delCat(type, i) {
+      if(!confirm("Delete category?")) return;
+      if(type==='sales') DB.salesCategories.splice(i,1);
+      else DB.serviceCategories.splice(i,1);
+      save(); populateCats(); renderCats();
+    }
+
+    function renderLists() {
+      const pList = document.getElementById('pList');
+      pList.innerHTML = DB.products.map(p => `
+        <div class="item-row">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <img src="${p.image}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2920/2920277.png'">
+            <div><strong>${p.name}</strong><br><small>₹${p.price} • ${p.category}</small></div>
+          </div>
+          <div class="actions">
+            <button class="del" onclick="delItem('products',${p.id})"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+
+      const sList = document.getElementById('sList');
+      sList.innerHTML = DB.services.map(s => `
+        <div class="item-row">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <img src="${s.image}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3067/3067258.png'">
+            <div><strong>${s.name}</strong><br><small>₹${s.price} • ${s.category}</small></div>
+          </div>
+          <div class="actions">
+            <button class="del" onclick="delItem('services',${s.id})"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function delItem(type, id) {
+      if(!confirm("Delete this item?")) return;
+      DB[type] = DB[type].filter(i => i.id !== id);
+      save(); renderLists(); updateStats();
+    }
+
+    function save() {
+      localStorage.setItem('cctech_db', JSON.stringify(DB));
+    }
+
+    function exportDB() {
+      const blob = new Blob([`const CCData = ${JSON.stringify(DB, null, 2)};\nif(localStorage.getItem('cctech_db')) Object.assign(CCData, JSON.parse(localStorage.getItem('cctech_db')));`], {type: 'text/javascript'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'database.js'; a.click();
+    }
+
+    function exportJSON() { exportDB(); }
+    function importJSON() {
+      try {
+        const json = document.getElementById('importJSON').value;
+        DB = JSON.parse(json); save(); init(); alert("Database restored!");
+      } catch(e) { alert("Invalid JSON"); }
+    }
+  </script>
+</body>
+</html>
