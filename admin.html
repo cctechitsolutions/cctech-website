@@ -6,141 +6,213 @@
   <title>Admin Panel - CC Tech</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root { --primary: #0d4a6b; --accent: #ff9800; --success: #25d366; --light: #f5f9fc; }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-    body { background: var(--light); }
-    .login-screen { position: fixed; inset: 0; background: var(--primary); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-    .login-box { background: white; padding: 2.5rem; border-radius: 15px; text-align: center; width: 350px; }
-    .login-box input { width: 100%; padding: 0.9rem; margin: 1rem 0; border: 2px solid #ddd; border-radius: 8px; }
-    .login-box button { width: 100%; padding: 0.9rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+    body { background: #f5f9fc; }
+    .login-screen { position: fixed; inset: 0; background: linear-gradient(135deg, #0d4a6b, #1a237e); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .login-box { background: white; padding: 2.5rem; border-radius: 15px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+    .login-box h2 { color: #0d4a6b; margin-bottom: 1.5rem; }
+    .login-box input { width: 100%; padding: 1rem; margin: 1rem 0; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; }
+    .login-box button { width: 100%; padding: 1rem; background: #ff9800; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem; }
     .dashboard { display: none; max-width: 1400px; margin: 0 auto; padding: 2rem; }
-    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .tabs { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-    .tab { padding: 0.8rem 1.5rem; background: white; border-radius: 8px; cursor: pointer; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .tab.active { background: var(--primary); color: white; }
+    .admin-header { background: white; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .tabs { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .tab { padding: 0.8rem 1.5rem; background: white; border-radius: 8px; cursor: pointer; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: none; }
+    .tab.active { background: #0d4a6b; color: white; }
     .panel { display: none; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .panel.active { display: block; }
     .form-group { margin-bottom: 1.2rem; }
     .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #555; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 6px; }
-    .btn { padding: 0.8rem 1.5rem; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #0d4a6b; }
+    .btn { padding: 0.9rem 1.5rem; background: #ff9800; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; margin-right: 0.5rem; }
     .btn:hover { background: #e68900; }
-    .btn-green { background: var(--success); }
+    .btn-green { background: #25d366; }
     .btn-green:hover { background: #128c7e; }
-    .item-list { margin-top: 1.5rem; max-height: 400px; overflow-y: auto; }
-    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #eee; }
-    .item-row img { width: 40px; height: 40px; object-fit: contain; border-radius: 4px; }
+    .btn-red { background: #f44336; }
+    .btn-red:hover { background: #d32f2f; }
+    .btn-blue { background: #2196f3; }
+    .btn-blue:hover { background: #1976d2; }
+    .item-list { margin-top: 2rem; max-height: 600px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; }
+    .item-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid #eee; flex-wrap: wrap; gap: 1rem; }
+    .item-row:last-child { border-bottom: none; }
+    .item-info { flex: 1; min-width: 200px; }
+    .item-info h4 { color: #0d4a6b; margin-bottom: 0.3rem; }
+    .item-info p { color: #666; font-size: 0.9rem; }
     .actions { display: flex; gap: 0.5rem; }
-    .actions button { padding: 0.4rem 0.8rem; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
-    .edit { background: #2196f3; color: white; }
-    .del { background: #f44336; color: white; }
     .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
     .stat-card { background: white; padding: 1.5rem; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .stat-card h3 { font-size: 2rem; color: var(--primary); }
-    .whatsapp-preview { background: #e8f5e9; padding: 1rem; border-radius: 8px; margin: 1rem 0; font-family: monospace; font-size: 0.9rem; }
+    .stat-card h3 { font-size: 2rem; color: #0d4a6b; }
+    .success-msg { background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 8px; margin: 1rem 0; display: none; border-left: 4px solid #25d366; }
+    .category-tag { display: inline-block; background: #e3f2fd; padding: 0.3rem 0.8rem; border-radius: 15px; margin: 0.2rem; font-size: 0.9rem; }
+    @media(max-width:768px) { .admin-header { flex-direction: column; text-align: center; } }
   </style>
 </head>
 <body>
-  <div class="login-screen" id="login">
+  <div class="login-screen" id="loginScreen">
     <div class="login-box">
-      <h2><i class="fas fa-lock"></i> Admin Access</h2>
-      <input type="password" id="pass" placeholder="Enter Admin Password">
+      <h2><i class="fas fa-lock"></i> Admin Login</h2>
+      <input type="password" id="adminPass" placeholder="Enter password">
       <button onclick="login()">Login</button>
-      <p style="margin-top:1rem; color:#666; font-size:0.9rem;">Default: cctech2026</p>
+      <p style="margin-top:1rem; color:#666; font-size:0.9rem;">Password: <strong>cctech2026</strong></p>
     </div>
   </div>
 
-  <div class="dashboard" id="dash">
+  <div class="dashboard" id="dashboard">
     <div class="admin-header">
       <h2><i class="fas fa-cogs"></i> CC Tech Admin Panel</h2>
-      <button class="btn" onclick="exportDB()"><i class="fas fa-download"></i> Export Database</button>
-    </div>
-
-    <div class="stats" id="stats"></div>
-
-    <div class="tabs">
-      <div class="tab active" onclick="showTab('products')">Products</div>
-      <div class="tab" onclick="showTab('services')">Services</div>
-      <div class="tab" onclick="showTab('categories')">Categories</div>
-      <div class="tab" onclick="showTab('export')">Backup/Restore</div>
-    </div>
-
-    <!-- Products Panel -->
-    <div class="panel active" id="products">
-      <h3>Add New Product</h3>
-      <div class="form-group"><label>Product Name</label><input type="text" id="pName"></div>
-      <div class="form-group"><label>Category</label><select id="pCat"></select></div>
-      <div class="form-group"><label>Price (₹)</label><input type="number" id="pPrice"></div>
-      <div class="form-group"><label>Image URL</label><input type="text" id="pImg" placeholder="https://... or leave blank for default"></div>
-      <div class="form-group"><label>Description</label><textarea id="pDesc" rows="2"></textarea></div>
-      <div class="form-group"><label>Versions (comma separated, e.g., Home, Pro)</label><input type="text" id="pVers"></div>
-      <button class="btn" onclick="addProduct()">Add Product</button>
-      <div class="item-list" id="pList"></div>
-    </div>
-
-    <!-- Services Panel -->
-    <div class="panel" id="services">
-      <h3>Add New Service</h3>
-      <div class="form-group"><label>Service Name</label><input type="text" id="sName"></div>
-      <div class="form-group"><label>Category</label><select id="sCat"></select></div>
-      <div class="form-group"><label>Price (₹)</label><input type="number" id="sPrice"></div>
-      <div class="form-group"><label>Image URL</label><input type="text" id="sImg" placeholder="https://..."></div>
-      <div class="form-group"><label>Description</label><textarea id="sDesc" rows="2"></textarea></div>
-      <button class="btn btn-green" onclick="addService()">Add Service</button>
-      <div class="item-list" id="sList"></div>
-    </div>
-
-    <!-- Categories Panel -->
-    <div class="panel" id="categories">
-      <h3>Manage Categories</h3>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:2rem;">
-        <div>
-          <h4>Sales Categories</h4>
-          <input type="text" id="newSCat" placeholder="e.g., Printers, CCTV, Servers" style="margin:1rem 0;">
-          <button class="btn" onclick="addCat('sales')">Add</button>
-          <div id="salesCats" style="margin-top:1rem;"></div>
-        </div>
-        <div>
-          <h4>Service Categories</h4>
-          <input type="text" id="newSVCCat" placeholder="e.g., Server Config, Mac Repair" style="margin:1rem 0;">
-          <button class="btn btn-green" onclick="addCat('service')">Add</button>
-          <div id="serviceCats" style="margin-top:1rem;"></div>
-        </div>
+      <div>
+        <button class="btn" onclick="exportDatabase()"><i class="fas fa-download"></i> Export DB</button>
+        <button class="btn btn-red" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
       </div>
     </div>
 
-    <!-- Export Panel -->
-    <div class="panel" id="export">
-      <h3>Backup & Restore</h3>
-      <p style="color:#666; margin:1rem 0;">Since this runs on GitHub Pages, download the updated JSON and replace <code>database.js</code> content in your repo.</p>
-      <button class="btn" onclick="exportJSON()">Download JSON</button>
-      <div class="form-group" style="margin-top:1.5rem;"><label>Paste JSON to Restore</label><textarea id="importJSON" rows="5"></textarea></div>
-      <button class="btn btn-green" onclick="importJSON()">Restore Database</button>
+    <div class="stats" id="stats"></div>
+    <div class="success-msg" id="successMsg"></div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab('products')">Products</button>
+      <button class="tab" onclick="showTab('services')">Services</button>
+      <button class="tab" onclick="showTab('categories')">Categories</button>
+    </div>
+
+    <!-- Products Panel -->
+    <div class="panel active" id="productsPanel">
+      <h3 style="color:#0d4a6b; margin-bottom:1.5rem;" id="prodFormTitle"><i class="fas fa-plus-circle"></i> Add New Product</h3>
+      <input type="hidden" id="editProdId" value="">
+      
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1rem;">
+        <div class="form-group">
+          <label>Product Name *</label>
+          <input type="text" id="prodName" placeholder="e.g., Windows 11 Pro">
+        </div>
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="prodCategory"></select>
+        </div>
+        <div class="form-group">
+          <label>Price (₹) *</label>
+          <input type="number" id="prodPrice" placeholder="e.g., 8499">
+        </div>
+        <div class="form-group">
+          <label>Type</label>
+          <input type="text" id="prodType" placeholder="e.g., One-time, Lifetime">
+        </div>
+        <div class="form-group">
+          <label>Image URL</label>
+          <input type="text" id="prodImage" placeholder="https://... or leave blank">
+        </div>
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label>Description</label>
+          <textarea id="prodDesc" rows="2" placeholder="Product description..."></textarea>
+        </div>
+      </div>
+      
+      <button class="btn" id="prodSubmitBtn" onclick="saveProduct()"><i class="fas fa-plus"></i> Add Product</button>
+      <button class="btn btn-red" id="prodCancelBtn" onclick="cancelProductEdit()" style="display:none;">Cancel Edit</button>
+      
+      <h3 style="color:#0d4a6b; margin:2rem 0 1rem;"><i class="fas fa-list"></i> Existing Products (<span id="prodCount">0</span>)</h3>
+      <div class="item-list" id="productsList"></div>
+    </div>
+
+    <!-- Services Panel -->
+    <div class="panel" id="servicesPanel">
+      <h3 style="color:#0d4a6b; margin-bottom:1.5rem;" id="servFormTitle"><i class="fas fa-plus-circle"></i> Add New Service</h3>
+      <input type="hidden" id="editServId" value="">
+      
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1rem;">
+        <div class="form-group">
+          <label>Service Name *</label>
+          <input type="text" id="serviceName" placeholder="e.g., Windows Installation">
+        </div>
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="serviceCategory"></select>
+        </div>
+        <div class="form-group">
+          <label>Price (₹) *</label>
+          <input type="number" id="servicePrice" placeholder="e.g., 1500">
+        </div>
+        <div class="form-group">
+          <label>Image URL</label>
+          <input type="text" id="serviceImage" placeholder="https://... or leave blank">
+        </div>
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label>Description</label>
+          <textarea id="serviceDesc" rows="2" placeholder="Service description..."></textarea>
+        </div>
+      </div>
+      
+      <button class="btn btn-green" id="servSubmitBtn" onclick="saveService()"><i class="fas fa-plus"></i> Add Service</button>
+      <button class="btn btn-red" id="servCancelBtn" onclick="cancelServiceEdit()" style="display:none;">Cancel Edit</button>
+      
+      <h3 style="color:#0d4a6b; margin:2rem 0 1rem;"><i class="fas fa-list"></i> Existing Services (<span id="servCount">0</span>)</h3>
+      <div class="item-list" id="servicesList"></div>
+    </div>
+
+    <!-- Categories Panel -->
+    <div class="panel" id="categoriesPanel">
+      <h3 style="color:#0d4a6b; margin-bottom:1.5rem;"><i class="fas fa-tags"></i> Manage Categories</h3>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:2rem;">
+        <div>
+          <h4 style="margin-bottom:1rem; color:#0d4a6b;">Sales Categories</h4>
+          <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+            <input type="text" id="newSalesCat" placeholder="New category name">
+            <button class="btn" onclick="addCategory('sales')">Add</button>
+          </div>
+          <div id="salesCategoriesList"></div>
+        </div>
+        <div>
+          <h4 style="margin-bottom:1rem; color:#0d4a6b;">Service Categories</h4>
+          <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+            <input type="text" id="newServiceCat" placeholder="New category name">
+            <button class="btn btn-green" onclick="addCategory('service')">Add</button>
+          </div>
+          <div id="serviceCategoriesList"></div>
+        </div>
+      </div>
     </div>
   </div>
 
+  <script src="database.js"></script>
   <script>
-    const PASS = "cctech2026";
     let DB = JSON.parse(JSON.stringify(CCData));
+    const PASSWORD = "cctech2026";
 
     function login() {
-      if(document.getElementById('pass').value === PASS) {
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('dash').style.display = 'block';
+      const pass = document.getElementById('adminPass').value;
+      if(pass === PASSWORD) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
         init();
-      } else alert("Wrong password");
+      } else {
+        alert('Wrong password!');
+      }
+    }
+
+    function logout() {
+      location.reload();
+    }
+
+    function showSuccess(msg) {
+      const el = document.getElementById('successMsg');
+      el.textContent = msg;
+      el.style.display = 'block';
+      setTimeout(() => { el.style.display = 'none'; }, 3000);
     }
 
     function init() {
       updateStats();
-      populateCats();
-      renderLists();
-      renderCats();
+      populateCategoryDropdowns();
+      renderProducts();
+      renderServices();
+      renderCategories();
     }
 
-    function showTab(id) {
-      document.querySelectorAll('.panel, .tab').forEach(el => el.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
+    function showTab(tab) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      
+      document.getElementById(tab + 'Panel').classList.add('active');
       event.target.classList.add('active');
     }
 
@@ -151,116 +223,318 @@
         <div class="stat-card"><h3>${DB.salesCategories.length}</h3><p>Sales Categories</p></div>
         <div class="stat-card"><h3>${DB.serviceCategories.length}</h3><p>Service Categories</p></div>
       `;
+      document.getElementById('prodCount').textContent = DB.products.length;
+      document.getElementById('servCount').textContent = DB.services.length;
     }
 
-    function populateCats() {
-      document.getElementById('pCat').innerHTML = DB.salesCategories.map(c=>`<option value="${c}">${c}</option>`).join('');
-      document.getElementById('sCat').innerHTML = DB.serviceCategories.map(c=>`<option value="${c}">${c}</option>`).join('');
+    function populateCategoryDropdowns() {
+      const prodCat = document.getElementById('prodCategory');
+      const servCat = document.getElementById('serviceCategory');
+      
+      prodCat.innerHTML = DB.salesCategories.map(c => `<option value="${c}">${c}</option>`).join('');
+      servCat.innerHTML = DB.serviceCategories.map(c => `<option value="${c}">${c}</option>`).join('');
     }
 
-    function addProduct() {
-      const p = {
-        id: Date.now(),
-        name: document.getElementById('pName').value.trim(),
-        category: document.getElementById('pCat').value,
-        price: Number(document.getElementById('pPrice').value),
-        type: document.getElementById('pVers').value ? "Multi-version" : "Fixed",
-        image: document.getElementById('pImg').value.trim() || "https://cdn-icons-png.flaticon.com/512/2920/2920277.png",
-        desc: document.getElementById('pDesc').value.trim(),
-        versions: document.getElementById('pVers').value.split(',').map(v=>v.trim()).filter(Boolean)
-      };
-      if(!p.name || !p.price) return alert("Name & Price required");
-      DB.products.push(p); save(); renderLists(); updateStats();
-      document.getElementById('pName').value = '';
-      alert("Product added!");
+    function saveProduct() {
+      const editId = document.getElementById('editProdId').value;
+      const name = document.getElementById('prodName').value.trim();
+      const category = document.getElementById('prodCategory').value;
+      const price = Number(document.getElementById('prodPrice').value);
+      const type = document.getElementById('prodType').value.trim() || 'Fixed';
+      const image = document.getElementById('prodImage').value.trim() || 'https://cdn-icons-png.flaticon.com/512/2920/2920277.png';
+      const desc = document.getElementById('prodDesc').value.trim();
+
+      if(!name || !price) {
+        alert('Please fill Product Name and Price!');
+        return;
+      }
+
+      if(editId) {
+        // Edit existing
+        const index = DB.products.findIndex(p => p.id == editId);
+        if(index !== -1) {
+          DB.products[index] = { ...DB.products[index], name, category, price, type, image, desc };
+          showSuccess('✅ Product updated successfully!');
+        }
+        cancelProductEdit();
+      } else {
+        // Add new
+        const newProduct = {
+          id: Date.now(),
+          name,
+          category,
+          price,
+          type,
+          image,
+          desc,
+          versions: []
+        };
+        DB.products.push(newProduct);
+        showSuccess('✅ Product added successfully!');
+        
+        // Clear form
+        document.getElementById('prodName').value = '';
+        document.getElementById('prodPrice').value = '';
+        document.getElementById('prodType').value = '';
+        document.getElementById('prodImage').value = '';
+        document.getElementById('prodDesc').value = '';
+      }
+
+      saveToLocalStorage();
+      init();
     }
 
-    function addService() {
-      const s = {
-        id: Date.now(),
-        name: document.getElementById('sName').value.trim(),
-        category: document.getElementById('sCat').value,
-        price: Number(document.getElementById('sPrice').value),
-        image: document.getElementById('sImg').value.trim() || "https://cdn-icons-png.flaticon.com/512/3067/3067258.png",
-        desc: document.getElementById('sDesc').value.trim()
-      };
-      if(!s.name || !s.price) return alert("Name & Price required");
-      DB.services.push(s); save(); renderLists(); updateStats();
-      document.getElementById('sName').value = '';
-      alert("Service added!");
+    function saveService() {
+      const editId = document.getElementById('editServId').value;
+      const name = document.getElementById('serviceName').value.trim();
+      const category = document.getElementById('serviceCategory').value;
+      const price = Number(document.getElementById('servicePrice').value);
+      const image = document.getElementById('serviceImage').value.trim() || 'https://cdn-icons-png.flaticon.com/512/3067/3067258.png';
+      const desc = document.getElementById('serviceDesc').value.trim();
+
+      if(!name || !price) {
+        alert('Please fill Service Name and Price!');
+        return;
+      }
+
+      if(editId) {
+        // Edit existing
+        const index = DB.services.findIndex(s => s.id == editId);
+        if(index !== -1) {
+          DB.services[index] = { ...DB.services[index], name, category, price, image, desc };
+          showSuccess('✅ Service updated successfully!');
+        }
+        cancelServiceEdit();
+      } else {
+        // Add new
+        const newService = {
+          id: Date.now(),
+          name,
+          category,
+          price,
+          image,
+          desc
+        };
+        DB.services.push(newService);
+        showSuccess('✅ Service added successfully!');
+        
+        // Clear form
+        document.getElementById('serviceName').value = '';
+        document.getElementById('servicePrice').value = '';
+        document.getElementById('serviceImage').value = '';
+        document.getElementById('serviceDesc').value = '';
+      }
+
+      saveToLocalStorage();
+      init();
     }
 
-    function addCat(type) {
-      const inp = type === 'sales' ? document.getElementById('newSCat') : document.getElementById('newSVCCat');
-      const val = inp.value.trim();
-      if(!val) return;
-      if(type === 'sales') DB.salesCategories.push(val);
-      else DB.serviceCategories.push(val);
-      inp.value = '';
-      save(); populateCats(); renderCats();
+    function editProduct(id) {
+      const product = DB.products.find(p => p.id === id);
+      if(!product) return;
+
+      document.getElementById('editProdId').value = product.id;
+      document.getElementById('prodName').value = product.name;
+      document.getElementById('prodCategory').value = product.category;
+      document.getElementById('prodPrice').value = product.price;
+      document.getElementById('prodType').value = product.type || '';
+      document.getElementById('prodImage').value = product.image || '';
+      document.getElementById('prodDesc').value = product.desc || '';
+
+      document.getElementById('prodFormTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Product';
+      document.getElementById('prodSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Update Product';
+      document.getElementById('prodCancelBtn').style.display = 'inline-block';
+      
+      // Scroll to form
+      document.getElementById('productsPanel').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function renderCats() {
-      document.getElementById('salesCats').innerHTML = DB.salesCategories.map((c,i)=>`<span style="display:inline-block; background:#e3f2fd; padding:0.3rem 0.8rem; border-radius:15px; margin:0.3rem;">${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:5px;" onclick="delCat('sales',${i})"></i></span>`).join('');
-      document.getElementById('serviceCats').innerHTML = DB.serviceCategories.map((c,i)=>`<span style="display:inline-block; background:#e8f5e9; padding:0.3rem 0.8rem; border-radius:15px; margin:0.3rem;">${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:5px;" onclick="delCat('service',${i})"></i></span>`).join('');
+    function editService(id) {
+      const service = DB.services.find(s => s.id === id);
+      if(!service) return;
+
+      document.getElementById('editServId').value = service.id;
+      document.getElementById('serviceName').value = service.name;
+      document.getElementById('serviceCategory').value = service.category;
+      document.getElementById('servicePrice').value = service.price;
+      document.getElementById('serviceImage').value = service.image || '';
+      document.getElementById('serviceDesc').value = service.desc || '';
+
+      document.getElementById('servFormTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Service';
+      document.getElementById('servSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Update Service';
+      document.getElementById('servCancelBtn').style.display = 'inline-block';
+      
+      document.getElementById('servicesPanel').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function delCat(type, i) {
-      if(!confirm("Delete category?")) return;
-      if(type==='sales') DB.salesCategories.splice(i,1);
-      else DB.serviceCategories.splice(i,1);
-      save(); populateCats(); renderCats();
+    function cancelProductEdit() {
+      document.getElementById('editProdId').value = '';
+      document.getElementById('prodName').value = '';
+      document.getElementById('prodPrice').value = '';
+      document.getElementById('prodType').value = '';
+      document.getElementById('prodImage').value = '';
+      document.getElementById('prodDesc').value = '';
+      
+      document.getElementById('prodFormTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Product';
+      document.getElementById('prodSubmitBtn').innerHTML = '<i class="fas fa-plus"></i> Add Product';
+      document.getElementById('prodCancelBtn').style.display = 'none';
     }
 
-    function renderLists() {
-      const pList = document.getElementById('pList');
-      pList.innerHTML = DB.products.map(p => `
+    function cancelServiceEdit() {
+      document.getElementById('editServId').value = '';
+      document.getElementById('serviceName').value = '';
+      document.getElementById('servicePrice').value = '';
+      document.getElementById('serviceImage').value = '';
+      document.getElementById('serviceDesc').value = '';
+      
+      document.getElementById('servFormTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Service';
+      document.getElementById('servSubmitBtn').innerHTML = '<i class="fas fa-plus"></i> Add Service';
+      document.getElementById('servCancelBtn').style.display = 'none';
+    }
+
+    function deleteProduct(id) {
+      if(!confirm('Delete this product?')) return;
+      DB.products = DB.products.filter(p => p.id !== id);
+      saveToLocalStorage();
+      init();
+      showSuccess('Product deleted');
+    }
+
+    function deleteService(id) {
+      if(!confirm('Delete this service?')) return;
+      DB.services = DB.services.filter(s => s.id !== id);
+      saveToLocalStorage();
+      init();
+      showSuccess('Service deleted');
+    }
+
+    function addCategory(type) {
+      const inputId = type === 'sales' ? 'newSalesCat' : 'newServiceCat';
+      const value = document.getElementById(inputId).value.trim();
+      
+      if(!value) {
+        alert('Please enter category name!');
+        return;
+      }
+
+      if(type === 'sales') {
+        if(DB.salesCategories.includes(value)) {
+          alert('Category already exists!');
+          return;
+        }
+        DB.salesCategories.push(value);
+      } else {
+        if(DB.serviceCategories.includes(value)) {
+          alert('Category already exists!');
+          return;
+        }
+        DB.serviceCategories.push(value);
+      }
+
+      document.getElementById(inputId).value = '';
+      saveToLocalStorage();
+      init();
+      showSuccess('✅ Category added!');
+    }
+
+    function deleteCategory(type, index) {
+      if(!confirm('Delete this category?')) return;
+      if(type === 'sales') {
+        DB.salesCategories.splice(index, 1);
+      } else {
+        DB.serviceCategories.splice(index, 1);
+      }
+      saveToLocalStorage();
+      init();
+      showSuccess('Category deleted');
+    }
+
+    function renderProducts() {
+      const list = document.getElementById('productsList');
+      if(DB.products.length === 0) {
+        list.innerHTML = '<div style="padding:2rem; text-align:center; color:#999;">No products yet</div>';
+        return;
+      }
+      
+      list.innerHTML = DB.products.map(p => `
         <div class="item-row">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <img src="${p.image}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2920/2920277.png'">
-            <div><strong>${p.name}</strong><br><small>₹${p.price} • ${p.category}</small></div>
+          <div class="item-info">
+            <h4>${p.name}</h4>
+            <p>₹${p.price.toLocaleString()} • ${p.category} • ${p.type}</p>
+            <p style="color:#999; font-size:0.85rem; margin-top:0.3rem;">${p.desc || 'No description'}</p>
           </div>
           <div class="actions">
-            <button class="del" onclick="delItem('products',${p.id})"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-blue" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-red" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
           </div>
         </div>
       `).join('');
+    }
 
-      const sList = document.getElementById('sList');
-      sList.innerHTML = DB.services.map(s => `
+    function renderServices() {
+      const list = document.getElementById('servicesList');
+      if(DB.services.length === 0) {
+        list.innerHTML = '<div style="padding:2rem; text-align:center; color:#999;">No services yet</div>';
+        return;
+      }
+      
+      list.innerHTML = DB.services.map(s => `
         <div class="item-row">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <img src="${s.image}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3067/3067258.png'">
-            <div><strong>${s.name}</strong><br><small>₹${s.price} • ${s.category}</small></div>
+          <div class="item-info">
+            <h4>${s.name}</h4>
+            <p>₹${s.price.toLocaleString()} • ${s.category}</p>
+            <p style="color:#999; font-size:0.85rem; margin-top:0.3rem;">${s.desc || 'No description'}</p>
           </div>
           <div class="actions">
-            <button class="del" onclick="delItem('services',${s.id})"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-blue" onclick="editService(${s.id})"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-red" onclick="deleteService(${s.id})"><i class="fas fa-trash"></i></button>
           </div>
         </div>
       `).join('');
     }
 
-    function delItem(type, id) {
-      if(!confirm("Delete this item?")) return;
-      DB[type] = DB[type].filter(i => i.id !== id);
-      save(); renderLists(); updateStats();
+    function renderCategories() {
+      document.getElementById('salesCategoriesList').innerHTML = DB.salesCategories.map((c, i) => `
+        <span class="category-tag">
+          ${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:8px;" onclick="deleteCategory('sales', ${i})"></i>
+        </span>
+      `).join('');
+
+      document.getElementById('serviceCategoriesList').innerHTML = DB.serviceCategories.map((c, i) => `
+        <span class="category-tag" style="background:#e8f5e9;">
+          ${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:8px;" onclick="deleteCategory('service', ${i})"></i>
+        </span>
+      `).join('');
     }
 
-    function save() {
+    function saveToLocalStorage() {
       localStorage.setItem('cctech_db', JSON.stringify(DB));
     }
 
-    function exportDB() {
-      const blob = new Blob([`const CCData = ${JSON.stringify(DB, null, 2)};\nif(localStorage.getItem('cctech_db')) Object.assign(CCData, JSON.parse(localStorage.getItem('cctech_db')));`], {type: 'text/javascript'});
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'database.js'; a.click();
-    }
+    function exportDatabase() {
+      const dataStr = `const CCData = ${JSON.stringify(DB, null, 2)};
 
-    function exportJSON() { exportDB(); }
-    function importJSON() {
-      try {
-        const json = document.getElementById('importJSON').value;
-        DB = JSON.parse(json); save(); init(); alert("Database restored!");
-      } catch(e) { alert("Invalid JSON"); }
+if(typeof window !== 'undefined' && localStorage.getItem('cctech_db')) {
+  try {
+    const localData = JSON.parse(localStorage.getItem('cctech_db'));
+    if(localData.products) CCData.products = localData.products;
+    if(localData.services) CCData.services = localData.services;
+    if(localData.salesCategories) CCData.salesCategories = localData.salesCategories;
+    if(localData.serviceCategories) CCData.serviceCategories = localData.serviceCategories;
+  } catch(e) {
+    console.error("Error loading local data:", e);
+  }
+}`;
+      
+      const blob = new Blob([dataStr], {type: 'text/javascript'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'database.js';
+      a.click();
+      URL.revokeObjectURL(url);
+      
+      alert('✅ Database exported!\n\nTo make changes live:\n1. Upload this file to GitHub\n2. Replace database.js content\n3. Commit changes\n4. Wait 1-2 minutes');
     }
   </script>
 </body>
