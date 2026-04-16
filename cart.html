@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart - CC Tech</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f5f9fc; }
+    header { background: linear-gradient(135deg, #0d4a6b, #1a237e); color: white; padding: 1rem 2rem; }
+    .header-wrap { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+    nav a { color: white; text-decoration: none; margin-left: 1.5rem; }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+    h1 { color: #0d4a6b; margin-bottom: 2rem; text-align: center; }
+    .cart-box { background: white; border-radius: 15px; padding: 2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    .item { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid #eee; flex-wrap: wrap; gap: 1rem; }
+    .item-info h3 { color: #0d4a6b; margin-bottom: 0.3rem; }
+    .item-info p { color: #666; font-size: 0.9rem; }
+    .qty-ctrl { display: flex; align-items: center; gap: 0.5rem; }
+    .qty-btn { width: 32px; height: 32px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 1.1rem; }
+    .qty-btn:hover { background: #f0f0f0; }
+    .remove { color: #f44336; cursor: pointer; font-weight: 600; margin-left: 1rem; }
+    .total-section { margin-top: 2rem; padding-top: 1.5rem; border-top: 3px solid #0d4a6b; text-align: right; }
+    .total { font-size: 2rem; color: #ff9800; font-weight: 700; }
+    .checkout-btn { width: 100%; padding: 1.2rem; background: #25d366; color: white; border: none; border-radius: 10px; font-size: 1.2rem; font-weight: 700; cursor: pointer; margin-top: 1.5rem; }
+    .checkout-btn:hover { background: #128c7e; }
+    .empty { text-align: center; padding: 4rem 2rem; color: #999; }
+    .empty i { font-size: 5rem; margin-bottom: 1rem; color: #ddd; }
+    .continue { display: inline-block; margin-top: 1rem; color: #0d4a6b; text-decoration: none; font-weight: 600; }
+    @media(max-width:768px) { .header-wrap { flex-direction: column; text-align: center; gap: 1rem; } nav a { margin: 0 0.8rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-wrap">
+      <h2><i class="fas fa-microchip"></i> CC Tech</h2>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="sales-dynamic.html">Sales</a>
+        <a href="service-dynamic.html">Service</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1><i class="fas fa-shopping-cart"></i> Your Shopping Cart</h1>
+    <div class="cart-box" id="cartBox"></div>
+  </div>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cctech_cart')) || [];
+    
+    function renderCart() {
+      const box = document.getElementById('cartBox');
+      
+      if(cart.length === 0) {
+        box.innerHTML = `
+          <div class="empty">
+            <i class="fas fa-shopping-cart"></i>
+            <h2>Your cart is empty</h2>
+            <p>Add products from our sales page</p>
+            <a href="sales-dynamic.html" class="continue"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+          </div>
+        `;
+        return;
+      }
+
+      let total = 0;
+      let html = '';
+      
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.qty;
+        total += itemTotal;
+        
+        html += `
+          <div class="item">
+            <div class="item-info">
+              <h3>${item.name}</h3>
+              <p>${item.category} • ₹${item.price.toLocaleString()} each</p>
+              <p style="color:#ff9800; font-weight:600; margin-top:0.3rem;">Subtotal: ₹${itemTotal.toLocaleString()}</p>
+            </div>
+            <div style="display:flex; align-items:center;">
+              <div class="qty-ctrl">
+                <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                <span style="font-weight:600; min-width:40px; text-align:center; font-size:1.1rem;">${item.qty}</span>
+                <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+              </div>
+              <span class="remove" onclick="removeItem(${index})"><i class="fas fa-trash"></i> Remove</span>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `
+        <div class="total-section">
+          <div class="total">Total: ₹${total.toLocaleString()}</div>
+          <button class="checkout-btn" onclick="location.href='checkout.html'">
+            <i class="fas fa-credit-card"></i> Proceed to Checkout
+          </button>
+          <a href="sales-dynamic.html" class="continue" style="display:block; margin-top:1rem;"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+        </div>
+      `;
+
+      box.innerHTML = html;
+    }
+
+    function changeQty(index, change) {
+      cart[index].qty += change;
+      if(cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      localStorage.setItem('cctech_cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cctech_cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    renderCart();
+  </script>
+</body>
+</html>
