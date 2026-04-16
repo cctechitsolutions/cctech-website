@@ -1,13 +1,205 @@
-<header>
-  <div class="header-wrap">
-    <h2><i class="fas fa-microchip"></i> CC Tech</h2>
-    <nav>
-      <a href="index.html"><i class="fas fa-home"></i> Home</a>
-      <a href="sales-dynamic.html"><i class="fas fa-shopping-cart"></i> Sales</a>
-      <a href="service-dynamic.html"><i class="fas fa-tools"></i> Service</a>
-      <a href="cart.html"><i class="fas fa-shopping-bag"></i> Cart</a>
-      <a href="contact.html"><i class="fas fa-address-card"></i> Contact</a>
-      <a href="admin.html" style="color:#ffd700;"><i class="fas fa-lock"></i> Admin</a>
-    </nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales - CC Tech IT Solutions</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #f5f9fc; }
+    
+    header { background: linear-gradient(135deg, #0d4a6b, #1a237e); color: white; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .header-wrap { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .logo { font-size: 1.6rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+    nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    nav a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.3s; font-weight: 500; }
+    nav a:hover { background: rgba(255,255,255,0.2); }
+    
+    .hero { background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-align: center; padding: 3rem 1rem; }
+    .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .hero p { font-size: 1.2rem; opacity: 0.9; }
+    
+    .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+    
+    .cats { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; }
+    .cat-btn { padding: 0.8rem 1.5rem; background: white; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; }
+    .cat-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .cat-btn.active { background: #0d4a6b; color: white; }
+    
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
+    
+    .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: all 0.3s; }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
+    
+    .card-img { width: 100%; height: 200px; object-fit: contain; background: linear-gradient(135deg, #f5f9fc, #e3f2fd); padding: 1rem; }
+    .card-img img { width: 100%; height: 100%; object-fit: contain; }
+    
+    .card-body { padding: 1.5rem; }
+    .category-tag { display: inline-block; background: #e3f2fd; color: #0d4a6b; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.8rem; }
+    .card-body h3 { color: #0d4a6b; margin-bottom: 0.5rem; font-size: 1.3rem; }
+    .card-body p { color: #666; font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5; }
+    
+    .price { font-size: 1.8rem; color: #ff9800; font-weight: 700; margin: 0.8rem 0; }
+    .price small { font-size: 0.9rem; color: #999; font-weight: normal; }
+    
+    .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .btn { flex: 1; padding: 0.9rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.95rem; }
+    .btn-cart { background: #ff9800; color: white; }
+    .btn-cart:hover { background: #e68900; transform: scale(1.02); }
+    .btn-chat { background: #25d366; color: white; }
+    .btn-chat:hover { background: #128c7e; transform: scale(1.02); }
+    
+    .cart-float { position: fixed; bottom: 30px; right: 30px; background: #ff9800; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; text-decoration: none; box-shadow: 0 5px 20px rgba(255,152,0,0.4); z-index: 99; transition: all 0.3s; }
+    .cart-float:hover { transform: scale(1.1); box-shadow: 0 8px 25px rgba(255,152,0,0.5); }
+    .cart-badge { position: absolute; top: -5px; right: -5px; background: #f44336; color: white; width: 28px; height: 28px; border-radius: 50%; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    
+    .empty-state { text-align: center; padding: 4rem 2rem; color: #999; grid-column: 1 / -1; }
+    .empty-state i { font-size: 5rem; margin-bottom: 1rem; color: #ddd; }
+    
+    @media(max-width:768px) { 
+      .header-wrap { flex-direction: column; text-align: center; } 
+      nav { justify-content: center; }
+      .hero h1 { font-size: 2rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-wrap">
+      <div class="logo"><i class="fas fa-microchip"></i> CC Tech</div>
+      <nav>
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="sales-dynamic.html"><i class="fas fa-shopping-cart"></i> Sales</a>
+        <a href="service-dynamic.html"><i class="fas fa-tools"></i> Service</a>
+        <a href="cart.html"><i class="fas fa-shopping-bag"></i> Cart</a>
+        <a href="contact.html"><i class="fas fa-address-card"></i> Contact</a>
+        <a href="admin.html" style="color:#ffd700;"><i class="fas fa-lock"></i> Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="hero">
+    <h1><i class="fas fa-shopping-bag"></i> Sales Store</h1>
+    <p>Browse products • Chat on WhatsApp • Add to cart • Best prices guaranteed</p>
   </div>
-</header>
+
+  <div class="container">
+    <div class="cats" id="cats"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <a href="cart.html" class="cart-float">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="cart-badge" id="cartCount">0</span>
+  </a>
+
+  <script src="database.js"></script>
+  <script>
+    let DB = JSON.parse(JSON.stringify(CCData));
+    if(localStorage.getItem('cctech_db')) {
+      try {
+        const local = JSON.parse(localStorage.getItem('cctech_db'));
+        if(local.products) DB.products = local.products;
+        if(local.salesCategories) DB.salesCategories = local.salesCategories;
+      } catch(e) { console.error(e); }
+    }
+    
+    let activeCat = 'All';
+
+    function init() {
+      const catsDiv = document.getElementById('cats');
+      catsDiv.innerHTML = `<button class="cat-btn ${activeCat==='All'?'active':''}" onclick="filter('All')">All Products</button>` + 
+        DB.salesCategories.map(c=>`<button class="cat-btn ${activeCat===c?'active':''}" onclick="filter('${c}')">${c}</button>`).join('');
+      render();
+      updateCartCount();
+    }
+
+    function filter(cat) { 
+      activeCat = cat; 
+      init(); 
+    }
+
+    function render() {
+      const items = activeCat === 'All' ? DB.products : DB.products.filter(p => p.category === activeCat);
+      const grid = document.getElementById('grid');
+      
+      if(items.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-box-open"></i>
+            <h3>No products found</h3>
+            <p>Check back soon for new arrivals!</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = items.map(p => `
+        <div class="card">
+          <div class="card-img">
+            <img src="${p.image}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2920/2920277.png'" alt="${p.name}">
+          </div>
+          <div class="card-body">
+            <span class="category-tag">${p.category}</span>
+            <h3>${p.name}</h3>
+            <p>${p.desc || 'No description available'}</p>
+            <div class="price">₹${p.price.toLocaleString()} <small>${p.type || ''}</small></div>
+            <div class="btn-group">
+              <button class="btn btn-cart" onclick="addToCart(${p.id})">
+                <i class="fas fa-cart-plus"></i> Add to Cart
+              </button>
+              <button class="btn btn-chat" onclick="chatWA('${p.name.replace(/'/g, "\\'")}', ${p.price}, '${p.category}')">
+                <i class="fab fa-whatsapp"></i> Chat
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function chatWA(name, price, cat) {
+      const msg = `Hi CC Tech! I'm interested in:%0A%0A*Product:* ${name}%0A*Category:* ${cat}%0A*Price:* ₹${price}%0A%0APlease share availability and delivery details.`;
+      window.open(`https://wa.me/${DB.whatsapp}?text=${msg}`, '_blank');
+    }
+
+    function addToCart(id) {
+      const product = DB.products.find(p => p.id === id);
+      if(!product) return;
+      
+      let cart = JSON.parse(localStorage.getItem('cctech_cart')) || [];
+      const existing = cart.find(item => item.id === product.id);
+      
+      if(existing) {
+        existing.qty++;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          category: product.category,
+          price: product.price,
+          type: product.type,
+          image: product.image,
+          qty: 1
+        });
+      }
+      
+      localStorage.setItem('cctech_cart', JSON.stringify(cart));
+      updateCartCount();
+      
+      // Show notification
+      alert(`✅ ${product.name} added to cart!`);
+    }
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cctech_cart')) || [];
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      document.getElementById('cartCount').textContent = count;
+    }
+
+    // Initialize
+    init();
+  </script>
+</body>
+</html>
