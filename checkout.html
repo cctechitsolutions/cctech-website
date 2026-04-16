@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - CC Tech</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #f5f9fc; }
+    header { background: linear-gradient(135deg, #0d4a6b, #1a237e); color: white; padding: 1rem 2rem; }
+    .header-wrap { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+    nav a { color: white; text-decoration: none; margin-left: 1.5rem; }
+    .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+    .checkout-box { background: white; border-radius: 15px; padding: 2.5rem; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+    h1 { color: #0d4a6b; margin-bottom: 2rem; text-align: center; }
+    .summary { background: #f8f9fa; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem; }
+    .summary h3 { color: #0d4a6b; margin-bottom: 1rem; }
+    .summary-item { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px dashed #ccc; }
+    .total-row { font-weight: 700; font-size: 1.3rem; color: #ff9800; border-top: 2px solid #0d4a6b; border-bottom: none !important; margin-top: 0.5rem; padding-top: 1rem !important; }
+    .payment-methods { margin: 2rem 0; }
+    .payment-methods h3 { color: #0d4a6b; margin-bottom: 1rem; }
+    .pay-option { display: flex; align-items: center; padding: 1.2rem; border: 2px solid #ddd; border-radius: 10px; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s; }
+    .pay-option:hover { border-color: #0d4a6b; background: #f0f8ff; }
+    .pay-option.selected { border-color: #0d4a6b; background: #e3f2fd; }
+    .pay-option input { margin-right: 1rem; width: 20px; height: 20px; }
+    .pay-option i { font-size: 2rem; margin-right: 1rem; }
+    .upi-icon { color: #25d366; }
+    .cod-icon { color: #ff9800; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #555; }
+    .form-group input, .form-group textarea { width: 100%; padding: 0.9rem; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #0d4a6b; }
+    .upi-info { background: #e8f5e9; padding: 1.5rem; border-radius: 10px; margin: 1.5rem 0; text-align: center; border-left: 4px solid #25d366; }
+    .upi-id { font-family: monospace; font-size: 1.3rem; background: white; padding: 0.8rem 1.5rem; border-radius: 8px; display: inline-block; margin: 1rem 0; font-weight: 600; color: #0d4a6b; }
+    .btn { width: 100%; padding: 1.2rem; background: #25d366; color: white; border: none; border-radius: 10px; font-size: 1.2rem; font-weight: 700; cursor: pointer; margin-top: 1.5rem; }
+    .btn:hover { background: #128c7e; }
+    .hidden { display: none; }
+    @media(max-width:768px) { .header-wrap { flex-direction: column; text-align: center; gap: 1rem; } nav a { margin: 0 0.8rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-wrap">
+      <h2><i class="fas fa-microchip"></i> CC Tech</h2>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="cart.html">Cart</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="checkout-box">
+      <h1><i class="fas fa-lock"></i> Secure Checkout</h1>
+      
+      <div class="summary" id="summary"></div>
+
+      <div class="payment-methods">
+        <h3>Select Payment Method</h3>
+        
+        <label class="pay-option selected" onclick="selectPayment('upi')">
+          <input type="radio" name="payment" value="upi" checked>
+          <i class="fas fa-qrcode upi-icon"></i>
+          <div>
+            <strong>UPI Payment</strong>
+            <p style="color:#666; font-size:0.9rem; margin-top:0.3rem;">Pay via Google Pay, PhonePe, Paytm, etc.</p>
+          </div>
+        </label>
+
+        <label class="pay-option" onclick="selectPayment('cod')">
+          <input type="radio" name="payment" value="cod">
+          <i class="fas fa-money-bill-wave cod-icon"></i>
+          <div>
+            <strong>Cash on Delivery</strong>
+            <p style="color:#666; font-size:0.9rem; margin-top:0.3rem;">Pay when you receive (Bengaluru only)</p>
+          </div>
+        </label>
+      </div>
+
+      <div id="upiSection">
+        <div class="upi-info">
+          <h3><i class="fas fa-qrcode"></i> Scan QR or Use UPI ID</h3>
+          <div class="upi-id" id="upiId">cctechitsolutions@upi</div>
+          <p style="color:#555; margin-top:0.5rem;">Amount: <strong style="color:#ff9800; font-size:1.2rem;" id="upiAmount">₹0</strong></p>
+          <p style="font-size:0.9rem; color:#666; margin-top:0.5rem;">After payment, click below to send screenshot on WhatsApp</p>
+        </div>
+      </div>
+
+      <div id="codSection" class="hidden">
+        <h3 style="color:#0d4a6b; margin-bottom:1rem;">Delivery Details</h3>
+        <div class="form-group">
+          <label><i class="fas fa-user"></i> Full Name *</label>
+          <input type="text" id="codName" placeholder="Enter your full name" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-phone"></i> Phone Number *</label>
+          <input type="tel" id="codPhone" placeholder="10-digit mobile number" required>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-map-marker-alt"></i> Complete Address *</label>
+          <textarea id="codAddress" rows="3" placeholder="House no., Street, Area, Landmark, City, PIN" required></textarea>
+        </div>
+      </div>
+
+      <button class="btn" onclick="placeOrder()">
+        <i class="fab fa-whatsapp"></i> Place Order via WhatsApp
+      </button>
+      
+      <p style="text-align:center; margin-top:1rem; color:#666; font-size:0.9rem;">
+        <i class="fas fa-shield-alt"></i> Your information is secure • We'll confirm your order on WhatsApp
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem('cctech_cart')) || [];
+    const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    let paymentMethod = 'upi';
+
+    // Render order summary
+    const summaryHTML = cart.map(item => `
+      <div class="summary-item">
+        <span>${item.name} x${item.qty}</span>
+        <span>₹${(item.price * item.qty).toLocaleString()}</span>
+      </div>
+    `).join('') + `
+      <div class="summary-item total-row">
+        <span>Total Amount</span>
+        <span>₹${total.toLocaleString()}</span>
+      </div>
+    `;
+    document.getElementById('summary').innerHTML = `<h3>Order Summary</h3>${summaryHTML}`;
+    document.getElementById('upiAmount').textContent = `₹${total.toLocaleString()}`;
+
+    function selectPayment(method) {
+      paymentMethod = method;
+      document.querySelectorAll('.pay-option').forEach(el => el.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+      
+      if(method === 'upi') {
+        document.getElementById('upiSection').classList.remove('hidden');
+        document.getElementById('codSection').classList.add('hidden');
+      } else {
+        document.getElementById('upiSection').classList.add('hidden');
+        document.getElementById('codSection').classList.remove('hidden');
+      }
+    }
+
+    function placeOrder() {
+      if(cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+
+      let message = `*🛒 NEW ORDER - CC TECH IT SOLUTIONS*%0A%0A`;
+      message += `*Order Details:*%0A`;
+      cart.forEach(item => {
+        message += `• ${item.name} x${item.qty} = ₹${(item.price * item.qty).toLocaleString()}%0A`;
+      });
+      message += `%0A*Total: ₹${total.toLocaleString()}*%0A%0A`;
+      message += `*Payment Method:* ${paymentMethod === 'upi' ? 'UPI' : 'Cash on Delivery'}%0A`;
+
+      if(paymentMethod === 'cod') {
+        const name = document.getElementById('codName').value.trim();
+        const phone = document.getElementById('codPhone').value.trim();
+        const address = document.getElementById('codAddress').value.trim();
+
+        if(!name || !phone || !address) {
+          alert('Please fill all delivery details!');
+          return;
+        }
+
+        message += `%0A*Delivery Details:*%0A`;
+        message += `Name: ${name}%0A`;
+        message += `Phone: ${phone}%0A`;
+        message += `Address: ${address}%0A`;
+      } else {
+        message += `%0A💳 *UPI Payment Instructions:*%0A`;
+        message += `1. Pay to: cctechitsolutions@upi%0A`;
+        message += `2. Amount: ₹${total}%0A`;
+        message += `3. Send payment screenshot%0A`;
+      }
+
+      message += `%0A*Please confirm my order.*`;
+
+      // Clear cart
+      localStorage.removeItem('cctech_cart');
+
+      // Open WhatsApp
+      window.open(`https://wa.me/916364253615?text=${message}`, '_blank');
+      
+      // Redirect to home
+      setTimeout(() => {
+        alert('✅ Order placed! We will confirm shortly on WhatsApp.');
+        window.location.href = 'index.html';
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
