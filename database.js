@@ -1,5 +1,7 @@
-// CC Tech IT Solutions - Central Database
+// CC Tech IT Solutions - Central Database v2.1
+// Last updated: 2026-04-17
 const CCData = {
+  version: "2.1",
   whatsapp: "916364253615",
   
   salesCategories: ["Software", "Laptops", "Desktops", "Servers", "Embedded Systems", "Robotics", "Sensors & Modules", "Components", "Tools & Equipment", "Enclosures", "CCTV & Security", "Networking", "Accessories"],
@@ -15,12 +17,12 @@ const CCData = {
     { id: 4, name: "HP Laptop 15s (i5, 8GB, 512GB)", category: "Laptops", price: 42999, type: "Hardware", image: "https://cdn-icons-png.flaticon.com/512/2190/2190333.png", desc: "Intel i5 11th Gen • 8GB RAM • 512GB SSD • 15.6\" FHD", versions: [] },
     { id: 5, name: "Dell Inspiron 15 (i7, 16GB, 1TB)", category: "Laptops", price: 62999, type: "Hardware", image: "https://cdn-icons-png.flaticon.com/512/2190/2190333.png", desc: "Intel i7 12th Gen • 16GB RAM • 1TB SSD • Backlit Keyboard", versions: [] },
     
-    // SERVERS (from impss.in)
+    // SERVERS
     { id: 6, name: "HP ProLiant DL380 G7 Server", category: "Servers", price: 85000, type: "Hardware", image: "https://cdn-icons-png.flaticon.com/512/2621/2621644.png", desc: "Dual Xeon X5650 • 32GB RAM • 4x 300GB SAS • 2U Rack", versions: [] },
     { id: 7, name: "Dell PowerEdge R720 Server", category: "Servers", price: 95000, type: "Hardware", image: "https://cdn-icons-png.flaticon.com/512/2621/2621644.png", desc: "Dual Xeon E5-2650 • 64GB RAM • 4x 600GB SAS • 2U Rack", versions: [] },
     { id: 8, name: "Dell PowerEdge T150 Tower", category: "Servers", price: 75000, type: "Hardware", image: "https://cdn-icons-png.flaticon.com/512/2621/2621644.png", desc: "Xeon E-2314 • 16GB ECC • 2TB HDD • Tower", versions: [] },
     
-    // EMBEDDED SYSTEMS - Development Boards (from probots.co.in with 10% margin)
+    // EMBEDDED SYSTEMS - Development Boards
     { id: 101, name: "Arduino Uno R3 (Original)", category: "Embedded Systems", price: 605, type: "Board", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "ATmega328P • 16MHz • 14 Digital I/O • 6 Analog • USB", versions: [] },
     { id: 102, name: "Arduino Nano", category: "Embedded Systems", price: 495, type: "Board", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "ATmega328 • Compact size • USB mini • Breadboard friendly", versions: [] },
     { id: 103, name: "Arduino Mega 2560 R3", category: "Embedded Systems", price: 1100, type: "Board", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "ATmega2560 • 54 Digital I/O • 16 Analog • 256KB Flash", versions: [] },
@@ -37,7 +39,7 @@ const CCData = {
     { id: 114, name: "Particle Photon WiFi Module", category: "Embedded Systems", price: 2199, type: "Module", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "ARM Cortex-M3 • WiFi • Cloud connectivity • IoT", versions: [] },
     { id: 115, name: "BBC micro:bit V2", category: "Embedded Systems", price: 2199, type: "Board", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "ARM Cortex-M4 • LED matrix • Sensors • Bluetooth", versions: [] },
     
-    // SENSORS (from probots.co.in with 10% margin)
+    // SENSORS & MODULES
     { id: 201, name: "HC-SR04 Ultrasonic Sensor", category: "Sensors & Modules", price: 110, type: "Sensor", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "2cm-400cm range • 5V • Trigger/Echo • Distance measurement", versions: [] },
     { id: 202, name: "DHT11 Temperature & Humidity", category: "Sensors & Modules", price: 110, type: "Sensor", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "20-90% RH • 0-50°C • Digital output • Low cost", versions: [] },
     { id: 203, name: "DHT22 Temperature & Humidity", category: "Sensors & Modules", price: 385, type: "Sensor", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "0-100% RH • -40 to 80°C • Higher accuracy • Digital", versions: [] },
@@ -115,7 +117,7 @@ const CCData = {
     { id: 619, name: "MOSFET IRF540N (10pcs)", category: "Components", price: 110, type: "Component", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "N-channel • 100V 33A • TO-220 • Switching", versions: [] },
     { id: 620, name: "Crystal Oscillator 16MHz (10pcs)", category: "Components", price: 55, type: "Component", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "16MHz • HC-49S • Arduino • Microcontroller clock", versions: [] },
     
-    // ENCLOSURES (from probots.co.in)
+    // ENCLOSURES
     { id: 701, name: "CircuitX PES01 Plastic Box - Small", category: "Enclosures", price: 55, type: "Enclosure", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "95x65x35mm • ABS plastic • Screw holes • PCB mounting", versions: [] },
     { id: 702, name: "CircuitX PES02 Plastic Box - Medium", category: "Enclosures", price: 110, type: "Enclosure", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "115x90x55mm • ABS plastic • Durable • Project box", versions: [] },
     { id: 703, name: "CircuitX PES03 Plastic Box - Large", category: "Enclosures", price: 165, type: "Enclosure", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "158x108x62mm • ABS plastic • Spacious • Electronics", versions: [] },
@@ -154,11 +156,11 @@ const CCData = {
     { id: 907, name: "Omni Wheel 60mm", category: "Robotics", price: 220, type: "Wheel", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "60mm • 3-roller • Mecanum • Omni-directional movement", versions: [] },
     { id: 908, name: "Robot Caster Wheel", category: "Robotics", price: 110, type: "Wheel", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "Free rotating • Support wheel • Robot balance", versions: [] },
     
-    // CCTV & NETWORKING (existing)
+    // CCTV & NETWORKING
     { id: 1001, name: "Hikvision 4-Camera CCTV Kit", category: "CCTV & Security", price: 18500, type: "Kit", image: "https://cdn-icons-png.flaticon.com/512/3067/3067258.png", desc: "2MP Cameras • 4ch DVR • 1TB HDD • Mobile View", versions: [] },
     { id: 1002, name: "TP-Link Gigabit WiFi 6 Router", category: "Networking", price: 3499, type: "Hardware", image: "https://cdn-icons-png.flaticon.com/512/2884/2884368.png", desc: "Dual Band • AX1500 • 4 LAN • MU-MIMO", versions: [] },
     
-    // ACCESSORIES & COMPONENTS
+    // ACCESSORIES
     { id: 1101, name: "Samsung 970 EVO Plus 1TB NVMe", category: "Accessories", price: 6499, type: "Storage", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "Read: 3500MB/s • Write: 3300MB/s • 5yr Warranty", versions: [] },
     { id: 1102, name: "Corsair Vengeance 16GB DDR4", category: "Accessories", price: 3299, type: "RAM", image: "https://cdn-icons-png.flaticon.com/512/2190/2190371.png", desc: "3200MHz • CL16 • Desktop • Lifetime Warranty", versions: [] }
   ],
@@ -173,15 +175,27 @@ const CCData = {
   ]
 };
 
-// Safely merge localStorage data
-if(typeof window !== 'undefined' && localStorage.getItem('cctech_db')) {
-  try {
-    const local = JSON.parse(localStorage.getItem('cctech_db'));
-    if(Array.isArray(local.products)) CCData.products = local.products;
-    if(Array.isArray(local.services)) CCData.services = local.services;
-    if(Array.isArray(local.salesCategories)) CCData.salesCategories = local.salesCategories;
-    if(Array.isArray(local.serviceCategories)) CCData.serviceCategories = local.serviceCategories;
-  } catch(e) {
-    console.error("LocalStorage merge error:", e);
+// Cache-busting: Force reload if version changed
+if(typeof window !== 'undefined') {
+  const savedVersion = localStorage.getItem('cctech_db_version');
+  const currentVersion = CCData.version;
+  
+  if(savedVersion !== currentVersion) {
+    localStorage.removeItem('cctech_db');
+    localStorage.setItem('cctech_db_version', currentVersion);
+    console.log(`✅ Database updated to v${currentVersion}`);
+  }
+  
+  // Load admin edits if available
+  if(localStorage.getItem('cctech_db')) {
+    try {
+      const local = JSON.parse(localStorage.getItem('cctech_db'));
+      if(Array.isArray(local.products)) CCData.products = local.products;
+      if(Array.isArray(local.services)) CCData.services = local.services;
+      if(Array.isArray(local.salesCategories)) CCData.salesCategories = local.salesCategories;
+      if(Array.isArray(local.serviceCategories)) CCData.serviceCategories = local.serviceCategories;
+    } catch(e) {
+      console.error("Error loading local ", e);
+    }
   }
 }
