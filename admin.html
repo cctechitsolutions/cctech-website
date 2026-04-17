@@ -173,7 +173,7 @@
     </div>
   </div>
 
-  <script src="database.js"></script>
+  <script src="database.js?v=2.1"></script>
   <script>
     let DB = JSON.parse(JSON.stringify(CCData));
     const PASSWORD = "cctech2026";
@@ -189,10 +189,7 @@
       }
     }
 
-    function logout() {
-      location.reload();
-    }
-
+    function logout() { location.reload(); }
     function showSuccess(msg) {
       const el = document.getElementById('successMsg');
       el.textContent = msg;
@@ -211,7 +208,6 @@
     function showTab(tab) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      
       document.getElementById(tab + 'Panel').classList.add('active');
       event.target.classList.add('active');
     }
@@ -228,11 +224,8 @@
     }
 
     function populateCategoryDropdowns() {
-      const prodCat = document.getElementById('prodCategory');
-      const servCat = document.getElementById('serviceCategory');
-      
-      prodCat.innerHTML = DB.salesCategories.map(c => `<option value="${c}">${c}</option>`).join('');
-      servCat.innerHTML = DB.serviceCategories.map(c => `<option value="${c}">${c}</option>`).join('');
+      document.getElementById('prodCategory').innerHTML = DB.salesCategories.map(c => `<option value="${c}">${c}</option>`).join('');
+      document.getElementById('serviceCategory').innerHTML = DB.serviceCategories.map(c => `<option value="${c}">${c}</option>`).join('');
     }
 
     function saveProduct() {
@@ -244,44 +237,25 @@
       const image = document.getElementById('prodImage').value.trim() || 'https://cdn-icons-png.flaticon.com/512/2920/2920277.png';
       const desc = document.getElementById('prodDesc').value.trim();
 
-      if(!name || !price) {
-        alert('Please fill Product Name and Price!');
-        return;
-      }
+      if(!name || !price) { alert('Please fill Product Name and Price!'); return; }
 
       if(editId) {
-        // Edit existing
         const index = DB.products.findIndex(p => p.id == editId);
         if(index !== -1) {
           DB.products[index] = { ...DB.products[index], name, category, price, type, image, desc };
-          showSuccess('✅ Product updated successfully!');
+          showSuccess('✅ Product updated!');
         }
         cancelProductEdit();
       } else {
-        // Add new
-        const newProduct = {
-          id: Date.now(),
-          name,
-          category,
-          price,
-          type,
-          image,
-          desc,
-          versions: []
-        };
-        DB.products.push(newProduct);
-        showSuccess('✅ Product added successfully!');
-        
-        // Clear form
+        DB.products.push({ id: Date.now(), name, category, price, type, image, desc, versions: [] });
+        showSuccess('✅ Product added!');
         document.getElementById('prodName').value = '';
         document.getElementById('prodPrice').value = '';
         document.getElementById('prodType').value = '';
         document.getElementById('prodImage').value = '';
         document.getElementById('prodDesc').value = '';
       }
-
-      saveToLocalStorage();
-      init();
+      saveToLocalStorage(); init();
     }
 
     function saveService() {
@@ -292,78 +266,54 @@
       const image = document.getElementById('serviceImage').value.trim() || 'https://cdn-icons-png.flaticon.com/512/3067/3067258.png';
       const desc = document.getElementById('serviceDesc').value.trim();
 
-      if(!name || !price) {
-        alert('Please fill Service Name and Price!');
-        return;
-      }
+      if(!name || !price) { alert('Please fill Service Name and Price!'); return; }
 
       if(editId) {
-        // Edit existing
         const index = DB.services.findIndex(s => s.id == editId);
         if(index !== -1) {
           DB.services[index] = { ...DB.services[index], name, category, price, image, desc };
-          showSuccess('✅ Service updated successfully!');
+          showSuccess('✅ Service updated!');
         }
         cancelServiceEdit();
       } else {
-        // Add new
-        const newService = {
-          id: Date.now(),
-          name,
-          category,
-          price,
-          image,
-          desc
-        };
-        DB.services.push(newService);
-        showSuccess('✅ Service added successfully!');
-        
-        // Clear form
+        DB.services.push({ id: Date.now(), name, category, price, image, desc });
+        showSuccess('✅ Service added!');
         document.getElementById('serviceName').value = '';
         document.getElementById('servicePrice').value = '';
         document.getElementById('serviceImage').value = '';
         document.getElementById('serviceDesc').value = '';
       }
-
-      saveToLocalStorage();
-      init();
+      saveToLocalStorage(); init();
     }
 
     function editProduct(id) {
-      const product = DB.products.find(p => p.id === id);
-      if(!product) return;
-
-      document.getElementById('editProdId').value = product.id;
-      document.getElementById('prodName').value = product.name;
-      document.getElementById('prodCategory').value = product.category;
-      document.getElementById('prodPrice').value = product.price;
-      document.getElementById('prodType').value = product.type || '';
-      document.getElementById('prodImage').value = product.image || '';
-      document.getElementById('prodDesc').value = product.desc || '';
-
+      const p = DB.products.find(x => x.id === id);
+      if(!p) return;
+      document.getElementById('editProdId').value = p.id;
+      document.getElementById('prodName').value = p.name;
+      document.getElementById('prodCategory').value = p.category;
+      document.getElementById('prodPrice').value = p.price;
+      document.getElementById('prodType').value = p.type || '';
+      document.getElementById('prodImage').value = p.image || '';
+      document.getElementById('prodDesc').value = p.desc || '';
       document.getElementById('prodFormTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Product';
-      document.getElementById('prodSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Update Product';
+      document.getElementById('prodSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Update';
       document.getElementById('prodCancelBtn').style.display = 'inline-block';
-      
-      // Scroll to form
       document.getElementById('productsPanel').scrollIntoView({ behavior: 'smooth' });
     }
 
     function editService(id) {
-      const service = DB.services.find(s => s.id === id);
-      if(!service) return;
-
-      document.getElementById('editServId').value = service.id;
-      document.getElementById('serviceName').value = service.name;
-      document.getElementById('serviceCategory').value = service.category;
-      document.getElementById('servicePrice').value = service.price;
-      document.getElementById('serviceImage').value = service.image || '';
-      document.getElementById('serviceDesc').value = service.desc || '';
-
+      const s = DB.services.find(x => x.id === id);
+      if(!s) return;
+      document.getElementById('editServId').value = s.id;
+      document.getElementById('serviceName').value = s.name;
+      document.getElementById('serviceCategory').value = s.category;
+      document.getElementById('servicePrice').value = s.price;
+      document.getElementById('serviceImage').value = s.image || '';
+      document.getElementById('serviceDesc').value = s.desc || '';
       document.getElementById('servFormTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Service';
-      document.getElementById('servSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Update Service';
+      document.getElementById('servSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Update';
       document.getElementById('servCancelBtn').style.display = 'inline-block';
-      
       document.getElementById('servicesPanel').scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -374,7 +324,6 @@
       document.getElementById('prodType').value = '';
       document.getElementById('prodImage').value = '';
       document.getElementById('prodDesc').value = '';
-      
       document.getElementById('prodFormTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Product';
       document.getElementById('prodSubmitBtn').innerHTML = '<i class="fas fa-plus"></i> Add Product';
       document.getElementById('prodCancelBtn').style.display = 'none';
@@ -386,7 +335,6 @@
       document.getElementById('servicePrice').value = '';
       document.getElementById('serviceImage').value = '';
       document.getElementById('serviceDesc').value = '';
-      
       document.getElementById('servFormTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Service';
       document.getElementById('servSubmitBtn').innerHTML = '<i class="fas fa-plus"></i> Add Service';
       document.getElementById('servCancelBtn').style.display = 'none';
@@ -395,74 +343,43 @@
     function deleteProduct(id) {
       if(!confirm('Delete this product?')) return;
       DB.products = DB.products.filter(p => p.id !== id);
-      saveToLocalStorage();
-      init();
-      showSuccess('Product deleted');
+      saveToLocalStorage(); init(); showSuccess('Product deleted');
     }
 
     function deleteService(id) {
       if(!confirm('Delete this service?')) return;
       DB.services = DB.services.filter(s => s.id !== id);
-      saveToLocalStorage();
-      init();
-      showSuccess('Service deleted');
+      saveToLocalStorage(); init(); showSuccess('Service deleted');
     }
 
     function addCategory(type) {
       const inputId = type === 'sales' ? 'newSalesCat' : 'newServiceCat';
       const value = document.getElementById(inputId).value.trim();
-      
-      if(!value) {
-        alert('Please enter category name!');
-        return;
-      }
-
+      if(!value) { alert('Please enter category name!'); return; }
       if(type === 'sales') {
-        if(DB.salesCategories.includes(value)) {
-          alert('Category already exists!');
-          return;
-        }
+        if(DB.salesCategories.includes(value)) { alert('Category exists!'); return; }
         DB.salesCategories.push(value);
       } else {
-        if(DB.serviceCategories.includes(value)) {
-          alert('Category already exists!');
-          return;
-        }
+        if(DB.serviceCategories.includes(value)) { alert('Category exists!'); return; }
         DB.serviceCategories.push(value);
       }
-
       document.getElementById(inputId).value = '';
-      saveToLocalStorage();
-      init();
-      showSuccess('✅ Category added!');
+      saveToLocalStorage(); init(); showSuccess('✅ Category added!');
     }
 
     function deleteCategory(type, index) {
       if(!confirm('Delete this category?')) return;
-      if(type === 'sales') {
-        DB.salesCategories.splice(index, 1);
-      } else {
-        DB.serviceCategories.splice(index, 1);
-      }
-      saveToLocalStorage();
-      init();
-      showSuccess('Category deleted');
+      if(type === 'sales') DB.salesCategories.splice(index, 1);
+      else DB.serviceCategories.splice(index, 1);
+      saveToLocalStorage(); init(); showSuccess('Category deleted');
     }
 
     function renderProducts() {
       const list = document.getElementById('productsList');
-      if(DB.products.length === 0) {
-        list.innerHTML = '<div style="padding:2rem; text-align:center; color:#999;">No products yet</div>';
-        return;
-      }
-      
+      if(DB.products.length === 0) { list.innerHTML = '<div style="padding:2rem; text-align:center; color:#999;">No products</div>'; return; }
       list.innerHTML = DB.products.map(p => `
         <div class="item-row">
-          <div class="item-info">
-            <h4>${p.name}</h4>
-            <p>₹${p.price.toLocaleString()} • ${p.category} • ${p.type}</p>
-            <p style="color:#999; font-size:0.85rem; margin-top:0.3rem;">${p.desc || 'No description'}</p>
-          </div>
+          <div class="item-info"><h4>${p.name}</h4><p>₹${p.price.toLocaleString()} • ${p.category} • ${p.type}</p></div>
           <div class="actions">
             <button class="btn btn-blue" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button>
             <button class="btn btn-red" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
@@ -473,18 +390,10 @@
 
     function renderServices() {
       const list = document.getElementById('servicesList');
-      if(DB.services.length === 0) {
-        list.innerHTML = '<div style="padding:2rem; text-align:center; color:#999;">No services yet</div>';
-        return;
-      }
-      
+      if(DB.services.length === 0) { list.innerHTML = '<div style="padding:2rem; text-align:center; color:#999;">No services</div>'; return; }
       list.innerHTML = DB.services.map(s => `
         <div class="item-row">
-          <div class="item-info">
-            <h4>${s.name}</h4>
-            <p>₹${s.price.toLocaleString()} • ${s.category}</p>
-            <p style="color:#999; font-size:0.85rem; margin-top:0.3rem;">${s.desc || 'No description'}</p>
-          </div>
+          <div class="item-info"><h4>${s.name}</h4><p>₹${s.price.toLocaleString()} • ${s.category}</p></div>
           <div class="actions">
             <button class="btn btn-blue" onclick="editService(${s.id})"><i class="fas fa-edit"></i></button>
             <button class="btn btn-red" onclick="deleteService(${s.id})"><i class="fas fa-trash"></i></button>
@@ -495,15 +404,10 @@
 
     function renderCategories() {
       document.getElementById('salesCategoriesList').innerHTML = DB.salesCategories.map((c, i) => `
-        <span class="category-tag">
-          ${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:8px;" onclick="deleteCategory('sales', ${i})"></i>
-        </span>
+        <span class="category-tag">${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:8px;" onclick="deleteCategory('sales', ${i})"></i></span>
       `).join('');
-
       document.getElementById('serviceCategoriesList').innerHTML = DB.serviceCategories.map((c, i) => `
-        <span class="category-tag" style="background:#e8f5e9;">
-          ${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:8px;" onclick="deleteCategory('service', ${i})"></i>
-        </span>
+        <span class="category-tag" style="background:#e8f5e9;">${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:8px;" onclick="deleteCategory('service', ${i})"></i></span>
       `).join('');
     }
 
@@ -513,28 +417,29 @@
 
     function exportDatabase() {
       const dataStr = `const CCData = ${JSON.stringify(DB, null, 2)};
-
-if(typeof window !== 'undefined' && localStorage.getItem('cctech_db')) {
-  try {
-    const localData = JSON.parse(localStorage.getItem('cctech_db'));
-    if(localData.products) CCData.products = localData.products;
-    if(localData.services) CCData.services = localData.services;
-    if(localData.salesCategories) CCData.salesCategories = localData.salesCategories;
-    if(localData.serviceCategories) CCData.serviceCategories = localData.serviceCategories;
-  } catch(e) {
-    console.error("Error loading local data:", e);
+if(typeof window !== 'undefined') {
+  const savedVersion = localStorage.getItem('cctech_db_version');
+  const currentVersion = CCData.version;
+  if(savedVersion !== currentVersion) {
+    localStorage.removeItem('cctech_db');
+    localStorage.setItem('cctech_db_version', currentVersion);
+  }
+  if(localStorage.getItem('cctech_db')) {
+    try {
+      const local = JSON.parse(localStorage.getItem('cctech_db'));
+      if(Array.isArray(local.products)) CCData.products = local.products;
+      if(Array.isArray(local.services)) CCData.services = local.services;
+      if(Array.isArray(local.salesCategories)) CCData.salesCategories = local.salesCategories;
+      if(Array.isArray(local.serviceCategories)) CCData.serviceCategories = local.serviceCategories;
+    } catch(e) { console.error("Error loading local ", e); }
   }
 }`;
-      
       const blob = new Blob([dataStr], {type: 'text/javascript'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = url;
-      a.download = 'database.js';
-      a.click();
+      a.href = url; a.download = 'database.js'; a.click();
       URL.revokeObjectURL(url);
-      
-      alert('✅ Database exported!\n\nTo make changes live:\n1. Upload this file to GitHub\n2. Replace database.js content\n3. Commit changes\n4. Wait 1-2 minutes');
+      alert('✅ Exported! Replace database.js in GitHub with this file.');
     }
   </script>
 </body>
