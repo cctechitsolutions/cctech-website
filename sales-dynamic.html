@@ -32,6 +32,7 @@
     .card-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
     .card-body { padding: 1.5rem; }
     .category-tag { display: inline-block; background: #e3f2fd; color: #0d4a6b; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.8rem; }
+    .type-tag { display: inline-block; background: #fff3e0; color: #e65100; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin-left: 0.5rem; }
     .card-body h3 { color: #0d4a6b; margin-bottom: 0.5rem; font-size: 1.3rem; }
     .card-body p { color: #666; font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5; }
     .price { font-size: 1.8rem; color: #ff9800; font-weight: 700; margin: 0.8rem 0; }
@@ -84,9 +85,8 @@
     <span class="cart-badge" id="cartCount">0</span>
   </a>
 
-  <script src="database.js?v=2.1"></script>
+  <script src="database.js?v=4.0"></script>
   <script>
-    // Debug: Log version and data
     if(typeof CCData !== 'undefined') {
       console.log('✅ CCData loaded v' + CCData.version);
       console.log('📦 Products:', CCData.products.length);
@@ -139,6 +139,7 @@
           <div class="card-img"><img src="${p.image}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2920/2920277.png'" alt="${p.name}"></div>
           <div class="card-body">
             <span class="category-tag">${p.category}</span>
+            ${p.type ? `<span class="type-tag">${p.type}</span>` : ''}
             <h3>${p.name}</h3>
             <p>${p.desc || 'No description'}</p>
             <div class="price">₹${p.price.toLocaleString()} <small>${p.type || ''}</small></div>
