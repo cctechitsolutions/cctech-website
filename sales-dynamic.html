@@ -84,15 +84,20 @@
     <span class="cart-badge" id="cartCount">0</span>
   </a>
 
-  <script src="database.js"></script>
+  <script src="database.js?v=2.1"></script>
   <script>
-    // STRICTLY load products only
+    // Debug: Log version and data
+    if(typeof CCData !== 'undefined') {
+      console.log('✅ CCData loaded v' + CCData.version);
+      console.log('📦 Products:', CCData.products.length);
+      console.log('📂 Categories:', CCData.salesCategories);
+    }
+
     let items = JSON.parse(JSON.stringify(CCData.products));
     let categories = JSON.parse(JSON.stringify(CCData.salesCategories));
     let activeCat = 'All';
     let searchQuery = '';
 
-    // Check localStorage for admin updates
     if(localStorage.getItem('cctech_db')) {
       try {
         const local = JSON.parse(localStorage.getItem('cctech_db'));
@@ -109,15 +114,8 @@
       updateCartCount();
     }
 
-    function setCat(cat) { 
-      activeCat = cat; 
-      init(); 
-    }
-
-    function filterItems() {
-      searchQuery = document.getElementById('searchInput').value.toLowerCase();
-      render();
-    }
+    function setCat(cat) { activeCat = cat; init(); }
+    function filterItems() { searchQuery = document.getElementById('searchInput').value.toLowerCase(); render(); }
 
     function render() {
       let filtered = items;
