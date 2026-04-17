@@ -71,15 +71,19 @@
     <div class="grid" id="grid"></div>
   </div>
 
-  <script src="database.js"></script>
+  <script src="database.js?v=2.1"></script>
   <script>
-    // STRICTLY load services only
+    if(typeof CCData !== 'undefined') {
+      console.log('✅ CCData loaded v' + CCData.version);
+      console.log('🔧 Services:', CCData.services.length);
+      console.log('📂 Service Categories:', CCData.serviceCategories);
+    }
+
     let items = JSON.parse(JSON.stringify(CCData.services));
     let categories = JSON.parse(JSON.stringify(CCData.serviceCategories));
     let activeCat = 'All';
     let searchQuery = '';
 
-    // Check localStorage for admin updates
     if(localStorage.getItem('cctech_db')) {
       try {
         const local = JSON.parse(localStorage.getItem('cctech_db'));
@@ -95,15 +99,8 @@
       render();
     }
 
-    function setCat(cat) { 
-      activeCat = cat; 
-      init(); 
-    }
-
-    function filterItems() {
-      searchQuery = document.getElementById('searchInput').value.toLowerCase();
-      render();
-    }
+    function setCat(cat) { activeCat = cat; init(); }
+    function filterItems() { searchQuery = document.getElementById('searchInput').value.toLowerCase(); render(); }
 
     function render() {
       let filtered = items;
