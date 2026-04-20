@@ -3,81 +3,219 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sales - CC Tech IT Solutions</title>
+  <title>Sales - CCTech IT Solutions</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background: #f5f9fc; }
-    header { background: linear-gradient(135deg, #0d4a6b, #1a237e); color: white; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    body { background: #f1f3f6; }
+    
+    /* Header */
+    header { background: linear-gradient(135deg, #0d4a6b, #1a237e); color: white; padding: 1rem 2rem; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
     .header-wrap { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
     .logo { font-size: 1.6rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
     nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
     nav a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.3s; font-weight: 500; }
     nav a:hover { background: rgba(255,255,255,0.2); }
-    .hero { background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-align: center; padding: 3rem 1rem; }
-    .hero h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
-    .search-bar { width: 100%; max-width: 500px; margin: 0 auto 1.5rem; position: relative; }
-    .search-bar input { width: 100%; padding: 1rem 1.2rem 1rem 3rem; border: 2px solid #ddd; border-radius: 50px; font-size: 1rem; outline: none; transition: border 0.3s; }
-    .search-bar input:focus { border-color: #0d4a6b; }
-    .search-bar i { position: absolute; left: 1.2rem; top: 50%; transform: translateY(-50%); color: #999; }
-    .cats { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center; }
-    .cat-btn { padding: 0.8rem 1.5rem; background: white; border: none; border-radius: 50px; cursor: pointer; font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; }
-    .cat-btn:hover { transform: translateY(-2px); }
-    .cat-btn.active { background: #0d4a6b; color: white; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem; }
-    .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: all 0.3s; }
-    .card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
-    .card-img { width: 100%; height: 200px; object-fit: contain; background: linear-gradient(135deg, #f5f9fc, #e3f2fd); padding: 1rem; display: flex; align-items: center; justify-content: center; }
-    .card-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
-    .card-body { padding: 1.5rem; }
-    .category-tag { display: inline-block; background: #e3f2fd; color: #0d4a6b; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.8rem; }
-    .type-tag { display: inline-block; background: #fff3e0; color: #e65100; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin-left: 0.5rem; }
-    .card-body h3 { color: #0d4a6b; margin-bottom: 0.5rem; font-size: 1.3rem; }
-    .card-body p { color: #666; font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5; }
-    .price { font-size: 1.8rem; color: #ff9800; font-weight: 700; margin: 0.8rem 0; }
-    .price small { font-size: 0.9rem; color: #999; font-weight: normal; }
-    .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; }
-    .btn { flex: 1; padding: 0.9rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.95rem; }
+    
+    /* Condition Tabs */
+    .condition-tabs { background: white; padding: 1rem 2rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: sticky; top: 60px; z-index: 99; }
+    .tabs-container { max-width: 1400px; margin: 0 auto; display: flex; gap: 1rem; }
+    .condition-tab { flex: 1; padding: 1.2rem; text-align: center; border: 2px solid #ddd; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1.1rem; transition: all 0.3s; background: white; }
+    .condition-tab:hover { border-color: #0d4a6b; background: #f5f9fc; }
+    .condition-tab.active.new { background: linear-gradient(135deg, #4caf50, #45a049); color: white; border-color: #4caf50; }
+    .condition-tab.active.refurb { background: linear-gradient(135deg, #ff9800, #f57c00); color: white; border-color: #ff9800; }
+    .condition-tab i { display: block; font-size: 2rem; margin-bottom: 0.5rem; }
+    
+    /* Main Layout */
+    .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; display: grid; grid-template-columns: 280px 1fr; gap: 2rem; }
+    
+    /* Left Sidebar */
+    .sidebar { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); height: fit-content; position: sticky; top: 150px; }
+    .sidebar-section { margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+    .sidebar-section:last-child { border-bottom: none; }
+    .sidebar-title { font-size: 1.1rem; font-weight: 700; color: #0d4a6b; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .sidebar-title i { color: #ff9800; }
+    
+    /* Category Tree */
+    .category-tree { list-style: none; }
+    .category-item { margin-bottom: 0.5rem; }
+    .category-header { padding: 0.6rem 0.8rem; background: #f5f9fc; border-radius: 8px; cursor: pointer; font-weight: 600; color: #0d4a6b; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; }
+    .category-header:hover { background: #e3f2fd; }
+    .category-header.active { background: #0d4a6b; color: white; }
+    .category-header i { transition: transform 0.3s; }
+    .category-header.active i { transform: rotate(180deg); }
+    .subcategory-list { list-style: none; padding-left: 1rem; margin-top: 0.5rem; display: none; }
+    .subcategory-list.show { display: block; animation: slideDown 0.3s ease; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .subcategory-item { padding: 0.5rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.95rem; color: #555; transition: all 0.2s; }
+    .subcategory-item:hover { background: #f0f0f0; color: #0d4a6b; }
+    .subcategory-item.active { background: #0d4a6b; color: white; }
+    
+    /* Brand Filters */
+    .brand-list { display: flex; flex-direction: column; gap: 0.5rem; max-height: 300px; overflow-y: auto; }
+    .brand-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0; cursor: pointer; }
+    .brand-item input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+    .brand-item label { cursor: pointer; font-size: 0.95rem; color: #555; flex: 1; }
+    .brand-item:hover label { color: #0d4a6b; }
+    
+    /* Price Range */
+    .price-inputs { display: flex; gap: 0.5rem; align-items: center; }
+    .price-inputs input { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; }
+    .price-inputs span { color: #999; }
+    
+    /* Main Content */
+    .main-content { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+    
+    /* Search & Sort Bar */
+    .toolbar { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; align-items: center; }
+    .search-box { flex: 1; min-width: 300px; position: relative; }
+    .search-box input { width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; transition: border 0.3s; }
+    .search-box input:focus { outline: none; border-color: #0d4a6b; }
+    .search-box i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #999; }
+    .sort-select { padding: 1rem; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; background: white; cursor: pointer; }
+    .results-count { color: #666; font-weight: 600; }
+    
+    /* Product Grid */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .product-card { background: white; border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; transition: all 0.3s; position: relative; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.15); border-color: #0d4a6b; }
+    .product-badge { position: absolute; top: 10px; left: 10px; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; z-index: 10; }
+    .product-badge.new { background: #4caf50; color: white; }
+    .product-badge.refurb { background: #ff9800; color: white; }
+    .product-image { width: 100%; height: 220px; object-fit: contain; background: linear-gradient(135deg, #f5f9fc, #e3f2fd); padding: 1.5rem; display: flex; align-items: center; justify-content: center; }
+    .product-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .product-info { padding: 1.5rem; }
+    .product-brand { color: #ff9800; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .product-name { font-size: 1.1rem; color: #0d4a6b; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.4; }
+    .product-desc { color: #666; font-size: 0.9rem; margin-bottom: 1rem; line-height: 1.5; }
+    .product-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 0.85rem; color: #999; }
+    .product-price { font-size: 1.8rem; color: #ff9800; font-weight: 700; }
+    .product-price small { font-size: 0.9rem; color: #999; font-weight: normal; }
+    .product-actions { display: flex; gap: 0.5rem; }
+    .action-btn { flex: 1; padding: 0.8rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.9rem; }
     .btn-cart { background: #ff9800; color: white; }
     .btn-cart:hover { background: #e68900; }
     .btn-chat { background: #25d366; color: white; }
     .btn-chat:hover { background: #128c7e; }
+    
+    /* Empty State */
+    .empty-state { text-align: center; padding: 4rem 2rem; color: #999; grid-column: 1 / -1; }
+    .empty-state i { font-size: 5rem; margin-bottom: 1rem; color: #ddd; }
+    
+    /* Cart Float */
     .cart-float { position: fixed; bottom: 30px; right: 30px; background: #ff9800; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; text-decoration: none; box-shadow: 0 5px 20px rgba(255,152,0,0.4); z-index: 99; transition: all 0.3s; }
     .cart-float:hover { transform: scale(1.1); }
     .cart-badge { position: absolute; top: -5px; right: -5px; background: #f44336; color: white; width: 28px; height: 28px; border-radius: 50%; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-    .empty-state { text-align: center; padding: 4rem 2rem; color: #999; grid-column: 1 / -1; }
-    .empty-state i { font-size: 5rem; margin-bottom: 1rem; color: #ddd; }
-    @media(max-width:768px) { .header-wrap { flex-direction: column; text-align: center; } nav { justify-content: center; } .hero h1 { font-size: 2rem; } .grid { grid-template-columns: 1fr; } }
+    
+    /* Mobile Responsive */
+    @media(max-width: 968px) {
+      .main-container { grid-template-columns: 1fr; }
+      .sidebar { position: static; display: none; }
+      .sidebar.show { display: block; }
+      .mobile-filter-btn { display: block; padding: 0.8rem 1.5rem; background: #0d4a6b; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 1rem; }
+      .toolbar { flex-direction: column; }
+      .search-box { min-width: 100%; }
+    }
+    @media(min-width: 969px) {
+      .mobile-filter-btn { display: none; }
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="header-wrap">
-      <div class="logo"><i class="fas fa-microchip"></i> CC Tech</div>
+      <div class="logo"><i class="fas fa-microchip"></i> CCTech IT Solutions</div>
       <nav>
         <a href="index.html"><i class="fas fa-home"></i> Home</a>
         <a href="sales-dynamic.html"><i class="fas fa-shopping-cart"></i> Sales</a>
         <a href="service-dynamic.html"><i class="fas fa-tools"></i> Service</a>
         <a href="cart.html"><i class="fas fa-shopping-bag"></i> Cart</a>
         <a href="contact.html"><i class="fas fa-address-card"></i> Contact</a>
-        <a href="admin.html" style="color:#ffd700;"><i class="fas fa-lock"></i> Admin</a>
       </nav>
     </div>
   </header>
 
-  <div class="hero">
-    <h1><i class="fas fa-shopping-bag"></i> Sales Store</h1>
-    <p>Browse products • Chat on WhatsApp • Best prices guaranteed</p>
+  <!-- Condition Toggle Tabs -->
+  <div class="condition-tabs">
+    <div class="tabs-container">
+      <div class="condition-tab active new" id="newTab" onclick="setCondition('NEW')">
+        <i class="fas fa-box-open"></i>
+        NEW PRODUCTS
+        <small style="display:block; font-size:0.85rem; font-weight:400; margin-top:0.3rem;">Brand new items with warranty</small>
+      </div>
+      <div class="condition-tab refurb" id="refurbTab" onclick="setCondition('REFURBISHED')">
+        <i class="fas fa-recycle"></i>
+        REFURBISHED
+        <small style="display:block; font-size:0.85rem; font-weight:400; margin-top:0.3rem;">Tested & certified pre-owned</small>
+      </div>
+    </div>
   </div>
 
-  <div class="container">
-    <div class="search-bar">
-      <i class="fas fa-search"></i>
-      <input type="text" id="searchInput" placeholder="Search products by name, category or description..." oninput="filterItems()">
-    </div>
-    <div class="cats" id="cats"></div>
-    <div class="grid" id="grid"></div>
+  <div class="main-container">
+    <!-- Left Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <button class="mobile-filter-btn" onclick="toggleSidebar()">
+        <i class="fas fa-filter"></i> Filters
+      </button>
+
+      <!-- Categories -->
+      <div class="sidebar-section">
+        <div class="sidebar-title">
+          <i class="fas fa-th-large"></i> Categories
+        </div>
+        <ul class="category-tree" id="categoryTree"></ul>
+      </div>
+
+      <!-- Brands -->
+      <div class="sidebar-section">
+        <div class="sidebar-title">
+          <i class="fas fa-tags"></i> Brands
+        </div>
+        <div class="brand-list" id="brandList"></div>
+      </div>
+
+      <!-- Price Range -->
+      <div class="sidebar-section">
+        <div class="sidebar-title">
+          <i class="fas fa-rupee-sign"></i> Price Range
+        </div>
+        <div class="price-inputs">
+          <input type="number" id="minPrice" placeholder="Min" onchange="applyFilters()">
+          <span>-</span>
+          <input type="number" id="maxPrice" placeholder="Max" onchange="applyFilters()">
+        </div>
+      </div>
+
+      <!-- Reset Filters -->
+      <button onclick="resetFilters()" style="width:100%; padding:0.8rem; background:#f5f5f5; border:2px solid #ddd; border-radius:8px; cursor:pointer; font-weight:600; color:#666;">
+        <i class="fas fa-undo"></i> Reset All Filters
+      </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <button class="mobile-filter-btn" onclick="toggleSidebar()">
+        <i class="fas fa-filter"></i> Show Filters
+      </button>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Search products, brands, categories..." oninput="applyFilters()">
+        </div>
+        <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+          <option value="default">Sort By: Featured</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="name">Name: A to Z</option>
+        </select>
+        <div class="results-count" id="resultsCount">0 products</div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="product-grid" id="productGrid"></div>
+    </main>
   </div>
 
   <a href="cart.html" class="cart-float">
@@ -85,75 +223,169 @@
     <span class="cart-badge" id="cartCount">0</span>
   </a>
 
-  <script src="database.js?v=4.0"></script>
+  <script src="database.js?v=6.0"></script>
   <script>
-    if(typeof CCData !== 'undefined') {
-      console.log('✅ CCData loaded v' + CCData.version);
-      console.log('📦 Products:', CCData.products.length);
-      console.log('📂 Categories:', CCData.salesCategories);
-    }
-
-    let items = JSON.parse(JSON.stringify(CCData.products));
-    let categories = JSON.parse(JSON.stringify(CCData.salesCategories));
-    let activeCat = 'All';
+    let items = CCData.products;
+    let activeCondition = 'NEW';
+    let activeCategory = 'All';
+    let activeSubcategory = 'All';
+    let selectedBrands = [];
     let searchQuery = '';
-
-    if(localStorage.getItem('cctech_db')) {
-      try {
-        const local = JSON.parse(localStorage.getItem('cctech_db'));
-        if(Array.isArray(local.products)) items = local.products;
-        if(Array.isArray(local.salesCategories)) categories = local.salesCategories;
-      } catch(e) { console.error(e); }
-    }
+    let minPrice = 0;
+    let maxPrice = 999999;
 
     function init() {
-      document.getElementById('cats').innerHTML = 
-        `<button class="cat-btn ${activeCat==='All'?'active':''}" onclick="setCat('All')">All Products</button>` + 
-        categories.map(c=>`<button class="cat-btn ${activeCat===c?'active':''}" onclick="setCat('${c}')">${c}</button>`).join('');
-      render();
+      renderCategoryTree();
+      renderBrandList();
+      applyFilters();
       updateCartCount();
     }
 
-    function setCat(cat) { activeCat = cat; init(); }
-    function filterItems() { searchQuery = document.getElementById('searchInput').value.toLowerCase(); render(); }
+    function setCondition(condition) {
+      activeCondition = condition;
+      document.getElementById('newTab').classList.toggle('active', condition === 'NEW');
+      document.getElementById('refurbTab').classList.toggle('active', condition === 'REFURBISHED');
+      renderCategoryTree();
+      renderBrandList();
+      applyFilters();
+    }
 
-    function render() {
-      let filtered = items;
-      if(activeCat !== 'All') filtered = filtered.filter(i => i.category === activeCat);
+    function renderCategoryTree() {
+      const tree = document.getElementById('categoryTree');
+      const mainCats = [...new Set(items.filter(p => p.condition === activeCondition).map(p => p.mainCategory))];
+      
+      tree.innerHTML = mainCats.map(cat => {
+        const subs = [...new Set(items.filter(p => p.mainCategory === cat && p.condition === activeCondition).map(p => p.subCategory))];
+        return `
+          <li class="category-item">
+            <div class="category-header ${activeCategory===cat?'active':''}" onclick="toggleCategory('${cat}')">
+              <span>${cat}</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <ul class="subcategory-list ${activeCategory===cat?'show':''}">
+              <li class="subcategory-item ${activeSubcategory==='All' && activeCategory===cat?'active':''}" onclick="setSubcategory('${cat}', 'All')">All ${cat}</li>
+              ${subs.map(sub => `
+                <li class="subcategory-item ${activeSubcategory===sub && activeCategory===cat?'active':''}" onclick="setSubcategory('${cat}', '${sub}')">${sub}</li>
+              `).join('')}
+            </ul>
+          </li>
+        `;
+      }).join('');
+    }
+
+    function toggleCategory(cat) {
+      if(activeCategory === cat) {
+        activeCategory = 'All';
+        activeSubcategory = 'All';
+      } else {
+        activeCategory = cat;
+        activeSubcategory = 'All';
+      }
+      renderCategoryTree();
+      applyFilters();
+    }
+
+    function setSubcategory(cat, sub) {
+      activeCategory = cat;
+      activeSubcategory = sub;
+      renderCategoryTree();
+      applyFilters();
+    }
+
+    function renderBrandList() {
+      const list = document.getElementById('brandList');
+      const brands = [...new Set(items.filter(p => p.condition === activeCondition).map(p => p.brand))].sort();
+      
+      list.innerHTML = brands.map(brand => `
+        <div class="brand-item">
+          <input type="checkbox" id="brand-${brand}" value="${brand}" ${selectedBrands.includes(brand)?'checked':''} onchange="toggleBrand('${brand}')">
+          <label for="brand-${brand}">${brand} (${items.filter(p => p.brand === brand && p.condition === activeCondition).length})</label>
+        </div>
+      `).join('');
+    }
+
+    function toggleBrand(brand) {
+      if(selectedBrands.includes(brand)) {
+        selectedBrands = selectedBrands.filter(b => b !== brand);
+      } else {
+        selectedBrands.push(brand);
+      }
+      applyFilters();
+    }
+
+    function applyFilters() {
+      searchQuery = document.getElementById('searchInput').value.toLowerCase();
+      minPrice = Number(document.getElementById('minPrice').value) || 0;
+      maxPrice = Number(document.getElementById('maxPrice').value) || 999999;
+      const sortBy = document.getElementById('sortSelect').value;
+
+      let filtered = items.filter(p => p.condition === activeCondition);
+
+      if(activeCategory !== 'All') filtered = filtered.filter(p => p.mainCategory === activeCategory);
+      if(activeSubcategory !== 'All') filtered = filtered.filter(p => p.subCategory === activeSubcategory);
+      if(selectedBrands.length > 0) filtered = filtered.filter(p => selectedBrands.includes(p.brand));
       if(searchQuery) {
-        filtered = filtered.filter(i => 
-          i.name.toLowerCase().includes(searchQuery) || 
-          i.category.toLowerCase().includes(searchQuery) || 
-          (i.desc && i.desc.toLowerCase().includes(searchQuery))
+        filtered = filtered.filter(p => 
+          p.name.toLowerCase().includes(searchQuery) || 
+          p.brand.toLowerCase().includes(searchQuery) || 
+          p.desc.toLowerCase().includes(searchQuery) ||
+          p.subCategory.toLowerCase().includes(searchQuery)
         );
       }
+      filtered = filtered.filter(p => p.price >= minPrice && p.price <= maxPrice);
 
-      const grid = document.getElementById('grid');
-      if(filtered.length === 0) {
-        grid.innerHTML = `<div class="empty-state"><i class="fas fa-box-open"></i><h3>No products found</h3><p>Try a different search or category</p></div>`;
+      // Sorting
+      if(sortBy === 'price-low') filtered.sort((a,b) => a.price - b.price);
+      else if(sortBy === 'price-high') filtered.sort((a,b) => b.price - a.price);
+      else if(sortBy === 'name') filtered.sort((a,b) => a.name.localeCompare(b.name));
+
+      renderProducts(filtered);
+      document.getElementById('resultsCount').textContent = `${filtered.length} product${filtered.length!==1?'s':''}`;
+    }
+
+    function renderProducts(list) {
+      const grid = document.getElementById('productGrid');
+      if(list.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-box-open"></i>
+            <h3>No products found</h3>
+            <p>Try adjusting your filters or search terms</p>
+          </div>
+        `;
         return;
       }
 
-      grid.innerHTML = filtered.map(p => `
-        <div class="card">
-          <div class="card-img"><img src="${p.image}" onerror="this.src='https://github.com/cctechitsolutions/cctech-website/blob/main/images/Windows%2011%20Pro.png'" alt="${p.name}"></div>
-          <div class="card-body">
-            <span class="category-tag">${p.category}</span>
-            ${p.type ? `<span class="type-tag">${p.type}</span>` : ''}
-            <h3>${p.name}</h3>
-            <p>${p.desc || 'No description'}</p>
-            <div class="price">₹${p.price.toLocaleString()} <small>${p.type || ''}</small></div>
-            <div class="btn-group">
-              <button class="btn btn-cart" onclick="addToCart(${p.id})"><i class="fas fa-cart-plus"></i> Add</button>
-              <button class="btn btn-chat" onclick="chatWA('${p.name.replace(/'/g, "\\'")}', ${p.price}, '${p.category}')"><i class="fab fa-whatsapp"></i> Chat</button>
+      grid.innerHTML = list.map(p => `
+        <div class="product-card">
+          <span class="product-badge ${p.condition.toLowerCase()}">${p.condition}</span>
+          <div class="product-image">
+            <img src="${p.image}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2920/2920277.png'" alt="${p.name}">
+          </div>
+          <div class="product-info">
+            <div class="product-brand">${p.brand}</div>
+            <h3 class="product-name">${p.name}</h3>
+            <p class="product-desc">${p.desc}</p>
+            <div class="product-meta">
+              <span><i class="fas fa-tag"></i> ${p.subCategory}</span>
+              <span><i class="fas fa-box"></i> ${p.type}</span>
+            </div>
+            <div class="product-price">₹${p.price.toLocaleString()} <small>${p.type || ''}</small></div>
+            <div class="product-actions">
+              <button class="action-btn btn-cart" onclick="addToCart(${p.id})">
+                <i class="fas fa-cart-plus"></i> Add
+              </button>
+              <button class="action-btn btn-chat" onclick="chatWA('${p.name.replace(/'/g, "\\'")}', ${p.price}, '${p.brand}')">
+                <i class="fab fa-whatsapp"></i> Chat
+              </button>
             </div>
           </div>
         </div>
       `).join('');
     }
 
-    function chatWA(name, price, cat) {
-      window.open(`https://wa.me/${CCData.whatsapp}?text=Hi CC Tech! I'm interested in:%0A*${name}*%0ACategory: ${cat}%0APrice: ₹${price}%0APlease share details.`, '_blank');
+    function chatWA(name, price, brand) {
+      window.open(`https://wa.me/${CCData.whatsapp}?text=Hi CCTech IT Solutions! I'm interested in:%0A*${name}*%0ABrand: ${brand}%0ACondition: ${activeCondition}%0APrice: ₹${price}%0APlease share availability & delivery details.`, '_blank');
     }
 
     function addToCart(id) {
@@ -170,6 +402,23 @@
     function updateCartCount() {
       const cart = JSON.parse(localStorage.getItem('cctech_cart')) || [];
       document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0);
+    }
+
+    function resetFilters() {
+      activeCategory = 'All';
+      activeSubcategory = 'All';
+      selectedBrands = [];
+      document.getElementById('searchInput').value = '';
+      document.getElementById('minPrice').value = '';
+      document.getElementById('maxPrice').value = '';
+      document.getElementById('sortSelect').value = 'default';
+      renderCategoryTree();
+      renderBrandList();
+      applyFilters();
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('show');
     }
 
     init();
