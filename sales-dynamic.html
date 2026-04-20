@@ -22,6 +22,7 @@
     .tabs-container { max-width: 1400px; margin: 0 auto; display: flex; gap: 1rem; }
     .condition-tab { flex: 1; padding: 1.2rem; text-align: center; border: 2px solid #ddd; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1.1rem; transition: all 0.3s; background: white; }
     .condition-tab:hover { border-color: #0d4a6b; background: #f5f9fc; }
+    .condition-tab.active.all { background: linear-gradient(135deg, #0d4a6b, #1a237e); color: white; border-color: #0d4a6b; }
     .condition-tab.active.new { background: linear-gradient(135deg, #4caf50, #45a049); color: white; border-color: #4caf50; }
     .condition-tab.active.refurb { background: linear-gradient(135deg, #ff9800, #f57c00); color: white; border-color: #ff9800; }
     .condition-tab i { display: block; font-size: 2rem; margin-bottom: 0.5rem; }
@@ -66,7 +67,7 @@
     /* Main Content */
     .main-content { background: white; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
     
-    /* Search & Sort Bar */
+    /* Toolbar */
     .toolbar { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; align-items: center; }
     .search-box { flex: 1; min-width: 300px; position: relative; }
     .search-box input { width: 100%; padding: 1rem 1rem 1rem 3rem; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; transition: border 0.3s; }
@@ -138,15 +139,20 @@
   <!-- Condition Toggle Tabs -->
   <div class="condition-tabs">
     <div class="tabs-container">
-      <div class="condition-tab active new" id="newTab" onclick="setCondition('NEW')">
+      <div class="condition-tab active all" id="allTab" onclick="setCondition('ALL')">
+        <i class="fas fa-th"></i>
+        ALL PRODUCTS
+        <small style="display:block; font-size:0.85rem; font-weight:400; margin-top:0.3rem;">New & Refurbished</small>
+      </div>
+      <div class="condition-tab" id="newTab" onclick="setCondition('NEW')">
         <i class="fas fa-box-open"></i>
         NEW PRODUCTS
-        <small style="display:block; font-size:0.85rem; font-weight:400; margin-top:0.3rem;">Brand new items with warranty</small>
+        <small style="display:block; font-size:0.85rem; font-weight:400; margin-top:0.3rem;">Brand new items</small>
       </div>
-      <div class="condition-tab refurb" id="refurbTab" onclick="setCondition('REFURBISHED')">
+      <div class="condition-tab" id="refurbTab" onclick="setCondition('REFURBISHED')">
         <i class="fas fa-recycle"></i>
         REFURBISHED
-        <small style="display:block; font-size:0.85rem; font-weight:400; margin-top:0.3rem;">Tested & certified pre-owned</small>
+        <small style="display:block; font-size:0.85rem; font-weight:400; margin-top:0.3rem;">Tested & certified</small>
       </div>
     </div>
   </div>
@@ -226,7 +232,7 @@
   <script src="database.js?v=6.0"></script>
   <script>
     let items = CCData.products;
-    let activeCondition = 'NEW';
+    let activeCondition = 'ALL'; // Changed from 'NEW' to 'ALL'
     let activeCategory = 'All';
     let activeSubcategory = 'All';
     let selectedBrands = [];
@@ -243,6 +249,7 @@
 
     function setCondition(condition) {
       activeCondition = condition;
+      document.getElementById('allTab').classList.toggle('active', condition === 'ALL');
       document.getElementById('newTab').classList.toggle('active', condition === 'NEW');
       document.getElementById('refurbTab').classList.toggle('active', condition === 'REFURBISHED');
       renderCategoryTree();
@@ -252,10 +259,16 @@
 
     function renderCategoryTree() {
       const tree = document.getElementById('categoryTree');
-      const mainCats = [...new Set(items.filter(p => p.condition === activeCondition).map(p => p.mainCategory))];
+      // Filter by condition if not ALL
+      let filteredItems = items;
+      if(activeCondition !== 'ALL') {
+        filteredItems = items.filter(p => p.condition === activeCondition);
+      }
+      
+      const mainCats = [...new Set(filteredItems.map(p => p.mainCategory))];
       
       tree.innerHTML = mainCats.map(cat => {
-        const subs = [...new Set(items.filter(p => p.mainCategory === cat && p.condition === activeCondition).map(p => p.subCategory))];
+        const subs = [...new Set(filteredItems.filter(p => p.mainCategory === cat).map(p => p.subCategory))];
         return `
           <li class="category-item">
             <div class="category-header ${activeCategory===cat?'active':''}" onclick="toggleCategory('${cat}')">
@@ -294,12 +307,18 @@
 
     function renderBrandList() {
       const list = document.getElementById('brandList');
-      const brands = [...new Set(items.filter(p => p.condition === activeCondition).map(p => p.brand))].sort();
+      // Filter by condition if not ALL
+      let filteredItems = items;
+      if(activeCondition !== 'ALL') {
+        filteredItems = items.filter(p => p.condition === activeCondition);
+      }
+      
+      const brands = [...new Set(filteredItems.map(p => p.brand))].sort();
       
       list.innerHTML = brands.map(brand => `
         <div class="brand-item">
           <input type="checkbox" id="brand-${brand}" value="${brand}" ${selectedBrands.includes(brand)?'checked':''} onchange="toggleBrand('${brand}')">
-          <label for="brand-${brand}">${brand} (${items.filter(p => p.brand === brand && p.condition === activeCondition).length})</label>
+          <label for="brand-${brand}">${brand} (${filteredItems.filter(p => p.brand === brand).length})</label>
         </div>
       `).join('');
     }
@@ -319,11 +338,17 @@
       maxPrice = Number(document.getElementById('maxPrice').value) || 999999;
       const sortBy = document.getElementById('sortSelect').value;
 
-      let filtered = items.filter(p => p.condition === activeCondition);
+      // Start with all items or filter by condition
+      let filtered = activeCondition === 'ALL' ? items : items.filter(p => p.condition === activeCondition);
 
+      // Apply category filter
       if(activeCategory !== 'All') filtered = filtered.filter(p => p.mainCategory === activeCategory);
       if(activeSubcategory !== 'All') filtered = filtered.filter(p => p.subCategory === activeSubcategory);
+      
+      // Apply brand filter
       if(selectedBrands.length > 0) filtered = filtered.filter(p => selectedBrands.includes(p.brand));
+      
+      // Apply search
       if(searchQuery) {
         filtered = filtered.filter(p => 
           p.name.toLowerCase().includes(searchQuery) || 
@@ -332,6 +357,8 @@
           p.subCategory.toLowerCase().includes(searchQuery)
         );
       }
+      
+      // Apply price filter
       filtered = filtered.filter(p => p.price >= minPrice && p.price <= maxPrice);
 
       // Sorting
@@ -405,6 +432,7 @@
     }
 
     function resetFilters() {
+      activeCondition = 'ALL';
       activeCategory = 'All';
       activeSubcategory = 'All';
       selectedBrands = [];
@@ -412,9 +440,7 @@
       document.getElementById('minPrice').value = '';
       document.getElementById('maxPrice').value = '';
       document.getElementById('sortSelect').value = 'default';
-      renderCategoryTree();
-      renderBrandList();
-      applyFilters();
+      setCondition('ALL');
     }
 
     function toggleSidebar() {
