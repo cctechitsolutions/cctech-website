@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - CC Tech</title>
+  <title>Admin Panel - CCTech IT Solutions</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
@@ -43,7 +43,6 @@
     .stat-card { background: white; padding: 1.5rem; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     .stat-card h3 { font-size: 2rem; color: #0d4a6b; }
     .success-msg { background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 8px; margin: 1rem 0; display: none; border-left: 4px solid #25d366; }
-    .category-tag { display: inline-block; background: #e3f2fd; padding: 0.3rem 0.8rem; border-radius: 15px; margin: 0.2rem; font-size: 0.9rem; }
     @media(max-width:768px) { .admin-header { flex-direction: column; text-align: center; } }
   </style>
 </head>
@@ -59,7 +58,7 @@
 
   <div class="dashboard" id="dashboard">
     <div class="admin-header">
-      <h2><i class="fas fa-cogs"></i> CC Tech Admin Panel</h2>
+      <h2><i class="fas fa-cogs"></i> CCTech IT Solutions Admin</h2>
       <div>
         <button class="btn" onclick="exportDatabase()"><i class="fas fa-download"></i> Export DB</button>
         <button class="btn btn-red" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -72,375 +71,85 @@
     <div class="tabs">
       <button class="tab active" onclick="showTab('products')">Products</button>
       <button class="tab" onclick="showTab('services')">Services</button>
-      <button class="tab" onclick="showTab('categories')">Categories</button>
     </div>
 
-    <!-- Products Panel -->
     <div class="panel active" id="productsPanel">
       <h3 style="color:#0d4a6b; margin-bottom:1.5rem;" id="prodFormTitle"><i class="fas fa-plus-circle"></i> Add New Product</h3>
       <input type="hidden" id="editProdId" value="">
-      
       <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1rem;">
-        <div class="form-group">
-          <label>Product Name *</label>
-          <input type="text" id="prodName" placeholder="e.g., Windows 11 Pro">
-        </div>
-        <div class="form-group">
-          <label>Category *</label>
-          <select id="prodCategory"></select>
-        </div>
-        <div class="form-group">
-          <label>Price (₹) *</label>
-          <input type="number" id="prodPrice" placeholder="e.g., 8499">
-        </div>
-        <div class="form-group">
-          <label>Type</label>
-          <input type="text" id="prodType" placeholder="e.g., One-time, Lifetime">
-        </div>
-        <div class="form-group">
-          <label>Image URL</label>
-          <input type="text" id="prodImage" placeholder="https://... or leave blank">
-        </div>
-        <div class="form-group" style="grid-column: 1 / -1;">
-          <label>Description</label>
-          <textarea id="prodDesc" rows="2" placeholder="Product description..."></textarea>
-        </div>
+        <div class="form-group"><label>Product Name *</label><input type="text" id="prodName" placeholder="e.g., HP Laptop 15s"></div>
+        <div class="form-group"><label>Main Category *</label><input type="text" id="prodMainCat" placeholder="e.g., Computers & Servers"></div>
+        <div class="form-group"><label>Subcategory *</label><input type="text" id="prodSubCat" placeholder="e.g., Laptops"></div>
+        <div class="form-group"><label>Brand *</label><input type="text" id="prodBrand" placeholder="e.g., HP"></div>
+        <div class="form-group"><label>Condition *</label><select id="prodCondition"><option value="NEW">NEW</option><option value="REFURBISHED">REFURBISHED</option></select></div>
+        <div class="form-group"><label>Price (₹) *</label><input type="number" id="prodPrice" placeholder="e.g., 42999"></div>
+        <div class="form-group"><label>Type</label><input type="text" id="prodType" placeholder="e.g., NEW"></div>
+        <div class="form-group"><label>Image URL</label><input type="text" id="prodImage" placeholder="images/laptop.png"></div>
+        <div class="form-group" style="grid-column: 1 / -1;"><label>Description</label><textarea id="prodDesc" rows="2" placeholder="Product description..."></textarea></div>
       </div>
-      
       <button class="btn" id="prodSubmitBtn" onclick="saveProduct()"><i class="fas fa-plus"></i> Add Product</button>
-      <button class="btn btn-red" id="prodCancelBtn" onclick="cancelProductEdit()" style="display:none;">Cancel Edit</button>
-      
+      <button class="btn btn-red" id="prodCancelBtn" onclick="cancelProductEdit()" style="display:none;">Cancel</button>
       <h3 style="color:#0d4a6b; margin:2rem 0 1rem;"><i class="fas fa-list"></i> Existing Products (<span id="prodCount">0</span>)</h3>
       <div class="item-list" id="productsList"></div>
     </div>
 
-    <!-- Services Panel -->
     <div class="panel" id="servicesPanel">
       <h3 style="color:#0d4a6b; margin-bottom:1.5rem;" id="servFormTitle"><i class="fas fa-plus-circle"></i> Add New Service</h3>
       <input type="hidden" id="editServId" value="">
-      
       <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1rem;">
-        <div class="form-group">
-          <label>Service Name *</label>
-          <input type="text" id="serviceName" placeholder="e.g., Windows Installation">
-        </div>
-        <div class="form-group">
-          <label>Category *</label>
-          <select id="serviceCategory"></select>
-        </div>
-        <div class="form-group">
-          <label>Price (₹) *</label>
-          <input type="number" id="servicePrice" placeholder="e.g., 1500">
-        </div>
-        <div class="form-group">
-          <label>Image URL</label>
-          <input type="text" id="serviceImage" placeholder="https://... or leave blank">
-        </div>
-        <div class="form-group" style="grid-column: 1 / -1;">
-          <label>Description</label>
-          <textarea id="serviceDesc" rows="2" placeholder="Service description..."></textarea>
-        </div>
+        <div class="form-group"><label>Service Name *</label><input type="text" id="serviceName" placeholder="e.g., Windows Installation"></div>
+        <div class="form-group"><label>Category *</label><input type="text" id="serviceCategory" placeholder="e.g., OS Installation"></div>
+        <div class="form-group"><label>Price (₹) *</label><input type="number" id="servicePrice" placeholder="e.g., 1500"></div>
+        <div class="form-group"><label>Image URL</label><input type="text" id="serviceImage" placeholder="images/service-os.png"></div>
+        <div class="form-group" style="grid-column: 1 / -1;"><label>Description</label><textarea id="serviceDesc" rows="2" placeholder="Service description..."></textarea></div>
       </div>
-      
       <button class="btn btn-green" id="servSubmitBtn" onclick="saveService()"><i class="fas fa-plus"></i> Add Service</button>
-      <button class="btn btn-red" id="servCancelBtn" onclick="cancelServiceEdit()" style="display:none;">Cancel Edit</button>
-      
+      <button class="btn btn-red" id="servCancelBtn" onclick="cancelServiceEdit()" style="display:none;">Cancel</button>
       <h3 style="color:#0d4a6b; margin:2rem 0 1rem;"><i class="fas fa-list"></i> Existing Services (<span id="servCount">0</span>)</h3>
       <div class="item-list" id="servicesList"></div>
     </div>
-
-    <!-- Categories Panel -->
-    <div class="panel" id="categoriesPanel">
-      <h3 style="color:#0d4a6b; margin-bottom:1.5rem;"><i class="fas fa-tags"></i> Manage Categories</h3>
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:2rem;">
-        <div>
-          <h4 style="margin-bottom:1rem; color:#0d4a6b;">Sales Categories</h4>
-          <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
-            <input type="text" id="newSalesCat" placeholder="New category name">
-            <button class="btn" onclick="addCategory('sales')">Add</button>
-          </div>
-          <div id="salesCategoriesList"></div>
-        </div>
-        <div>
-          <h4 style="margin-bottom:1rem; color:#0d4a6b;">Service Categories</h4>
-          <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
-            <input type="text" id="newServiceCat" placeholder="New category name">
-            <button class="btn btn-green" onclick="addCategory('service')">Add</button>
-          </div>
-          <div id="serviceCategoriesList"></div>
-        </div>
-      </div>
-    </div>
   </div>
 
-  <script src="database.js?v=2.1"></script>
+  <script src="database.js?v=7.0"></script>
   <script>
     let DB = JSON.parse(JSON.stringify(CCData));
     const PASSWORD = "cctech2026";
-
-    function login() {
-      const pass = document.getElementById('adminPass').value;
-      if(pass === PASSWORD) {
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
-        init();
-      } else {
-        alert('Wrong password!');
-      }
-    }
-
+    function login() { if(document.getElementById('adminPass').value === PASSWORD) { document.getElementById('loginScreen').style.display='none'; document.getElementById('dashboard').style.display='block'; init(); } else { alert('Wrong password!'); } }
     function logout() { location.reload(); }
-    function showSuccess(msg) {
-      const el = document.getElementById('successMsg');
-      el.textContent = msg;
-      el.style.display = 'block';
-      setTimeout(() => { el.style.display = 'none'; }, 3000);
-    }
-
-    function init() {
-      updateStats();
-      populateCategoryDropdowns();
-      renderProducts();
-      renderServices();
-      renderCategories();
-    }
-
-    function showTab(tab) {
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.getElementById(tab + 'Panel').classList.add('active');
-      event.target.classList.add('active');
-    }
-
-    function updateStats() {
-      document.getElementById('stats').innerHTML = `
-        <div class="stat-card"><h3>${DB.products.length}</h3><p>Products</p></div>
-        <div class="stat-card"><h3>${DB.services.length}</h3><p>Services</p></div>
-        <div class="stat-card"><h3>${DB.salesCategories.length}</h3><p>Sales Categories</p></div>
-        <div class="stat-card"><h3>${DB.serviceCategories.length}</h3><p>Service Categories</p></div>
-      `;
-      document.getElementById('prodCount').textContent = DB.products.length;
-      document.getElementById('servCount').textContent = DB.services.length;
-    }
-
-    function populateCategoryDropdowns() {
-      document.getElementById('prodCategory').innerHTML = DB.salesCategories.map(c => `<option value="${c}">${c}</option>`).join('');
-      document.getElementById('serviceCategory').innerHTML = DB.serviceCategories.map(c => `<option value="${c}">${c}</option>`).join('');
-    }
-
+    function showSuccess(msg) { const el=document.getElementById('successMsg'); el.textContent=msg; el.style.display='block'; setTimeout(()=>el.style.display='none',3000); }
+    function init() { updateStats(); renderProducts(); renderServices(); }
+    function showTab(tab) { document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tab+'Panel').classList.add('active'); event.target.classList.add('active'); }
+    function updateStats() { document.getElementById('stats').innerHTML=`<div class="stat-card"><h3>${DB.products.length}</h3><p>Products</p></div><div class="stat-card"><h3>${DB.services.length}</h3><p>Services</p></div>`; document.getElementById('prodCount').textContent=DB.products.length; document.getElementById('servCount').textContent=DB.services.length; }
     function saveProduct() {
-      const editId = document.getElementById('editProdId').value;
-      const name = document.getElementById('prodName').value.trim();
-      const category = document.getElementById('prodCategory').value;
-      const price = Number(document.getElementById('prodPrice').value);
-      const type = document.getElementById('prodType').value.trim() || 'Fixed';
-      const image = document.getElementById('prodImage').value.trim() || 'https://cdn-icons-png.flaticon.com/512/2920/2920277.png';
-      const desc = document.getElementById('prodDesc').value.trim();
-
-      if(!name || !price) { alert('Please fill Product Name and Price!'); return; }
-
-      if(editId) {
-        const index = DB.products.findIndex(p => p.id == editId);
-        if(index !== -1) {
-          DB.products[index] = { ...DB.products[index], name, category, price, type, image, desc };
-          showSuccess('✅ Product updated!');
-        }
-        cancelProductEdit();
-      } else {
-        DB.products.push({ id: Date.now(), name, category, price, type, image, desc, versions: [] });
-        showSuccess('✅ Product added!');
-        document.getElementById('prodName').value = '';
-        document.getElementById('prodPrice').value = '';
-        document.getElementById('prodType').value = '';
-        document.getElementById('prodImage').value = '';
-        document.getElementById('prodDesc').value = '';
-      }
-      saveToLocalStorage(); init();
+      const editId=document.getElementById('editProdId').value;
+      const p={id:editId?Number(editId):Date.now(), name:document.getElementById('prodName').value.trim(), mainCategory:document.getElementById('prodMainCat').value.trim(), subCategory:document.getElementById('prodSubCat').value.trim(), brand:document.getElementById('prodBrand').value.trim(), condition:document.getElementById('prodCondition').value, price:Number(document.getElementById('prodPrice').value), type:document.getElementById('prodType').value.trim(), image:document.getElementById('prodImage').value.trim(), desc:document.getElementById('prodDesc').value.trim()};
+      if(!p.name||!p.mainCategory||!p.price){alert('Fill required fields!');return;}
+      if(editId){const i=DB.products.findIndex(x=>x.id==editId);if(i!==-1)DB.products[i]=p;showSuccess('Product updated!');cancelProductEdit();}else{DB.products.push(p);showSuccess('Product added!');['prodName','prodMainCat','prodSubCat','prodBrand','prodPrice','prodType','prodImage','prodDesc'].forEach(id=>document.getElementById(id).value='');}
+      localStorage.setItem('cctech_db',JSON.stringify({products:DB.products,services:DB.services}));init();
     }
-
     function saveService() {
-      const editId = document.getElementById('editServId').value;
-      const name = document.getElementById('serviceName').value.trim();
-      const category = document.getElementById('serviceCategory').value;
-      const price = Number(document.getElementById('servicePrice').value);
-      const image = document.getElementById('serviceImage').value.trim() || 'https://cdn-icons-png.flaticon.com/512/3067/3067258.png';
-      const desc = document.getElementById('serviceDesc').value.trim();
-
-      if(!name || !price) { alert('Please fill Service Name and Price!'); return; }
-
-      if(editId) {
-        const index = DB.services.findIndex(s => s.id == editId);
-        if(index !== -1) {
-          DB.services[index] = { ...DB.services[index], name, category, price, image, desc };
-          showSuccess('✅ Service updated!');
-        }
-        cancelServiceEdit();
-      } else {
-        DB.services.push({ id: Date.now(), name, category, price, image, desc });
-        showSuccess('✅ Service added!');
-        document.getElementById('serviceName').value = '';
-        document.getElementById('servicePrice').value = '';
-        document.getElementById('serviceImage').value = '';
-        document.getElementById('serviceDesc').value = '';
-      }
-      saveToLocalStorage(); init();
+      const editId=document.getElementById('editServId').value;
+      const s={id:editId?Number(editId):Date.now(), name:document.getElementById('serviceName').value.trim(), category:document.getElementById('serviceCategory').value.trim(), price:Number(document.getElementById('servicePrice').value), image:document.getElementById('serviceImage').value.trim(), desc:document.getElementById('serviceDesc').value.trim()};
+      if(!s.name||!s.category||!s.price){alert('Fill required fields!');return;}
+      if(editId){const i=DB.services.findIndex(x=>x.id==editId);if(i!==-1)DB.services[i]=s;showSuccess('Service updated!');cancelServiceEdit();}else{DB.services.push(s);showSuccess('Service added!');['serviceName','serviceCategory','servicePrice','serviceImage','serviceDesc'].forEach(id=>document.getElementById(id).value='');}
+      localStorage.setItem('cctech_db',JSON.stringify({products:DB.products,services:DB.services}));init();
     }
-
-    function editProduct(id) {
-      const p = DB.products.find(x => x.id === id);
-      if(!p) return;
-      document.getElementById('editProdId').value = p.id;
-      document.getElementById('prodName').value = p.name;
-      document.getElementById('prodCategory').value = p.category;
-      document.getElementById('prodPrice').value = p.price;
-      document.getElementById('prodType').value = p.type || '';
-      document.getElementById('prodImage').value = p.image || '';
-      document.getElementById('prodDesc').value = p.desc || '';
-      document.getElementById('prodFormTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Product';
-      document.getElementById('prodSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Update';
-      document.getElementById('prodCancelBtn').style.display = 'inline-block';
-      document.getElementById('productsPanel').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function editService(id) {
-      const s = DB.services.find(x => x.id === id);
-      if(!s) return;
-      document.getElementById('editServId').value = s.id;
-      document.getElementById('serviceName').value = s.name;
-      document.getElementById('serviceCategory').value = s.category;
-      document.getElementById('servicePrice').value = s.price;
-      document.getElementById('serviceImage').value = s.image || '';
-      document.getElementById('serviceDesc').value = s.desc || '';
-      document.getElementById('servFormTitle').innerHTML = '<i class="fas fa-edit"></i> Edit Service';
-      document.getElementById('servSubmitBtn').innerHTML = '<i class="fas fa-save"></i> Update';
-      document.getElementById('servCancelBtn').style.display = 'inline-block';
-      document.getElementById('servicesPanel').scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function cancelProductEdit() {
-      document.getElementById('editProdId').value = '';
-      document.getElementById('prodName').value = '';
-      document.getElementById('prodPrice').value = '';
-      document.getElementById('prodType').value = '';
-      document.getElementById('prodImage').value = '';
-      document.getElementById('prodDesc').value = '';
-      document.getElementById('prodFormTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Product';
-      document.getElementById('prodSubmitBtn').innerHTML = '<i class="fas fa-plus"></i> Add Product';
-      document.getElementById('prodCancelBtn').style.display = 'none';
-    }
-
-    function cancelServiceEdit() {
-      document.getElementById('editServId').value = '';
-      document.getElementById('serviceName').value = '';
-      document.getElementById('servicePrice').value = '';
-      document.getElementById('serviceImage').value = '';
-      document.getElementById('serviceDesc').value = '';
-      document.getElementById('servFormTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Add New Service';
-      document.getElementById('servSubmitBtn').innerHTML = '<i class="fas fa-plus"></i> Add Service';
-      document.getElementById('servCancelBtn').style.display = 'none';
-    }
-
-    function deleteProduct(id) {
-      if(!confirm('Delete this product?')) return;
-      DB.products = DB.products.filter(p => p.id !== id);
-      saveToLocalStorage(); init(); showSuccess('Product deleted');
-    }
-
-    function deleteService(id) {
-      if(!confirm('Delete this service?')) return;
-      DB.services = DB.services.filter(s => s.id !== id);
-      saveToLocalStorage(); init(); showSuccess('Service deleted');
-    }
-
-    function addCategory(type) {
-      const inputId = type === 'sales' ? 'newSalesCat' : 'newServiceCat';
-      const value = document.getElementById(inputId).value.trim();
-      if(!value) { alert('Please enter category name!'); return; }
-      if(type === 'sales') {
-        if(DB.salesCategories.includes(value)) { alert('Category exists!'); return; }
-        DB.salesCategories.push(value);
-      } else {
-        if(DB.serviceCategories.includes(value)) { alert('Category exists!'); return; }
-        DB.serviceCategories.push(value);
-      }
-      document.getElementById(inputId).value = '';
-      saveToLocalStorage(); init(); showSuccess('✅ Category added!');
-    }
-
-    function deleteCategory(type, index) {
-      if(!confirm('Delete this category?')) return;
-      if(type === 'sales') DB.salesCategories.splice(index, 1);
-      else DB.serviceCategories.splice(index, 1);
-      saveToLocalStorage(); init(); showSuccess('Category deleted');
-    }
-
-    function renderProducts() {
-      const list = document.getElementById('productsList');
-      if(DB.products.length === 0) { list.innerHTML = '<div style="padding:2rem; text-align:center; color:#999;">No products</div>'; return; }
-      list.innerHTML = DB.products.map(p => `
-        <div class="item-row">
-          <div class="item-info"><h4>${p.name}</h4><p>₹${p.price.toLocaleString()} • ${p.category} • ${p.type}</p></div>
-          <div class="actions">
-            <button class="btn btn-blue" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-red" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderServices() {
-      const list = document.getElementById('servicesList');
-      if(DB.services.length === 0) { list.innerHTML = '<div style="padding:2rem; text-align:center; color:#999;">No services</div>'; return; }
-      list.innerHTML = DB.services.map(s => `
-        <div class="item-row">
-          <div class="item-info"><h4>${s.name}</h4><p>₹${s.price.toLocaleString()} • ${s.category}</p></div>
-          <div class="actions">
-            <button class="btn btn-blue" onclick="editService(${s.id})"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-red" onclick="deleteService(${s.id})"><i class="fas fa-trash"></i></button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function renderCategories() {
-      document.getElementById('salesCategoriesList').innerHTML = DB.salesCategories.map((c, i) => `
-        <span class="category-tag">${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:8px;" onclick="deleteCategory('sales', ${i})"></i></span>
-      `).join('');
-      document.getElementById('serviceCategoriesList').innerHTML = DB.serviceCategories.map((c, i) => `
-        <span class="category-tag" style="background:#e8f5e9;">${c} <i class="fas fa-times" style="cursor:pointer; color:#f44336; margin-left:8px;" onclick="deleteCategory('service', ${i})"></i></span>
-      `).join('');
-    }
-
-    function saveToLocalStorage() {
-      localStorage.setItem('cctech_db', JSON.stringify(DB));
-    }
-
-    function exportDatabase() {
-      const dataStr = `const CCData = ${JSON.stringify(DB, null, 2)};
+    function editProduct(id){const p=DB.products.find(x=>x.id===id);if(!p)return;document.getElementById('editProdId').value=p.id;document.getElementById('prodName').value=p.name;document.getElementById('prodMainCat').value=p.mainCategory;document.getElementById('prodSubCat').value=p.subCategory;document.getElementById('prodBrand').value=p.brand;document.getElementById('prodCondition').value=p.condition;document.getElementById('prodPrice').value=p.price;document.getElementById('prodType').value=p.type;document.getElementById('prodImage').value=p.image;document.getElementById('prodDesc').value=p.desc;document.getElementById('prodFormTitle').innerHTML='<i class="fas fa-edit"></i> Edit Product';document.getElementById('prodSubmitBtn').innerHTML='<i class="fas fa-save"></i> Update';document.getElementById('prodCancelBtn').style.display='inline-block';}
+    function editService(id){const s=DB.services.find(x=>x.id===id);if(!s)return;document.getElementById('editServId').value=s.id;document.getElementById('serviceName').value=s.name;document.getElementById('serviceCategory').value=s.category;document.getElementById('servicePrice').value=s.price;document.getElementById('serviceImage').value=s.image;document.getElementById('serviceDesc').value=s.desc;document.getElementById('servFormTitle').innerHTML='<i class="fas fa-edit"></i> Edit Service';document.getElementById('servSubmitBtn').innerHTML='<i class="fas fa-save"></i> Update';document.getElementById('servCancelBtn').style.display='inline-block';}
+    function cancelProductEdit(){document.getElementById('editProdId').value='';['prodName','prodMainCat','prodSubCat','prodBrand','prodPrice','prodType','prodImage','prodDesc'].forEach(id=>document.getElementById(id).value='');document.getElementById('prodFormTitle').innerHTML='<i class="fas fa-plus-circle"></i> Add New Product';document.getElementById('prodSubmitBtn').innerHTML='<i class="fas fa-plus"></i> Add Product';document.getElementById('prodCancelBtn').style.display='none';}
+    function cancelServiceEdit(){document.getElementById('editServId').value='';['serviceName','serviceCategory','servicePrice','serviceImage','serviceDesc'].forEach(id=>document.getElementById(id).value='');document.getElementById('servFormTitle').innerHTML='<i class="fas fa-plus-circle"></i> Add New Service';document.getElementById('servSubmitBtn').innerHTML='<i class="fas fa-plus"></i> Add Service';document.getElementById('servCancelBtn').style.display='none';}
+    function deleteProduct(id){if(!confirm('Delete?'))return;DB.products=DB.products.filter(p=>p.id!==id);localStorage.setItem('cctech_db',JSON.stringify({products:DB.products,services:DB.services}));init();showSuccess('Deleted');}
+    function deleteService(id){if(!confirm('Delete?'))return;DB.services=DB.services.filter(s=>s.id!==id);localStorage.setItem('cctech_db',JSON.stringify({products:DB.products,services:DB.services}));init();showSuccess('Deleted');}
+    function renderProducts(){const l=document.getElementById('productsList');if(DB.products.length===0){l.innerHTML='<div style="padding:2rem;text-align:center;color:#999;">No products</div>';return;}l.innerHTML=DB.products.map(p=>`<div class="item-row"><div class="item-info"><h4>${p.name}</h4><p>₹${p.price.toLocaleString()} • ${p.mainCategory} • ${p.condition}</p></div><div class="actions"><button class="btn btn-blue" onclick="editProduct(${p.id})"><i class="fas fa-edit"></i></button><button class="btn btn-red" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button></div></div>`).join('');}
+    function renderServices(){const l=document.getElementById('servicesList');if(DB.services.length===0){l.innerHTML='<div style="padding:2rem;text-align:center;color:#999;">No services</div>';return;}l.innerHTML=DB.services.map(s=>`<div class="item-row"><div class="item-info"><h4>${s.name}</h4><p>₹${s.price.toLocaleString()} • ${s.category}</p></div><div class="actions"><button class="btn btn-blue" onclick="editService(${s.id})"><i class="fas fa-edit"></i></button><button class="btn btn-red" onclick="deleteService(${s.id})"><i class="fas fa-trash"></i></button></div></div>`).join('');}
+    function exportDatabase(){const dataStr=`const CCData = ${JSON.stringify(DB, null, 2)};
 if(typeof window !== 'undefined') {
-  const savedVersion = localStorage.getItem('cctech_db_version');
-  const currentVersion = CCData.version;
-  if(savedVersion !== currentVersion) {
-    localStorage.removeItem('cctech_db');
-    localStorage.setItem('cctech_db_version', currentVersion);
-  }
-  if(localStorage.getItem('cctech_db')) {
-    try {
-      const local = JSON.parse(localStorage.getItem('cctech_db'));
-      if(Array.isArray(local.products)) CCData.products = local.products;
-      if(Array.isArray(local.services)) CCData.services = local.services;
-      if(Array.isArray(local.salesCategories)) CCData.salesCategories = local.salesCategories;
-      if(Array.isArray(local.serviceCategories)) CCData.serviceCategories = local.serviceCategories;
-    } catch(e) { console.error("Error loading local ", e); }
-  }
+  const saved = localStorage.getItem('cctech_db_version');
+  if(saved !== CCData.version) { localStorage.removeItem('cctech_db'); localStorage.setItem('cctech_db_version', CCData.version); }
+  if(localStorage.getItem('cctech_db')) { try { const local = JSON.parse(localStorage.getItem('cctech_db')); if(Array.isArray(local.products)) CCData.products = local.products; if(Array.isArray(local.services)) CCData.services = local.services; } catch(e){} }
 }`;
-      const blob = new Blob([dataStr], {type: 'text/javascript'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'database.js'; a.click();
-      URL.revokeObjectURL(url);
-      alert('✅ Exported! Replace database.js in GitHub with this file.');
-    }
+      const blob=new Blob([dataStr],{type:'text/javascript'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='database.js';a.click();URL.revokeObjectURL(a.href);alert('Exported! Replace database.js in GitHub.');}
+    init();
   </script>
 </body>
 </html>
