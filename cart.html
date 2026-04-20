@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Cart - CC Tech IT Solutions</title>
+  <title>Your Cart - CCTech IT Solutions</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -45,7 +45,7 @@
 <body>
   <header>
     <div class="header-wrap">
-      <div class="logo"><i class="fas fa-microchip"></i> CC Tech</div>
+      <div class="logo"><i class="fas fa-microchip"></i> CCTech IT Solutions</div>
       <nav>
         <a href="index.html"><i class="fas fa-home"></i> Home</a>
         <a href="sales-dynamic.html"><i class="fas fa-shopping-cart"></i> Sales</a>
@@ -73,7 +73,7 @@
       let total = 0, html = '';
       cart.forEach((item, index) => {
         const itemTotal = item.price * item.qty; total += itemTotal;
-        html += `<div class="item"><div class="item-info"><h3>${item.name}</h3><p>${item.category} • ${item.type || 'Product'}</p><p style="color:#666;">₹${item.price.toLocaleString()} each</p><div class="price">Subtotal: ₹${itemTotal.toLocaleString()}</div></div><div style="display:flex; align-items:center; flex-wrap:wrap;"><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(${index}, -1)">-</button><span class="qty-display">${item.qty}</span><button class="qty-btn" onclick="changeQty(${index}, 1)">+</button></div><span class="remove" onclick="removeItem(${index})"><i class="fas fa-trash"></i> Remove</span></div></div>`;
+        html += `<div class="item"><div class="item-info"><h3>${item.name}</h3><p>${item.mainCategory || item.category} • ${item.brand || 'Product'}</p><p style="color:#666;">₹${item.price.toLocaleString()} each</p><div class="price">Subtotal: ₹${itemTotal.toLocaleString()}</div></div><div style="display:flex; align-items:center; flex-wrap:wrap;"><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(${index}, -1)">-</button><span class="qty-display">${item.qty}</span><button class="qty-btn" onclick="changeQty(${index}, 1)">+</button></div><span class="remove" onclick="removeItem(${index})"><i class="fas fa-trash"></i> Remove</span></div></div>`;
       });
       html += `<div class="total-section"><div class="total">Total: ₹${total.toLocaleString()}</div><button class="checkout-btn" onclick="location.href='checkout.html'"><i class="fas fa-credit-card"></i> Proceed to Checkout</button><a href="sales-dynamic.html" class="continue"><i class="fas fa-arrow-left"></i> Continue Shopping</a></div>`;
       box.innerHTML = html;
