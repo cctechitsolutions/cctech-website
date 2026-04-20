@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout - CC Tech IT Solutions</title>
+  <title>Checkout - CCTech IT Solutions</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -48,7 +48,7 @@
 <body>
   <header>
     <div class="header-wrap">
-      <div class="logo"><i class="fas fa-microchip"></i> CC Tech</div>
+      <div class="logo"><i class="fas fa-microchip"></i> CCTech IT Solutions</div>
       <nav>
         <a href="index.html"><i class="fas fa-home"></i> Home</a>
         <a href="cart.html"><i class="fas fa-shopping-bag"></i> Cart</a>
@@ -76,7 +76,7 @@
       <div id="upiSection">
         <div class="upi-info">
           <h3><i class="fas fa-qrcode"></i> Scan QR or Use UPI ID</h3>
-          <div class="upi-id" id="upiId">cctech@sbi</div>
+          <div class="upi-id" id="upiId">cctechitsolutions@upi</div>
           <p style="color:#555; margin-top:0.5rem;">Amount to Pay: <strong style="color:#ff9800; font-size:1.3rem;" id="upiAmount">₹0</strong></p>
           <p style="font-size:0.9rem; color:#666; margin-top:0.5rem;">After payment, click below to send screenshot on WhatsApp</p>
         </div>
@@ -108,7 +108,7 @@
     }
     function placeOrder() {
       if(cart.length === 0) { alert('Your cart is empty!'); return; }
-      let message = `*🛒 NEW ORDER - CC TECH IT SOLUTIONS*%0A%0A*Order Details:*%0A`;
+      let message = `*🛒 NEW ORDER - CCTech IT Solutions*%0A%0A*Order Details:*%0A`;
       cart.forEach(item => { message += `• ${item.name} x${item.qty} = ₹${(item.price * item.qty).toLocaleString()}%0A`; });
       message += `%0A*Total: ₹${total.toLocaleString()}*%0A%0A*Payment Method:* ${paymentMethod === 'upi' ? 'UPI Payment' : 'Cash on Delivery'}%0A`;
       if(paymentMethod === 'cod') {
