@@ -51,8 +51,8 @@
   </header>
 
   <div class="hero">
-    <h1><i class="fas fa-tools"></i> IT Services</h1>
-    <p>Professional installation, repair & support • Book via WhatsApp</p>
+    <h1><i class="fas fa-tools"></i> Professional IT Services</h1>
+    <p>Installation, Repair & Support • Book via WhatsApp</p>
   </div>
 
   <div class="container">
@@ -67,23 +67,34 @@
 
   <script src="database.js?v=9.0"></script>
   <script>
-    let items = CCData.services;
+    let items = [];
     let activeCategory = 'ALL';
 
     function init() {
-      const categories = [...new Set(items.map(s => s.category))];
-      document.getElementById('serviceFilter').innerHTML = '<option value="ALL">All Services</option>' + 
-        categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
-      renderServices();
+      try {
+        if(!CCData || !CCData.services) throw new Error('Database not loaded');
+        items = CCData.services;
+        
+        const categories = [...new Set(items.map(s => s.category))];
+        document.getElementById('serviceFilter').innerHTML = '<option value="ALL">All Services</option>' + 
+          categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+        
+        renderServices();
+      } catch(error) {
+        document.getElementById('serviceGrid').innerHTML = 
+          `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><h3>Error loading services</h3><p>${error.message}</p></div>`;
+      }
     }
 
     function renderServices() {
       let filtered = activeCategory === 'ALL' ? items : items.filter(s => s.category === activeCategory);
       const grid = document.getElementById('serviceGrid');
+      
       if(filtered.length === 0) {
         grid.innerHTML = `<div class="empty-state"><i class="fas fa-tools"></i><h3>No services found</h3><p>Contact us for custom requests!</p></div>`;
         return;
       }
+      
       grid.innerHTML = filtered.map(s => `
         <div class="card">
           <div class="card-img"><img src="${s.image}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3067/3067258.png'" alt="${s.name}"></div>
@@ -101,7 +112,7 @@
     }
 
     function bookService(name, price, category) {
-      window.open(`https://wa.me/${CCData.whatsapp}?text=Hi CCTech IT Solutions! I want to book:%0A*${name}*%0ACategory: ${category}%0APrice: ₹${price}%0APlease confirm availability.`, '_blank');
+      window.open(`https://wa.me/${CCData.whatsapp}?text=Hi CCTech IT Solutions! I want to book:%0A*${name}*%0ACategory: ${category}%0APrice: ₹${price}%0APlease confirm availability & schedule.`, '_blank');
     }
 
     document.getElementById('serviceFilter').addEventListener('change', function() {
@@ -109,7 +120,8 @@
       renderServices();
     });
 
-    init();
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
   </script>
 </body>
 </html>
