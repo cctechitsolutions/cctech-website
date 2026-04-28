@@ -22,7 +22,6 @@
     .filter-label { font-weight: 600; color: #555; }
     .filter-select { padding: 0.6rem 1rem; border: 2px solid #ddd; border-radius: 8px; font-size: 0.95rem; background: white; }
     
-    /* Category Grid View */
     .category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
     .category-card {
       background: white;
@@ -57,7 +56,6 @@
       font-weight: 600;
     }
     
-    /* Product Grid View */
     .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
     .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: all 0.3s; }
     .product-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
@@ -101,6 +99,7 @@
     }
     .back-btn:hover { background: #1a237e; }
     .hidden { display: none; }
+    .error-msg { background: #ffebee; color: #c62828; padding: 1rem; border-radius: 8px; margin: 1rem 0; text-align: center; }
     @media(max-width:768px) { .header-wrap { flex-direction: column; text-align: center; } nav { justify-content: center; } .hero h1 { font-size: 2rem; } .category-grid, .product-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -124,9 +123,13 @@
   </div>
 
   <div class="container">
+    <div id="errorMsg"></div>
+    
     <!-- Category View -->
     <div id="categoryView">
-      <div class="category-grid" id="categoryGrid"></div>
+      <div class="category-grid" id="categoryGrid">
+        <div class="empty-state"><i class="fas fa-spinner fa-spin"></i><h3>Loading categories...</h3></div>
+      </div>
     </div>
     
     <!-- Product View -->
@@ -161,37 +164,75 @@
 
   <script src="database.js?v=9.0"></script>
   <script>
-    let items = CCData.products;
+    console.log('Sales page loaded');
+    console.log('CCData:', CCData);
+    
+    let items = [];
     let activeCategory = null;
     let activeCondition = 'ALL';
     let activeBrand = 'ALL';
 
     function init() {
-      renderCategories();
-      updateCartCount();
+      try {
+        if(!CCData || !CCData.products) {
+          throw new Error('Database not loaded properly');
+        }
+        
+        items = CCData.products;
+        console.log('Loaded', items.length, 'products');
+        
+        if(items.length === 0) {
+          showError('No products found in database');
+          return;
+        }
+        
+        renderCategories();
+        updateCartCount();
+      } catch(error) {
+        console.error('Initialization error:', error);
+        showError('Error loading products: ' + error.message);
+      }
+    }
+
+    function showError(message) {
+      document.getElementById('errorMsg').innerHTML = 
+        `<div class="error-msg"><i class="fas fa-exclamation-triangle"></i> ${message}</div>`;
     }
 
     function renderCategories() {
-      const grid = document.getElementById('categoryGrid');
-      const categories = [...new Set(items.map(p => p.subCategory))];
-      
-      grid.innerHTML = categories.map(cat => {
-        const count = items.filter(p => p.subCategory === cat).length;
-        const imageUrl = CCData.categoryImages[cat] || CCData.categoryImages["default"];
+      try {
+        const grid = document.getElementById('categoryGrid');
+        const categories = [...new Set(items.map(p => p.subCategory))];
         
-        return `
-          <div class="category-card" onclick="showProducts('${cat}')">
-            <div class="category-image">
-              <img src="${imageUrl}" alt="${cat}" onerror="this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(cat)}'">
+        console.log('Categories found:', categories);
+        
+        if(categories.length === 0) {
+          grid.innerHTML = '<div class="empty-state"><i class="fas fa-box-open"></i><h3>No categories found</h3></div>';
+          return;
+        }
+        
+        grid.innerHTML = categories.map(cat => {
+          const count = items.filter(p => p.subCategory === cat).length;
+          const imageUrl = CCData.categoryImages && CCData.categoryImages[cat] ? 
+            CCData.categoryImages[cat] : 'https://via.placeholder.com/400x300?text=' + encodeURIComponent(cat);
+          
+          return `
+            <div class="category-card" onclick="showProducts('${cat}')">
+              <div class="category-image">
+                <img src="${imageUrl}" alt="${cat}" onerror="this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(cat)}'">
+              </div>
+              <div class="category-info">
+                <h3>${cat}</h3>
+                <p>Browse our selection of ${cat.toLowerCase()}</p>
+                <span class="category-count">${count} Products</span>
+              </div>
             </div>
-            <div class="category-info">
-              <h3>${cat}</h3>
-              <p>Browse our selection of ${cat.toLowerCase()}</p>
-              <span class="category-count">${count} Products</span>
-            </div>
-          </div>
-        `;
-      }).join('');
+          `;
+        }).join('');
+      } catch(error) {
+        console.error('Render categories error:', error);
+        showError('Error rendering categories: ' + error.message);
+      }
     }
 
     function showProducts(category) {
@@ -273,7 +314,12 @@
     document.getElementById('conditionFilter').addEventListener('change', function() { activeCondition = this.value; applyFilters(); });
     document.getElementById('brandFilter').addEventListener('change', function() { activeBrand = this.value; applyFilters(); });
 
-    init();
+    // Initialize when page loads
+    if(document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   </script>
 </body>
 </html>
