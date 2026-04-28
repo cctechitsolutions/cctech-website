@@ -21,12 +21,49 @@
     .filter-group { display: flex; align-items: center; gap: 0.5rem; }
     .filter-label { font-weight: 600; color: #555; }
     .filter-select { padding: 0.6rem 1rem; border: 2px solid #ddd; border-radius: 8px; font-size: 0.95rem; background: white; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
-    .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: all 0.3s; }
-    .card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
-    .card-img { width: 100%; height: 200px; object-fit: contain; background: linear-gradient(135deg, #f5f9fc, #e3f2fd); padding: 1rem; display: flex; align-items: center; justify-content: center; }
-    .card-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
-    .card-body { padding: 1.5rem; }
+    
+    /* Category Grid View */
+    .category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+    .category-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .category-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
+    .category-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      background: linear-gradient(135deg, #f5f9fc, #e3f2fd);
+    }
+    .category-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .category-info { padding: 1.5rem; }
+    .category-info h3 { color: #0d4a6b; margin-bottom: 0.5rem; font-size: 1.5rem; }
+    .category-info p { color: #666; font-size: 0.95rem; margin-bottom: 1rem; }
+    .category-count { 
+      display: inline-block; 
+      background: #ff9800; 
+      color: white; 
+      padding: 0.3rem 0.8rem; 
+      border-radius: 20px; 
+      font-size: 0.85rem; 
+      font-weight: 600;
+    }
+    
+    /* Product Grid View */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+    .product-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: all 0.3s; }
+    .product-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.15); }
+    .product-image { width: 100%; height: 200px; object-fit: contain; background: linear-gradient(135deg, #f5f9fc, #e3f2fd); padding: 1rem; display: flex; align-items: center; justify-content: center; }
+    .product-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .product-body { padding: 1.5rem; }
     .tags { display: flex; gap: 0.5rem; margin-bottom: 0.8rem; flex-wrap: wrap; }
     .tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
     .tag-main { background: #e3f2fd; color: #0d4a6b; }
@@ -34,8 +71,8 @@
     .tag-brand { background: #f3e5f5; color: #7b1fa2; }
     .tag-condition { background: #fff3e0; color: #e65100; }
     .tag-condition.refurb { background: #ffebee; color: #c62828; }
-    .card-body h3 { color: #0d4a6b; margin-bottom: 0.5rem; font-size: 1.3rem; }
-    .card-body p { color: #666; font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5; }
+    .product-body h3 { color: #0d4a6b; margin-bottom: 0.5rem; font-size: 1.3rem; }
+    .product-body p { color: #666; font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5; }
     .price { font-size: 1.8rem; color: #ff9800; font-weight: 700; margin: 0.8rem 0; }
     .price small { font-size: 0.9rem; color: #999; font-weight: normal; }
     .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; }
@@ -49,7 +86,22 @@
     .cart-badge { position: absolute; top: -5px; right: -5px; background: #f44336; color: white; width: 28px; height: 28px; border-radius: 50%; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; font-weight: bold; }
     .empty-state { text-align: center; padding: 4rem 2rem; color: #999; grid-column: 1 / -1; }
     .empty-state i { font-size: 5rem; margin-bottom: 1rem; color: #ddd; }
-    @media(max-width:768px) { .header-wrap { flex-direction: column; text-align: center; } nav { justify-content: center; } .hero h1 { font-size: 2rem; } .grid { grid-template-columns: 1fr; } }
+    .back-btn { 
+      background: #0d4a6b; 
+      color: white; 
+      padding: 0.8rem 1.5rem; 
+      border: none; 
+      border-radius: 8px; 
+      font-weight: 600; 
+      cursor: pointer; 
+      margin-bottom: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .back-btn:hover { background: #1a237e; }
+    .hidden { display: none; }
+    @media(max-width:768px) { .header-wrap { flex-direction: column; text-align: center; } nav { justify-content: center; } .hero h1 { font-size: 2rem; } .category-grid, .product-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -68,34 +120,38 @@
 
   <div class="hero">
     <h1><i class="fas fa-shopping-bag"></i> All Products</h1>
-    <p>Browse our complete catalog of NEW and REFURBISHED products</p>
+    <p>Browse by category or view all products</p>
   </div>
 
   <div class="container">
-    <div class="filters">
-      <div class="filter-group">
-        <span class="filter-label">Condition:</span>
-        <select id="conditionFilter" class="filter-select">
-          <option value="ALL">All Conditions</option>
-          <option value="NEW">New</option>
-          <option value="REFURBISHED">Refurbished</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <span class="filter-label">Category:</span>
-        <select id="categoryFilter" class="filter-select">
-          <option value="ALL">All Categories</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <span class="filter-label">Brand:</span>
-        <select id="brandFilter" class="filter-select">
-          <option value="ALL">All Brands</option>
-        </select>
-      </div>
+    <!-- Category View -->
+    <div id="categoryView">
+      <div class="category-grid" id="categoryGrid"></div>
     </div>
     
-    <div class="grid" id="productGrid"></div>
+    <!-- Product View -->
+    <div id="productView" class="hidden">
+      <button class="back-btn" onclick="showCategories()">
+        <i class="fas fa-arrow-left"></i> Back to Categories
+      </button>
+      <div class="filters">
+        <div class="filter-group">
+          <span class="filter-label">Condition:</span>
+          <select id="conditionFilter" class="filter-select">
+            <option value="ALL">All Conditions</option>
+            <option value="NEW">New</option>
+            <option value="REFURBISHED">Refurbished</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Brand:</span>
+          <select id="brandFilter" class="filter-select">
+            <option value="ALL">All Brands</option>
+          </select>
+        </div>
+      </div>
+      <div class="product-grid" id="productGrid"></div>
+    </div>
   </div>
 
   <a href="cart.html" class="cart-float">
@@ -106,31 +162,65 @@
   <script src="database.js?v=9.0"></script>
   <script>
     let items = CCData.products;
+    let activeCategory = null;
     let activeCondition = 'ALL';
-    let activeCategory = 'ALL';
     let activeBrand = 'ALL';
 
     function init() {
-      populateFilters();
-      applyFilters();
+      renderCategories();
       updateCartCount();
     }
 
-    function populateFilters() {
-      const categories = [...new Set(items.map(p => p.mainCategory))];
-      document.getElementById('categoryFilter').innerHTML = '<option value="ALL">All Categories</option>' + 
-        categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+    function renderCategories() {
+      const grid = document.getElementById('categoryGrid');
+      const categories = [...new Set(items.map(p => p.subCategory))];
       
-      const brands = [...new Set(items.map(p => p.brand))].sort();
+      grid.innerHTML = categories.map(cat => {
+        const count = items.filter(p => p.subCategory === cat).length;
+        const imageUrl = CCData.categoryImages[cat] || CCData.categoryImages["default"];
+        
+        return `
+          <div class="category-card" onclick="showProducts('${cat}')">
+            <div class="category-image">
+              <img src="${imageUrl}" alt="${cat}" onerror="this.src='https://via.placeholder.com/400x300?text=${encodeURIComponent(cat)}'">
+            </div>
+            <div class="category-info">
+              <h3>${cat}</h3>
+              <p>Browse our selection of ${cat.toLowerCase()}</p>
+              <span class="category-count">${count} Products</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function showProducts(category) {
+      activeCategory = category;
+      document.getElementById('categoryView').classList.add('hidden');
+      document.getElementById('productView').classList.remove('hidden');
+      populateBrandFilter();
+      applyFilters();
+      window.scrollTo(0, 0);
+    }
+
+    function showCategories() {
+      activeCategory = null;
+      document.getElementById('categoryView').classList.remove('hidden');
+      document.getElementById('productView').classList.add('hidden');
+    }
+
+    function populateBrandFilter() {
+      const brands = [...new Set(items.filter(p => p.subCategory === activeCategory).map(p => p.brand))].sort();
       document.getElementById('brandFilter').innerHTML = '<option value="ALL">All Brands</option>' + 
         brands.map(brand => `<option value="${brand}">${brand}</option>`).join('');
     }
 
     function applyFilters() {
-      let filtered = items;
+      let filtered = items.filter(p => p.subCategory === activeCategory);
+      
       if(activeCondition !== 'ALL') filtered = filtered.filter(p => p.condition === activeCondition);
-      if(activeCategory !== 'ALL') filtered = filtered.filter(p => p.mainCategory === activeCategory);
       if(activeBrand !== 'ALL') filtered = filtered.filter(p => p.brand === activeBrand);
+      
       renderProducts(filtered);
     }
 
@@ -141,12 +231,10 @@
         return;
       }
       grid.innerHTML = list.map(p => `
-        <div class="card">
-          <div class="card-img"><img src="${p.image}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2920/2920277.png'" alt="${p.name}"></div>
-          <div class="card-body">
+        <div class="product-card">
+          <div class="product-image"><img src="${p.image}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2920/2920277.png'" alt="${p.name}"></div>
+          <div class="product-body">
             <div class="tags">
-              <span class="tag tag-main">${p.mainCategory}</span>
-              <span class="tag tag-sub">${p.subCategory}</span>
               <span class="tag tag-brand">${p.brand}</span>
               <span class="tag tag-condition ${p.condition==='REFURBISHED'?'refurb':''}">${p.condition}</span>
             </div>
@@ -183,7 +271,6 @@
     }
 
     document.getElementById('conditionFilter').addEventListener('change', function() { activeCondition = this.value; applyFilters(); });
-    document.getElementById('categoryFilter').addEventListener('change', function() { activeCategory = this.value; applyFilters(); });
     document.getElementById('brandFilter').addEventListener('change', function() { activeBrand = this.value; applyFilters(); });
 
     init();
