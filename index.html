@@ -183,9 +183,11 @@
     .main-btn:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 18px 45px rgba(0,0,0,0.35); }
     .main-btn.sales { border-color: #ff9800; }
     .main-btn.service { border-color: #4caf50; }
+    .main-btn.amc { border-color: #00a6a6; }
     .main-btn i { font-size: 3.6rem; }
     .main-btn.sales i { color: #ff9800; }
     .main-btn.service i { color: #4caf50; }
+    .main-btn.amc i { color: #00a6a6; }
     .main-btn small { font-size: 0.95rem; font-weight: 500; opacity: 0.85; }
     
     .quick-info {
@@ -316,6 +318,27 @@
     .service-item li { padding: 0.45rem 0 0.45rem 1.6rem; position: relative; font-size: 0.98rem; opacity: 0.95; }
     .service-item li::before { content: '✓'; position: absolute; left: 0; color: #4caf50; font-weight: bold; font-size: 1.1rem; }
 
+    /* AMC */
+    .amc-section { background: #f7fafc; padding: 5rem 2rem; }
+    .amc-intro { max-width: 900px; margin: 0 auto 2rem; text-align: center; color: #4a5a6a; font-size: 1.05rem; }
+    .amc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1250px; margin: 0 auto; }
+    .amc-card { background: white; padding: 1.6rem; border-radius: 14px; box-shadow: 0 8px 24px rgba(13,74,107,0.1); border-top: 4px solid #0d4a6b; }
+    .amc-card h3 { color: #0d4a6b; margin-bottom: 0.9rem; font-size: 1.3rem; }
+    .amc-card ul { list-style: none; padding: 0; color: #4a5a6a; }
+    .amc-card li { padding: 0.32rem 0 0.32rem 1.35rem; position: relative; font-size: 0.95rem; }
+    .amc-card li::before { content: '✓'; position: absolute; left: 0; color: #4caf50; font-weight: 700; }
+    .amc-card.exclusions { border-top-color: #e65100; }
+    .amc-card.exclusions li::before { content: '×'; color: #e65100; }
+    .amc-card.chargeable { border-top-color: #ff9800; }
+    .amc-pricing { max-width: 900px; margin: 1.8rem auto 0; background: linear-gradient(135deg, #0d4a6b, #1a237e); color: white; padding: 2rem; border-radius: 16px; text-align: center; box-shadow: 0 12px 30px rgba(13,74,107,0.22); }
+    .amc-pricing h3 { font-size: 1.5rem; margin-bottom: 1rem; }
+    .amc-price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .amc-price { background: rgba(255,255,255,0.12); padding: 1rem; border-radius: 10px; }
+    .amc-price strong { display: block; font-size: 1.35rem; color: #ffb74d; }
+    .amc-contact { margin-top: 1rem; line-height: 1.7; font-size: 0.95rem; opacity: 0.96; }
+    .amc-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+    .amc-actions .contact-btn { padding: 0.8rem 1.2rem; font-size: 0.95rem; }
+
     /* Contact Bar */
     .contact-bar { background: linear-gradient(135deg, #ff9800, #f57c00); color: white; padding: 3.5rem 2rem; text-align: center; }
     .contact-bar h2 { font-size: 2.2rem; margin-bottom: 1.4rem; font-weight: 700; }
@@ -415,6 +438,7 @@
         <!-- ✅ FIXED LINKS BELOW -->
         <li><a href="sales-dynamic.html">Sales</a></li>
         <li><a href="service-dynamic.html">Services</a></li>
+        <li><a href="amc.html" target="_blank" rel="noopener">AMC</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
       <div class="mobile-menu">
@@ -453,6 +477,11 @@
         <i class="fas fa-tools"></i>
         GET SERVICE
         <small>Installation • Repair • Networking • AMC Plans</small>
+      </a>
+      <a href="amc.html" class="main-btn amc" target="_blank" rel="noopener">
+        <i class="fas fa-file-contract"></i>
+        AMC PLAN
+        <small>12 Months • Laptop & Desktop • Support</small>
       </a>
     </div>
 
@@ -620,6 +649,99 @@
               <li>Preventive Maintenance</li>
             </ul>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Annual Maintenance Contract -->
+    <section class="amc-section" id="amc">
+      <div class="container">
+        <h2 class="section-title">Annual Maintenance Contract</h2>
+        <p class="amc-intro">
+          CCTech IT Solutions provides a 12-month AMC for laptops and desktop PCs. The contract becomes effective after full payment. A preventive maintenance report is provided after every scheduled visit.
+        </p>
+        <div class="amc-grid">
+          <article class="amc-card">
+            <h3><i class="fas fa-tools"></i> AMC Services</h3>
+            <ul>
+              <li>Four preventive maintenance visits per year</li>
+              <li>Unlimited remote technical support</li>
+              <li>Onsite support</li>
+              <li>Windows troubleshooting and reinstallation with customer license</li>
+              <li>Driver installation and updates</li>
+              <li>Antivirus health check</li>
+              <li>Printer installation and troubleshooting</li>
+              <li>LAN and Wi-Fi troubleshooting</li>
+              <li>Internal dust and fan cleaning</li>
+              <li>System performance optimization</li>
+              <li>SSD, HDD, RAM and battery health checks</li>
+              <li>Temperature monitoring</li>
+              <li>Basic Microsoft Office support and IT consultation</li>
+            </ul>
+          </article>
+          <article class="amc-card">
+            <h3><i class="fas fa-clipboard-check"></i> Preventive Maintenance</h3>
+            <ul>
+              <li>Windows and driver updates</li>
+              <li>Antivirus verification</li>
+              <li>SSD and HDD health check</li>
+              <li>Battery and RAM health check</li>
+              <li>Internal dust and fan cleaning</li>
+              <li>Performance optimization</li>
+              <li>Temperature monitoring</li>
+              <li>Printer and network connectivity check</li>
+              <li>General hardware inspection</li>
+            </ul>
+          </article>
+          <article class="amc-card exclusions">
+            <h3><i class="fas fa-ban"></i> AMC Exclusions</h3>
+            <ul>
+              <li>Hardware replacements and accessories</li>
+              <li>SSD, HDD, RAM, battery, display and keyboard parts</li>
+              <li>Motherboards, chargers and adapters</li>
+              <li>Windows, Office and antivirus licenses</li>
+              <li>Data recovery services</li>
+              <li>Physical, liquid, fire or theft damage</li>
+              <li>Electrical fluctuation damage</li>
+              <li>Third-party software and consumables</li>
+            </ul>
+          </article>
+          <article class="amc-card chargeable">
+            <h3><i class="fas fa-file-invoice-dollar"></i> Chargeable Services</h3>
+            <ul>
+              <li>Hardware replacement, parts and labour</li>
+              <li>Data recovery as per requirement</li>
+              <li>Network cabling</li>
+              <li>Installation of new devices</li>
+              <li>Software licenses at actual cost</li>
+              <li>Shifting IT equipment</li>
+            </ul>
+          </article>
+        </div>
+        <div class="amc-pricing">
+          <h3><i class="fas fa-tags"></i> AMC Pricing</h3>
+          <div class="amc-price-grid">
+            <div class="amc-price"><span>Laptop AMC</span><strong>₹3,000</strong><small>per device</small></div>
+            <div class="amc-price"><span>Desktop PC AMC</span><strong>₹3,000</strong><small>per device</small></div>
+            <div class="amc-price"><span>GST</span><strong>18%</strong><small>CGST 9% + SGST 9%</small></div>
+            <div class="amc-price"><span>Payment</span><strong>100%</strong><small>advance payment</small></div>
+          </div>
+          <div class="amc-contact">
+            <strong>CCTech IT Solutions</strong><br>
+            Shop No. 117, Chandrakala Building, Near Nagarjuna College, SN Halli Post, Yelahanka, Ramagondanahalli, Bengaluru - 560064<br>
+            Mobile: <a href="tel:+918951711631">+91 8951711631</a> | GSTIN: 29AASFC7080J1ZR
+          </div>
+          <div class="amc-actions">
+            <a href="amc.html" class="contact-btn" target="_blank" rel="noopener">
+              <i class="fab fa-whatsapp"></i> WhatsApp AMC Enquiry
+            </a>
+            <a href="tel:+918951711631" class="contact-btn">
+              <i class="fas fa-phone-alt"></i> Call for AMC
+            </a>
+            <a href="contact.html" class="contact-btn">
+              <i class="fas fa-envelope"></i> Send Enquiry
+            </a>
+          </div>
         </div>
       </div>
     </section>

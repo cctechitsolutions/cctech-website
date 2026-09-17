@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMC Asset Registration | CCTech IT Solutions</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Segoe UI, Tahoma, sans-serif; color: #25364a; background: #f4f8fb; line-height: 1.5; }
+    header { background: linear-gradient(135deg, #0d4a6b, #1a237e); color: white; padding: 1.2rem 2rem; }
+    .header-inner, main { max-width: 1180px; margin: 0 auto; }
+    .header-inner { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .brand { font-size: 1.35rem; font-weight: 700; }
+    .brand i { color: #ffb74d; margin-right: .45rem; }
+    header a { color: white; text-decoration: none; }
+    main { padding: 2.2rem 1rem 4rem; }
+    .intro { background: white; padding: 1.7rem; border-radius: 14px; box-shadow: 0 8px 24px rgba(13,74,107,.1); margin-bottom: 1.4rem; }
+    h1 { margin: 0 0 .45rem; color: #0d4a6b; font-size: clamp(1.8rem, 4vw, 2.7rem); }
+    h2 { color: #0d4a6b; margin: 0 0 1rem; font-size: 1.35rem; }
+    .muted { color: #657589; }
+    .customer-grid, .asset-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .panel { background: white; border-radius: 14px; padding: 1.5rem; box-shadow: 0 8px 24px rgba(13,74,107,.1); margin-bottom: 1.4rem; }
+    label { display: block; font-weight: 600; color: #38506a; margin-bottom: .35rem; }
+    input, select, textarea { width: 100%; border: 1px solid #cbd7e2; border-radius: 8px; padding: .75rem .8rem; font: inherit; color: #25364a; background: #fff; }
+    textarea { min-height: 95px; resize: vertical; }
+    .full { grid-column: 1 / -1; }
+    .button-row { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; }
+    button, .button { border: 0; border-radius: 8px; padding: .75rem 1rem; font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: .45rem; }
+    .primary { background: #0d8b72; color: white; }
+    .primary:hover { background: #08735e; }
+    .secondary { background: #e8f0f6; color: #0d4a6b; }
+    .whatsapp { background: #25d366; color: white; }
+    .whatsapp:hover { background: #128c7e; }
+    .danger { background: #ffebee; color: #c62828; padding: .5rem .7rem; }
+    .asset-list { display: grid; gap: .8rem; }
+    .asset-item { border: 1px solid #d6e0e8; border-left: 5px solid #ff9800; border-radius: 10px; padding: 1rem; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; background: #fff; }
+    .asset-item strong { color: #0d4a6b; }
+    .asset-meta { color: #5d7084; font-size: .93rem; white-space: pre-line; }
+    .empty { color: #718096; text-align: center; border: 1px dashed #cbd7e2; border-radius: 10px; padding: 1.2rem; }
+    .notice { background: #fff8e1; border-left: 4px solid #ff9800; padding: .9rem 1rem; color: #6d4c1d; margin-top: 1rem; }
+    .visit-plan { background: #eef8f6; border-left: 4px solid #0d8b72; padding: .9rem 1rem; color: #285b55; margin-top: 1rem; }
+    .estimate { background: #eaf1ff; border-left: 4px solid #1a237e; padding: 1rem; margin-top: 1rem; color: #243b70; }
+    .estimate strong { font-size: 1.25rem; }
+    .saved-note { color: #5d7084; font-size: .9rem; margin-top: .7rem; }
+    @media (max-width: 700px) { .customer-grid, .asset-grid { grid-template-columns: 1fr; } .header-inner { align-items: flex-start; flex-direction: column; } .asset-item { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a class="brand" href="index.html"><i class="fas fa-file-contract"></i> CCTech IT Solutions AMC</a>
+      <div><a href="index.html"><i class="fas fa-home"></i> Home</a> &nbsp; <a href="sales-dynamic.html"><i class="fas fa-shopping-cart"></i> Sales</a> &nbsp; <a href="service-dynamic.html"><i class="fas fa-tools"></i> Service</a></div>
+    </div>
+  </header>
+  <main>
+    <section class="intro">
+      <h1>AMC Asset Registration</h1>
+      <p class="muted">Add every laptop, desktop, server, network device, CCTV system, UPS, printer, or other asset you want to include in your 12-month AMC. Review the list, then send the complete requirement to CCTech IT Solutions on WhatsApp.</p>
+      <div class="notice"><strong>AMC pricing:</strong> Laptop ₹3,000 per device and Desktop PC ₹3,000 per device, plus 18% GST. 100% advance payment. Final coverage and quotation will be confirmed by CCTech IT Solutions.</div>
+      <div class="visit-plan"><strong>Preventive maintenance visits:</strong> Four visits during the 12-month contract, normally scheduled once every three months. Each visit includes Windows and driver updates, antivirus verification, SSD/HDD, RAM and battery health checks, internal dust and fan cleaning, performance and temperature checks, printer/network connectivity checks, and a general hardware inspection. A report is provided after every scheduled visit.</div>
+    </section>
+
+    <section class="panel">
+      <h2><i class="fas fa-user"></i> Customer Details</h2>
+      <div class="customer-grid">
+        <div><label for="customerName">Name *</label><input id="customerName" required placeholder="Customer or company name"></div>
+        <div><label for="customerPhone">Mobile / WhatsApp *</label><input id="customerPhone" required placeholder="Mobile number"></div>
+        <div><label for="customerEmail">Email</label><input id="customerEmail" type="email" placeholder="Email address"></div>
+        <div><label for="customerLocation">Site / Location *</label><input id="customerLocation" required placeholder="Service location"></div>
+      </div>
+      <p class="saved-note"><i class="fas fa-lock"></i> Your draft is saved only in this browser until you send or clear it.</p>
+    </section>
+
+    <section class="panel">
+      <h2><i class="fas fa-plus-circle"></i> Add AMC Asset</h2>
+      <div class="asset-grid">
+        <div><label for="assetType">Asset Type *</label><select id="assetType"><option>Laptop</option><option>Desktop</option><option>Workstation</option><option>Server</option><option>Switch</option><option>Router</option><option>CCTV</option><option>UPS</option><option>Printer</option><option>Other</option></select></div>
+        <div><label for="assetMake">Make / Brand *</label><input id="assetMake" placeholder="Dell, HP, Lenovo, APC, Canon..."></div>
+        <div><label for="assetModel">Model *</label><input id="assetModel" placeholder="Model number or series"></div>
+        <div><label for="assetSerial">Serial Number</label><input id="assetSerial" placeholder="Serial number / asset ID"></div>
+        <div><label for="assetStatus">Working Status *</label><select id="assetStatus"><option>Working</option><option>Not Working</option><option>Partially Working</option><option>Needs Inspection</option></select></div>
+        <div><label for="assetQuantity">Quantity</label><input id="assetQuantity" type="number" min="1" value="1"></div>
+        <div class="full"><label for="assetDetails">Condition / Fault / Other Details</label><textarea id="assetDetails" placeholder="Enter condition, fault, accessories, location, IP/channel details, battery status, or any other requirement"></textarea></div>
+      </div>
+      <div class="button-row"><button class="primary" type="button" id="addAsset"><i class="fas fa-plus"></i> Add Asset to AMC</button><button class="secondary" type="button" id="clearAsset"><i class="fas fa-eraser"></i> Clear Fields</button></div>
+    </section>
+
+    <section class="panel">
+      <h2><i class="fas fa-list-check"></i> Selected AMC Assets <span id="assetCount">(0)</span></h2>
+      <div id="assetList" class="asset-list"><div class="empty">No assets added yet. Add each customer asset above.</div></div>
+      <div class="estimate" id="estimateBox">Add laptop or desktop assets to calculate the approximate AMC total. Other asset types require a final quotation.</div>
+      <div class="button-row"><button class="whatsapp" type="button" id="sendWhatsApp"><i class="fab fa-whatsapp"></i> Finish Assets & Send WhatsApp</button><button class="secondary" type="button" id="clearRegistration"><i class="fas fa-trash"></i> Clear Registration</button><a class="button secondary" href="tel:+918951711631"><i class="fas fa-phone"></i> Call CCTech</a></div>
+    </section>
+  </main>
+  <script>
+    const storageKey = 'cctech_amc_registration';
+    let assets = [];
+    const fieldIds = ['customerName', 'customerPhone', 'customerEmail', 'customerLocation'];
+    const get = id => document.getElementById(id);
+
+    function saveDraft() {
+      const customer = Object.fromEntries(fieldIds.map(id => [id, get(id).value]));
+      localStorage.setItem(storageKey, JSON.stringify({ customer, assets }));
+    }
+
+    function loadDraft() {
+      try {
+        const draft = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        fieldIds.forEach(id => { if (draft.customer && draft.customer[id]) get(id).value = draft.customer[id]; });
+        if (Array.isArray(draft.assets)) assets = draft.assets;
+      } catch (error) { localStorage.removeItem(storageKey); }
+    }
+
+    function renderEstimate() {
+      const laptopCount = assets.filter(asset => asset.type === 'Laptop').reduce((total, asset) => total + Number(asset.quantity || 1), 0);
+      const desktopCount = assets.filter(asset => asset.type === 'Desktop').reduce((total, asset) => total + Number(asset.quantity || 1), 0);
+      const knownSubtotal = (laptopCount + desktopCount) * 3000;
+      const gst = knownSubtotal * 0.18;
+      const total = knownSubtotal + gst;
+      const otherCount = assets.filter(asset => !['Laptop', 'Desktop'].includes(asset.type)).length;
+      if (!knownSubtotal && !otherCount) {
+        get('estimateBox').innerHTML = 'Add laptop or desktop assets to calculate the approximate AMC total. Other asset types require a final quotation.';
+      } else {
+        get('estimateBox').innerHTML = `<strong>Approximate AMC estimate: ₹${total.toLocaleString()}</strong><br>${laptopCount} laptop/desktop device(s) at ₹3,000 each = ₹${knownSubtotal.toLocaleString()} + 18% GST (₹${gst.toLocaleString()}).${otherCount ? ` ${otherCount} other asset type(s) require final inspection and quotation.` : ''}<br><small>Payment: 100% advance. Final amount is confirmed by CCTech IT Solutions.</small>`;
+      }
+    }
+
+    function clearAssetFields() {
+      get('assetMake').value = '';
+      get('assetModel').value = '';
+      get('assetSerial').value = '';
+      get('assetStatus').value = 'Working';
+      get('assetQuantity').value = '1';
+      get('assetDetails').value = '';
+    }
+
+    function renderAssets() {
+      get('assetCount').textContent = `(${assets.length})`;
+      if (!assets.length) {
+        get('assetList').innerHTML = '<div class="empty">No assets added yet. Add each customer asset above.</div>';
+        renderEstimate();
+        return;
+      }
+      get('assetList').innerHTML = assets.map((asset, index) => `
+        <div class="asset-item">
+          <div><strong>${index + 1}. ${escapeHtml(asset.type)} - ${escapeHtml(asset.make)} ${escapeHtml(asset.model)}</strong>
+            <div class="asset-meta">Serial: ${escapeHtml(asset.serial || 'Not provided')}\nStatus: ${escapeHtml(asset.status)} | Quantity: ${escapeHtml(asset.quantity)}\nDetails: ${escapeHtml(asset.details || 'None')}</div>
+          </div>
+          <button class="danger" type="button" data-remove="${index}"><i class="fas fa-trash"></i> Remove</button>
+        </div>`).join('');
+      document.querySelectorAll('[data-remove]').forEach(button => button.addEventListener('click', () => { assets.splice(Number(button.dataset.remove), 1); renderAssets(); }));
+      renderEstimate();
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>'"]/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[character]));
+    }
+
+    get('addAsset').addEventListener('click', () => {
+      const make = get('assetMake').value.trim();
+      const model = get('assetModel').value.trim();
+      if (!make || !model) { alert('Please enter the asset make/brand and model.'); return; }
+      assets.push({ type: get('assetType').value, make, model, serial: get('assetSerial').value.trim(), status: get('assetStatus').value, quantity: get('assetQuantity').value || '1', details: get('assetDetails').value.trim() });
+      saveDraft();
+      renderAssets();
+      clearAssetFields();
+    });
+
+    get('clearAsset').addEventListener('click', clearAssetFields);
+    fieldIds.forEach(id => get(id).addEventListener('input', saveDraft));
+    get('clearRegistration').addEventListener('click', () => {
+      if (!confirm('Clear all customer and asset registration details?')) return;
+      localStorage.removeItem(storageKey);
+      assets = [];
+      fieldIds.forEach(id => { get(id).value = ''; });
+      renderAssets();
+      renderEstimate();
+    });
+
+    get('sendWhatsApp').addEventListener('click', () => {
+      const name = get('customerName').value.trim();
+      const phone = get('customerPhone').value.trim();
+      const location = get('customerLocation').value.trim();
+      if (!name || !phone || !location) { alert('Please enter customer name, mobile/WhatsApp number, and site/location.'); return; }
+      if (!assets.length) { alert('Please add at least one AMC asset.'); return; }
+      const email = get('customerEmail').value.trim() || 'Not provided';
+      const assetText = assets.map((asset, index) => `${index + 1}. ${asset.type} | ${asset.make} ${asset.model} | Serial: ${asset.serial || 'Not provided'} | Status: ${asset.status} | Qty: ${asset.quantity} | Details: ${asset.details || 'None'}`).join('\n');
+      const laptopCount = assets.filter(asset => asset.type === 'Laptop').reduce((total, asset) => total + Number(asset.quantity || 1), 0);
+      const desktopCount = assets.filter(asset => asset.type === 'Desktop').reduce((total, asset) => total + Number(asset.quantity || 1), 0);
+      const estimate = (laptopCount + desktopCount) * 3000 * 1.18;
+      const message = `Hi CCTech IT Solutions, I want a 12-month AMC quotation.%0A%0ACustomer: ${encodeURIComponent(name)}%0AMobile: ${encodeURIComponent(phone)}%0AEmail: ${encodeURIComponent(email)}%0ASite: ${encodeURIComponent(location)}%0A%0AAMC Assets:%0A${encodeURIComponent(assetText)}%0A%0AApproximate laptop/desktop AMC estimate including 18% GST: ₹${estimate.toLocaleString()}%0APreventive visits requested: 4 visits over 12 months.%0A%0APlease share the final AMC coverage, quotation, GST, and next steps.`;
+      window.open(`https://wa.me/918951711631?text=${message}`, '_blank', 'noopener');
+    });
+
+    loadDraft();
+    renderAssets();
+    renderEstimate();
+  </script>
+</body>
+</html>

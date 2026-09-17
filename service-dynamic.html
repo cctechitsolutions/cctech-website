@@ -44,6 +44,7 @@
         <a href="index.html"><i class="fas fa-home"></i> Home</a>
         <a href="sales-dynamic.html"><i class="fas fa-shopping-cart"></i> Sales</a>
         <a href="service-dynamic.html"><i class="fas fa-tools"></i> Service</a>
+        <a href="amc.html" target="_blank" rel="noopener"><i class="fas fa-file-contract"></i> AMC</a>
         <a href="cart.html"><i class="fas fa-shopping-bag"></i> Cart</a>
         <a href="contact.html"><i class="fas fa-address-card"></i> Contact</a>
       </nav>
@@ -69,6 +70,28 @@
   <script>
     let items = [];
     let activeCategory = 'ALL';
+
+    function svgDataUri(label, bgColor, accentColor) {
+      const svg = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0%" stop-color="${bgColor}"/>
+              <stop offset="100%" stop-color="${accentColor}"/>
+            </linearGradient>
+          </defs>
+          <rect width="800" height="500" fill="url(#g)" rx="30"/>
+          <circle cx="120" cy="110" r="70" fill="rgba(255,255,255,0.14)"/>
+          <circle cx="700" cy="390" r="110" fill="rgba(255,255,255,0.10)"/>
+          <rect x="150" y="150" width="500" height="200" rx="18" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.26)"/>
+          <text x="400" y="250" font-family="Segoe UI, Arial, sans-serif" font-size="40" font-weight="700" text-anchor="middle" fill="white">${label}</text>
+          <text x="400" y="310" font-family="Segoe UI, Arial, sans-serif" font-size="20" text-anchor="middle" fill="rgba(255,255,255,0.85)">CCTech IT Solutions</text>
+        </svg>
+      `;
+      return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+    }
+
+    const defaultServiceImage = svgDataUri('Service', '#1b5e20', '#4caf50');
 
     function init() {
       try {
@@ -97,7 +120,7 @@
       
       grid.innerHTML = filtered.map(s => `
         <div class="card">
-          <div class="card-img"><img src="${s.image}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3067/3067258.png'" alt="${s.name}"></div>
+          <div class="card-img"><img src="${s.image || defaultServiceImage}" onerror="this.src='${defaultServiceImage}'" alt="${s.name}"></div>
           <div class="card-body">
             <span class="category-tag">${s.category}</span>
             <h3>${s.name}</h3>
