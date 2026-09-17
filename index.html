@@ -397,7 +397,8 @@
 
     /* Responsive */
     @media (max-width: 968px) {
-      .nav-links { display: none; }
+      .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; padding: .75rem 1rem; background: rgba(26, 35, 126, 0.98); flex-direction: column; gap: .35rem; box-shadow: 0 8px 18px rgba(0,0,0,.2); }
+      .nav-links.open { display: flex; }
       .mobile-menu { display: block; }
       .company-name { font-size: 2.6rem; }
       .tagline { font-size: 1.25rem; }
@@ -410,7 +411,29 @@
       .rgb-fan-container { width: 300px; height: 300px; }
       .fan-ring, .fan-ring::before { width: 270px; height: 270px; }
     }
+    @media (max-width: 700px) {
+      .container { padding-left: 1rem; padding-right: 1rem; }
+      .hero { min-height: auto; padding: 7rem 1rem 2rem; }
+      .description { font-size: 1rem; }
+      .main-buttons { gap: 1rem; margin-bottom: 1.5rem; }
+      .main-btn { padding: 1.35rem 1rem; font-size: 1.25rem; border-width: 3px; }
+      .main-btn i { font-size: 2.7rem; }
+      .quick-info { width: 100%; font-size: .95rem; }
+      .info-item { max-width: 100%; justify-content: center; text-align: center; flex-wrap: wrap; }
+      .features, .about, .services-preview, .amc-section { padding: 3rem 1rem; }
+      .section-title { font-size: 1.8rem; margin-bottom: 2rem; }
+      .about-content { gap: 2rem; }
+      .about-stats { gap: .8rem; }
+      .stat { padding: 1rem .7rem; }
+      .stat h3 { font-size: 1.8rem; }
+      .contact-bar { padding: 2.5rem 1rem; }
+      .contact-btn { width: 100%; justify-content: center; }
+      .footer-links { gap: .5rem; }
+      .social-links a { margin: 0 .35rem; }
+    }
     @media (max-width: 520px) {
+      .nav-container { padding: 0 1rem; }
+      .nav-logo { font-size: 1.35rem; }
       .company-name { font-size: 2.2rem; }
       .tagline { font-size: 1.15rem; }
       .logo { font-size: 3.2rem; }
@@ -442,7 +465,7 @@
         <li><a href="#contact">Contact</a></li>
       </ul>
       <div class="mobile-menu">
-        <i class="fas fa-bars"></i>
+        <button type="button" aria-label="Open navigation" aria-expanded="false" style="background:none;border:0;color:inherit;font-size:inherit;cursor:pointer;padding:.25rem;"><i class="fas fa-bars"></i></button>
       </div>
     </div>
   </nav>
@@ -794,6 +817,18 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    const mobileMenuButton = document.querySelector('.mobile-menu button');
+    const navLinks = document.querySelector('.nav-links');
+    mobileMenuButton.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      mobileMenuButton.setAttribute('aria-expanded', String(isOpen));
+      mobileMenuButton.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      mobileMenuButton.setAttribute('aria-expanded', 'false');
+      mobileMenuButton.setAttribute('aria-label', 'Open navigation');
+    }));
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
