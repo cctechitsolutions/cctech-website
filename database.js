@@ -46,9 +46,9 @@ const CCData = {
   },
 
   categories: [
-    { id: 1, name: "Laptops & Desktops", image: localCatalogImage("aarna-cpu.png"), description: "New branded laptops, desktops, assembled PCs, gaming systems and peripherals" },
+    { id: 1, name: "Laptops & Desktops", image: "images/sales/Dell Laptop.jpg", description: "New branded laptops, desktops, assembled PCs, gaming systems and peripherals" },
     { id: 2, name: "Workstations", image: makeSvgImage("Workstations", "#5e35b1", "#3949ab"), description: "High-performance workstations and business desktops" },
-    { id: 3, name: "Servers", image: makeSvgImage("Servers", "#00897b", "#00695c"), description: "Server rentals, sales and hire solutions" },
+    { id: 3, name: "Servers", image: "images/sales/Server1.png", description: "Server rentals, sales and hire solutions" },
     { id: 4, name: "Laptop Accessories", image: localCatalogImage("vikash-laptop-accessory.jpg"), description: "Laptop parts, cooling fans, keyboards, batteries, body panels, touchpads and adapters" },
     { id: 5, name: "Storage & Memory", image: localCatalogImage("storage-drive.jpg"), description: "Laptop and desktop RAM, SSD, HDD and upgrade storage options" },
     { id: 6, name: "CCTV Sales, Installation & Service", image: makeSvgImage("CCTV Security", "#ef6c00", "#fdd835"), description: "CCTV cameras, DVR/NVR, networking, installation, maintenance and AMC" },

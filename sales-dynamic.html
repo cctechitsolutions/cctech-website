@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sales - CCTech IT Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -100,8 +103,41 @@
     .back-btn:hover { background: #1a237e; }
     .hidden { display: none; }
     .error-msg { background: #ffebee; color: #c62828; padding: 1rem; border-radius: 8px; margin: 1rem 0; text-align: center; }
+    /* Keep the catalog in the same visual system as the home page. */
+    body { background:#09121d; color:#f5f8fb; font-family:'DM Sans','Segoe UI',sans-serif; }
+    header { background:rgba(9,18,29,.92); border-bottom:1px solid #ffffff18; box-shadow:0 8px 30px #0004; backdrop-filter:blur(16px); }
+    .logo { font-family:'Space Grotesk','Segoe UI',sans-serif; letter-spacing:-.03em; }
+    nav a:hover { color:#52e2c0; background:#52e2c014; }
+    .hero { background:radial-gradient(ellipse at 72% 30%,#19404b,#111f2d 44%,#09121d 78%); border-bottom:1px solid #ffffff18; }
+    .hero h1 { font-family:'Space Grotesk','Segoe UI',sans-serif; letter-spacing:-.05em; }
+    .container { max-width:1220px; }
+    .filter-label { color:#c4d1dc; }
+    .filter-select { background:#101d2b; color:#f5f8fb; border:1px solid #ffffff24; }
+    .category-grid { grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:16px; }
+    .category-card,.product-card { background:#101d2b; border:1px solid #ffffff16; box-shadow:0 14px 36px #0003; }
+    .category-card:hover,.product-card:hover { border-color:#52e2c066; box-shadow:0 20px 45px #0005; }
+    .category-image,.product-image { background:linear-gradient(145deg,#152a37,#0e1925); }
+    .category-info h3,.product-body h3 { color:#f1f6f8; font-family:'Space Grotesk','Segoe UI',sans-serif; }
+    .category-info p,.product-body p { color:#aab9c5; }
+    .category-count { background:#52e2c0; color:#07151c; }
+    .tag-main { background:#14334a; color:#9bd9ff; }
+    .tag-sub { background:#10342f; color:#80e5ca; }
+    .tag-brand { background:#2b2541; color:#d0bcff; }
+    .tag-condition { background:#3b2d1c; color:#ffd19e; }
+    .tag-condition.refurb { background:#3c2026; color:#ffabb5; }
+    .price { color:#ffbd7f; }
+    .price small { color:#a2b1bc; }
+    .btn-cart { background:#52e2c0; color:#07151c; }
+    .btn-cart:hover { background:#77efd2; }
+    .btn-chat { background:#208e64; color:#fff; }
+    .back-btn { background:#142b37; border:1px solid #52e2c04a; }
+    .back-btn:hover { background:#1a3943; }
+    .empty-state { color:#9aabb8; }
+    .empty-state i { color:#426071; }
     @media(max-width:1024px) { .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-    @media(max-width:768px) { .header-wrap { flex-direction: column; text-align: center; } header { padding: .8rem 1rem; } nav { justify-content: center; gap: .25rem; } nav a { padding: .45rem .6rem; font-size: .9rem; } .hero { padding: 2.2rem 1rem; } .hero h1 { font-size: 2rem; } .container { padding: 1.25rem 1rem; } .category-grid, .product-grid { grid-template-columns: 1fr; gap: 1rem; } .category-image { height: 180px; } .product-image { height: 180px; } .category-info, .product-body { padding: 1rem; } .filters { gap: .65rem; } .filter-group { width: 100%; align-items: stretch; flex-direction: column; gap: .25rem; } .filter-select { width: 100%; min-height: 44px; } .price { font-size: 1.45rem; } .btn { min-height: 46px; } }
+    .cart-link { position:relative; }
+    .cart-link .cart-count { position:absolute; top:-3px; right:1px; min-width:18px; height:18px; padding:0 4px; border-radius:10px; background:#f44336; color:white; font-size:.7rem; line-height:18px; text-align:center; }
+    @media(max-width:768px) { .header-wrap { flex-direction: column; text-align: center; } header { padding: .8rem 1rem; } nav { justify-content: center; gap: .25rem; } nav a { padding: .45rem .6rem; font-size: .9rem; } .hero { padding: 2.2rem 1rem; } .hero h1 { font-size: 2rem; } .container { padding: 1.25rem 1rem; } .category-grid, .product-grid { grid-template-columns: 1fr; gap: 1rem; } .category-image { height: 180px; } .product-image { height: 180px; } .category-info, .product-body { padding: 1rem; } .filters { gap: .65rem; } .filter-group { width: 100%; align-items: stretch; flex-direction: column; gap: .25rem; } .filter-select { width: 100%; min-height: 44px; } .price { font-size: 1.45rem; } .btn { min-height: 46px; } .btn-group { flex-direction:column; } }
   </style>
 </head>
 <body>
@@ -115,6 +151,7 @@
         <a href="amc.html" target="_blank" rel="noopener"><i class="fas fa-file-contract"></i> AMC</a>
         <a href="reviews.html"><i class="fab fa-google"></i> Reviews</a>
         <a href="contact.html"><i class="fas fa-address-card"></i> Contact</a>
+        <a class="cart-link" href="cart.html" aria-label="Shopping cart"><i class="fas fa-shopping-bag"></i> Cart <span class="cart-count" id="cartCount">0</span></a>
       </nav>
     </div>
   </header>
@@ -198,6 +235,7 @@
 
     const defaultCategoryImage = svgDataUri('Product', '#0d4a6b', '#ff9800');
     const defaultProductImage = svgDataUri('Product', '#0d4a6b', '#ff9800');
+    function esc(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
     function init() {
       try {
@@ -228,13 +266,17 @@
     function renderCategories() {
       try {
         const grid = document.getElementById('categoryGrid');
-        const customCategories = Array.isArray(CCData.categories) && CCData.categories.length ? CCData.categories : [];
-        const derivedCategories = [...new Set(items.map(p => p.subCategory))];
+        const customCategories = Array.isArray(CCData.categories) && CCData.categories.length ? CCData.categories.filter(cat => !cat.parentCategory) : [];
+        const derivedCategories = [...new Set(items.map(p => p.mainCategory || p.subCategory))];
         const categories = customCategories.length ? customCategories.map(cat => ({
           name: cat.name,
           image: cat.image || CCData.categoryImages?.[cat.name] || defaultCategoryImage,
           description: cat.description || `Browse our selection of ${cat.name.toLowerCase()}`
-        })) : derivedCategories.map(cat => ({
+        })).concat(derivedCategories.filter(name => !customCategories.some(cat => cat.name === name)).map(cat => ({
+          name: cat,
+          image: CCData.categoryImages?.[cat] || CCData.categoryImages?.default || defaultCategoryImage,
+          description: `Browse our selection of ${cat.toLowerCase()}`
+        }))) : derivedCategories.map(cat => ({
           name: cat,
           image: CCData.categoryImages && CCData.categoryImages[cat] ? CCData.categoryImages[cat] : (CCData.categoryImages?.default || defaultCategoryImage),
           description: `Browse our selection of ${cat.toLowerCase()}`
@@ -247,24 +289,34 @@
 
         grid.innerHTML = categories.map(cat => {
           const catName = cat.name;
-          const count = items.filter(p => p.subCategory === catName).length || 1;
+          const count = categoryProducts(catName).length;
           return `
-            <div class="category-card" onclick="showProducts('${catName}')">
+            <div class="category-card" data-category="${esc(catName)}" role="button" tabindex="0">
               <div class="category-image">
-                <img src="${cat.image}" alt="${catName}" onerror="this.src='${defaultCategoryImage}'">
+                <img src="${esc(cat.image)}" alt="${esc(catName)}" onerror="this.src='${defaultCategoryImage}'">
               </div>
               <div class="category-info">
-                <h3>${catName}</h3>
-                <p>${cat.description}</p>
+                <h3>${esc(catName)}</h3>
+                <p>${esc(cat.description)}</p>
                 <span class="category-count">${count} Products</span>
               </div>
             </div>
           `;
         }).join('');
+        grid.querySelectorAll('[data-category]').forEach(card => {
+          const open = () => showProducts(card.dataset.category);
+          card.addEventListener('click', open);
+          card.addEventListener('keydown', event => { if(event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); } });
+        });
       } catch(error) {
         console.error('Render categories error:', error);
         showError('Error rendering categories: ' + error.message);
       }
+    }
+
+    function categoryProducts(category) {
+      const hasMainCategory = items.some(p => p.mainCategory === category);
+      return items.filter(p => hasMainCategory ? p.mainCategory === category : p.subCategory === category);
     }
 
     function showProducts(category) {
@@ -287,26 +339,25 @@
     }
 
     function populateBrandFilter() {
-      const brands = [...new Set(items.filter(p => p.subCategory === activeCategory).map(p => p.brand))].sort();
+      const brands = [...new Set(categoryProducts(activeCategory).map(p => p.brand).filter(Boolean))].sort();
       document.getElementById('brandFilter').innerHTML = '<option value="ALL">All Brands</option>' + 
-        brands.map(brand => `<option value="${brand}">${brand}</option>`).join('');
+        brands.map(brand => `<option value="${esc(brand)}">${esc(brand)}</option>`).join('');
     }
 
     function populateSubCategoryFilter() {
-      const subCategories = [...new Set(items
-        .filter(p => p.subCategory === activeCategory)
-        .map(p => p.catalogSubCategory || p.type)
+      const subCategories = [...new Set(categoryProducts(activeCategory)
+        .map(p => p.mainCategory === activeCategory ? (p.catalogSubCategory || p.subCategory || p.type) : (p.catalogSubCategory || p.type))
         .filter(Boolean))].sort();
       document.getElementById('subCategoryFilter').innerHTML = '<option value="ALL">All Sub-categories</option>' +
-        subCategories.map(subCategory => `<option value="${subCategory}">${subCategory}</option>`).join('');
+        subCategories.map(subCategory => `<option value="${esc(subCategory)}">${esc(subCategory)}</option>`).join('');
     }
 
     function applyFilters() {
-      let filtered = items.filter(p => p.subCategory === activeCategory);
+      let filtered = categoryProducts(activeCategory);
       
       if(activeCondition !== 'ALL') filtered = filtered.filter(p => p.condition === activeCondition);
       if(activeBrand !== 'ALL') filtered = filtered.filter(p => p.brand === activeBrand);
-      if(activeSubCategory !== 'ALL') filtered = filtered.filter(p => (p.catalogSubCategory || p.type) === activeSubCategory);
+      if(activeSubCategory !== 'ALL') filtered = filtered.filter(p => (p.mainCategory === activeCategory ? (p.catalogSubCategory || p.subCategory || p.type) : (p.catalogSubCategory || p.type)) === activeSubCategory);
       
       renderProducts(filtered);
     }
@@ -319,23 +370,29 @@
       }
       grid.innerHTML = list.map(p => `
         <div class="product-card">
-          <div class="product-image"><img src="${p.image || CCData.categoryImages?.default || defaultProductImage}" onerror="this.src='${defaultProductImage}'" alt="${p.name}"></div>
+          <div class="product-image"><img src="${esc(p.image || CCData.categoryImages?.default || defaultProductImage)}" onerror="this.src='${defaultProductImage}'" alt="${esc(p.name)}"></div>
           <div class="product-body">
             <div class="tags">
-              <span class="tag tag-brand">${p.brand}</span>
-              <span class="tag tag-sub">${p.catalogSubCategory || p.type || 'Product'}</span>
-              <span class="tag tag-condition ${p.condition==='REFURBISHED'?'refurb':''}">${p.condition}</span>
+              <span class="tag tag-brand">${esc(p.brand)}</span>
+              <span class="tag tag-sub">${esc((p.mainCategory === activeCategory ? (p.catalogSubCategory || p.subCategory || p.type) : (p.catalogSubCategory || p.type)) || 'Product')}</span>
+              <span class="tag tag-condition ${p.condition==='REFURBISHED'?'refurb':''}">${esc(p.condition)}</span>
             </div>
-            <h3>${p.name}</h3>
-            ${p.config ? `<p><strong>Config:</strong> ${p.config}</p>` : ''}
-            <p>${p.desc}</p>
-            <div class="price">₹${p.price.toLocaleString()} <small>${p.type || ''}</small></div>
+            <h3>${esc(p.name)}</h3>
+            ${p.config ? `<p><strong>Config:</strong> ${esc(p.config)}</p>` : ''}
+            <p>${esc(p.desc)}</p>
+            <div class="price">₹${Number(p.price || 0).toLocaleString()} <small>${esc(p.type || '')}</small></div>
             <div class="btn-group">
-              <button class="btn btn-chat" onclick="chatWA('${p.name.replace(/'/g, "\\'")}', '${p.brand}', '${(p.config || '').replace(/'/g, "\\'")}')"><i class="fab fa-whatsapp"></i> Get Latest Price</button>
+              <button class="btn btn-cart" data-add-to-cart="${Number(p.id)}"><i class="fas fa-cart-plus"></i> Add to cart</button>
+              <button class="btn btn-chat" data-chat="${Number(p.id)}"><i class="fab fa-whatsapp"></i> Get Latest Price</button>
             </div>
           </div>
         </div>
       `).join('');
+      grid.querySelectorAll('[data-add-to-cart]').forEach(button => button.addEventListener('click', () => addToCart(Number(button.dataset.addToCart))));
+      grid.querySelectorAll('[data-chat]').forEach(button => button.addEventListener('click', () => {
+        const product = items.find(item => Number(item.id) === Number(button.dataset.chat));
+        if(product) chatWA(product.name, product.brand, product.config || '');
+      }));
     }
 
     function chatWA(name, brand, config) {
@@ -354,15 +411,22 @@
       alert(`✅ ${product.name} added to cart!`);
     }
 
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cctech_cart') || '[]');
+      const count = cart.reduce((sum, item) => sum + Number(item.qty || 1), 0);
+      const badge = document.getElementById('cartCount');
+      if(badge) badge.textContent = count;
+    }
+
     document.getElementById('conditionFilter').addEventListener('change', function() { activeCondition = this.value; applyFilters(); });
     document.getElementById('brandFilter').addEventListener('change', function() { activeBrand = this.value; applyFilters(); });
     document.getElementById('subCategoryFilter').addEventListener('change', function() { activeSubCategory = this.value; applyFilters(); });
 
     // Initialize when page loads
     if(document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
+      document.addEventListener('DOMContentLoaded', () => { updateCartCount(); init(); });
     } else {
-      init();
+      updateCartCount(); init();
     }
   </script>
 </body>
