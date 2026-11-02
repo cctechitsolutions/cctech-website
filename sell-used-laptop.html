@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09121d">
+  <meta name="description" content="Sell or trade in your used laptop with CCTech IT Solutions in Bengaluru. Share its details and photos for an assessment.">
+  <title>Sell Your Used Laptop | CCTech IT Solutions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{--ink:#09121d;--panel:#101d2b;--line:#ffffff20;--muted:#a4b4c4;--white:#f5f8fb;--mint:#52e2c0;--width:980px}
+    *{box-sizing:border-box}body{margin:0;background:var(--ink);color:var(--white);font:16px/1.6 'DM Sans',sans-serif}a{color:inherit;text-decoration:none}.wrap{width:min(var(--width),calc(100% - 36px));margin:auto}
+    header{border-bottom:1px solid var(--line);background:#0b1723}.nav{min-height:72px;display:flex;justify-content:space-between;align-items:center;gap:18px}.brand{font:700 1rem 'Space Grotesk';display:flex;align-items:center;gap:10px}.mark{width:36px;height:36px;border-radius:11px;background:linear-gradient(145deg,var(--mint),#56a7ff);display:grid;place-items:center;color:#07151c}.links{display:flex;gap:18px;flex-wrap:wrap;color:#c4d0da;font-size:.86rem}.links a:hover{color:var(--mint)}
+    main{padding:54px 0 80px}.hero{padding:clamp(24px,5vw,48px);border:1px solid var(--line);border-radius:22px;background:radial-gradient(ellipse at 85% 12%,#194044,#112434 45%,#0e1b28 85%)}.eyebrow{color:var(--mint);font-size:.75rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase}.hero h1{font:600 clamp(2.3rem,6vw,4rem)/1.05 'Space Grotesk';letter-spacing:-.055em;margin:14px 0}.hero p{max-width:690px;color:#bac7d2}.steps{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}.step{padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#ffffff08;color:#d6e0e8;font-size:.8rem}.step i{color:var(--mint);margin-right:6px}
+    .form-card{margin-top:20px;padding:clamp(20px,4vw,34px);border:1px solid var(--line);border-radius:18px;background:var(--panel)}.form-card h2{font:600 1.35rem 'Space Grotesk';margin:0 0 5px}.hint{margin:0 0 20px;color:var(--muted);font-size:.88rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}label{font-size:.84rem;font-weight:600;color:#d6e0e8}input,select,textarea{width:100%;border:1px solid #ffffff26;border-radius:9px;background:#091520;color:var(--white);padding:12px;font:inherit}input:focus,select:focus,textarea:focus{outline:2px solid #52e2c066;border-color:var(--mint)}input[type=file]{font-size:.83rem}textarea{min-height:100px;resize:vertical}.photos{color:var(--muted);font-size:.79rem}.preview{display:flex;gap:10px;flex-wrap:wrap}.preview img{width:86px;height:86px;object-fit:cover;border:1px solid var(--line);border-radius:9px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}.button{border:0;border-radius:10px;padding:12px 17px;background:var(--mint);color:#07151c;font:700 .9rem 'DM Sans';cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:9px}.button.secondary{background:transparent;color:var(--white);border:1px solid #ffffff38}.privacy{margin:16px 0 0;color:var(--muted);font-size:.79rem}.privacy i{color:var(--mint)}footer{padding:22px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.8rem}
+    @media(max-width:650px){.nav{align-items:flex-start;padding:15px 0;flex-direction:column}.links{gap:11px}.grid{grid-template-columns:1fr}.field.full{grid-column:auto}.actions{flex-direction:column}.button{width:100%}main{padding-top:28px}}
+  </style>
+</head>
+<body>
+  <header><div class="wrap nav"><a class="brand" href="index.html"><span class="mark"><i class="fa-solid fa-microchip"></i></span>CCTech IT Solutions</a><nav class="links" aria-label="Main navigation"><a href="index.html">Home</a><a href="sales-dynamic.html">Shop products</a><a href="service-dynamic.html">Services</a><a href="contact.html">Contact</a></nav></div></header>
+  <main class="wrap">
+    <section class="hero"><span class="eyebrow">CCTech laptop buyback</span><h1>Sell or trade in your used laptop.</h1><p>Share a few details and clear photos. Our team will review the laptop and contact you on WhatsApp with the next steps. Final value depends on inspection, condition and current demand.</p><div class="steps"><span class="step"><i class="fa-solid fa-list-check"></i>Tell us about it</span><span class="step"><i class="fa-solid fa-camera"></i>Share photos in chat</span><span class="step"><i class="fa-solid fa-comments"></i>Get an assessment</span></div></section>
+    <form class="form-card" id="sellForm"><h2>Laptop details</h2><p class="hint">Required fields are marked with an asterisk. Your details are sent to CCTech in WhatsApp only when you press the button.</p>
+      <div class="grid">
+        <div class="field"><label for="customerName">Your name *</label><input id="customerName" name="customerName" autocomplete="name" required maxlength="80"></div>
+        <div class="field"><label for="customerPhone">Phone number *</label><input id="customerPhone" name="customerPhone" type="tel" autocomplete="tel" required maxlength="20" placeholder="+91"></div>
+        <div class="field"><label for="brand">Laptop brand *</label><input id="brand" name="brand" required maxlength="60" placeholder="Dell, HP, Lenovo…"></div>
+        <div class="field"><label for="model">Model name / number *</label><input id="model" name="model" required maxlength="100" placeholder="Latitude 5420"></div>
+        <div class="field"><label for="year">Approximate purchase year</label><input id="year" name="year" type="number" min="1995" max="2099" placeholder="2022"></div>
+        <div class="field"><label for="processor">Processor</label><input id="processor" name="processor" maxlength="100" placeholder="Intel Core i5 11th Gen"></div>
+        <div class="field"><label for="memory">RAM</label><input id="memory" name="memory" maxlength="40" placeholder="16 GB"></div>
+        <div class="field"><label for="storage">Storage</label><input id="storage" name="storage" maxlength="60" placeholder="512 GB SSD"></div>
+        <div class="field"><label for="condition">Overall condition</label><select id="condition" name="condition"><option value="Not selected">Select condition</option><option>Excellent</option><option>Good, normal wear</option><option>Fair, visible wear</option><option>Needs repair</option></select></div>
+        <div class="field"><label for="accessories">Charger / accessories</label><input id="accessories" name="accessories" maxlength="120" placeholder="Original charger included"></div>
+        <div class="field full"><label for="issues">Faults, damage or battery issues</label><textarea id="issues" name="issues" maxlength="700" placeholder="Mention any known issues, repairs or missing parts."></textarea></div>
+        <div class="field"><label for="expectedPrice">Expected price (optional)</label><input id="expectedPrice" name="expectedPrice" type="number" min="0" max="10000000" placeholder="₹"></div>
+        <div class="field"><label for="photos">Laptop photos (optional)</label><input id="photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple><span class="photos">Select up to 5 JPG, PNG or WebP photos. They are previewed here, not uploaded; attach them in WhatsApp after it opens.</span><div class="preview" id="photoPreview" aria-live="polite"></div></div>
+        <div class="field full"><label for="extra">Anything else?</label><textarea id="extra" name="extra" maxlength="500" placeholder="Add any extra information that may help us assess it."></textarea></div>
+      </div>
+      <div class="actions"><button class="button" type="submit"><i class="fa-brands fa-whatsapp"></i> Send laptop details on WhatsApp</button><a class="button secondary" href="tel:+916364253615"><i class="fa-solid fa-phone"></i> Call CCTech</a></div>
+      <p class="privacy"><i class="fa-solid fa-shield-halved"></i> This form does not upload or store your information. It opens a WhatsApp message for you to review and send. Please back up your data and sign out of accounts before handing over a device.</p>
+    </form>
+  </main>
+  <footer><div class="wrap">© <span id="year"></span> CCTech IT Solutions · Bengaluru, India</div></footer>
+  <script src="database.js?v=10.0"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const photoInput = document.getElementById('photos');
+    photoInput.addEventListener('change', () => {
+      const preview = document.getElementById('photoPreview');
+      preview.replaceChildren();
+      const files = [...photoInput.files];
+      if (files.length > 5) { alert('Please choose no more than 5 photos.'); photoInput.value = ''; return; }
+      for (const file of files) {
+        if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 8 * 1024 * 1024) {
+          alert('Please use JPG, PNG or WebP photos under 8 MB each.'); photoInput.value = ''; preview.replaceChildren(); return;
+        }
+        const image = document.createElement('img');
+        image.alt = `Selected laptop photo: ${file.name}`;
+        image.src = URL.createObjectURL(file);
+        preview.append(image);
+      }
+    });
+    document.getElementById('sellForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const form = new FormData(event.currentTarget);
+      const fields = [
+        ['Customer', form.get('customerName')], ['Phone', form.get('customerPhone')],
+        ['Brand', form.get('brand')], ['Model', form.get('model')], ['Purchase year', form.get('year')],
+        ['Processor', form.get('processor')], ['RAM', form.get('memory')], ['Storage', form.get('storage')],
+        ['Condition', form.get('condition')], ['Accessories', form.get('accessories')],
+        ['Known issues', form.get('issues')], ['Expected price', form.get('expectedPrice') ? `₹${form.get('expectedPrice')}` : ''],
+        ['Additional details', form.get('extra')]
+      ].filter(([, value]) => value && value !== 'Not selected');
+      const photoCount = photoInput.files.length;
+      const message = `Hi CCTech IT Solutions, I would like to sell or trade in my used laptop.\n\n${fields.map(([label, value]) => `${label}: ${value}`).join('\n')}\n\n${photoCount ? `I selected ${photoCount} photo(s) on the form. I will attach them in this WhatsApp chat.` : 'I can share laptop photos in this chat.'}\nPlease review the details and let me know the assessment process.`;
+      const phone = typeof CCData !== 'undefined' ? CCData.whatsapp : '916364253615';
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+    });
+  </script>
+</body>
+</html>
