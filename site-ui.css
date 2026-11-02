@@ -1,0 +1,44 @@
+/* Shared visual system for the CCTech inner pages. */
+:root { color-scheme: dark; --site-bg:#09121d; --site-panel:#101d2b; --site-line:#ffffff1c; --site-text:#f5f8fb; --site-muted:#aab9c5; --site-mint:#52e2c0; }
+html { scroll-behavior:smooth; }
+body { background:var(--site-bg)!important; color:var(--site-text)!important; }
+header { background:rgba(9,18,29,.94)!important; color:var(--site-text)!important; border-bottom:1px solid var(--site-line); box-shadow:0 8px 30px #0004!important; backdrop-filter:blur(16px); }
+header a, nav a { color:var(--site-text)!important; }
+nav a:hover, header a:hover { color:var(--site-mint)!important; background:#52e2c014!important; }
+.hero { background:radial-gradient(ellipse at 72% 30%,#19404b,#111f2d 44%,#09121d 78%)!important; color:var(--site-text)!important; border-bottom:1px solid var(--site-line); }
+.hero h1, h1, h2, h3, .card h3, .item-info h3, .item-info h4, .empty h2 { color:var(--site-text)!important; }
+.container, main { color:var(--site-text); }
+.card, .cart-box, .checkout-box, .panel, .intro, .asset-item, .summary, .business-card, .stat-card, .admin-header { background:var(--site-panel)!important; color:var(--site-text)!important; border:1px solid var(--site-line); box-shadow:0 14px 36px #0003!important; }
+.card p, .item-info p, .muted, .saved-note, .asset-meta, .security-note, .empty, .info-item, .form-group label { color:var(--site-muted)!important; }
+.category-tag, .category-count { background:#10342f!important; color:#80e5ca!important; }
+input, select, textarea, .filter-select { background:#0b1723!important; color:var(--site-text)!important; border:1px solid #ffffff2b!important; }
+input::placeholder, textarea::placeholder { color:#91a3b1; }
+button, .btn, .button, .checkout-btn, .whatsapp-btn { transition:transform .18s,filter .18s,box-shadow .18s; }
+button:hover, .btn:hover, .button:hover, .checkout-btn:hover, .whatsapp-btn:hover { transform:translateY(-1px); filter:brightness(1.08); }
+:focus-visible { outline:3px solid var(--site-mint)!important; outline-offset:3px; }
+.btn, .checkout-btn, .btn-green, .whatsapp { background:#168b68!important; color:#fff!important; }
+.qty-btn { min-width:40px; min-height:40px; background:#0b1723!important; color:var(--site-text)!important; border:1px solid #ffffff35!important; }
+.remove { border:1px solid #ffb4bd55!important; border-radius:8px; padding:.55rem .75rem; cursor:pointer; }
+.filters > span, .filter-label { color:var(--site-muted)!important; }
+.secondary { background:#162737!important; color:#c9d8e2!important; border:1px solid var(--site-line)!important; }
+.pay-option { background:#101d2b!important; color:var(--site-text)!important; border-color:#ffffff2b!important; }
+.pay-option:hover, .pay-option.selected { background:#132c32!important; border-color:var(--site-mint)!important; }
+.pay-option p { color:var(--site-muted)!important; }
+.info-item strong { color:var(--site-text)!important; }
+.dashboard .tab { background:#0b1723; color:var(--site-muted); border:1px solid var(--site-line); }
+.dashboard .tab.active { background:var(--site-mint); color:#07151c; }
+.dashboard .btn:not(.btn-red):not(.btn-blue) { background:var(--site-mint); color:#07151c; }
+.catalog-notice { background:#10242a; color:#c9ddd8; padding:1rem 1.2rem; border-left:4px solid var(--site-mint); border-radius:8px; margin-bottom:1.5rem; line-height:1.6; }
+.btn-cart { background:var(--site-mint)!important; color:#07151c!important; }
+.btn-chat { background:#168b68!important; color:#fff!important; }
+.continue, .info-item a { color:var(--site-mint)!important; }
+.item, .item-row, .summary-item { border-color:var(--site-line)!important; }
+.item:hover { background:#ffffff08!important; }
+.total, .price { color:#ffbd7f!important; }
+.empty-state i, .empty i { color:#426071!important; }
+.notice { background:#332b1e!important; color:#ffe0ae!important; border-color:#ffb36c!important; }
+.visit-plan, .estimate, .saved-note, .security-note { background:#10242a!important; color:#b9ddd4!important; border-color:#52e2c0!important; }
+.danger, .btn-red, .remove { background:#3a2027!important; color:#ffb4bd!important; }
+footer { color:var(--site-muted); border-color:var(--site-line); }
+@media(max-width:768px) { .item-info { min-width:0; } .cart-box,.checkout-box { padding:1rem!important; } }
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; } }

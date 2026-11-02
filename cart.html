@@ -41,6 +41,7 @@
     .empty h2 { color: #0d4a6b; margin-bottom: 1rem; }
     @media(max-width:768px) { .header-wrap { flex-direction: column; text-align: center; } header { padding: .8rem 1rem; } nav { justify-content: center; gap: .25rem; } nav a { padding: .45rem .6rem; font-size: .9rem; } .container { padding: 1.25rem 1rem; } h1 { font-size: 1.8rem; } .cart-box { padding: .75rem; } .item { flex-direction: column; align-items: flex-start; padding: 1rem .5rem; } .item > div:last-child { width: 100%; justify-content: space-between; } .qty-ctrl { margin-top: .5rem; } .remove { margin-left: .5rem; } .total { font-size: 1.8rem; } }
   </style>
+  <link rel="stylesheet" href="site-ui.css">
 </head>
 <body>
   <header>
@@ -50,6 +51,8 @@
         <a href="index.html"><i class="fas fa-home"></i> Home</a>
         <a href="sales-dynamic.html"><i class="fas fa-shopping-cart"></i> Sales</a>
         <a href="service-dynamic.html"><i class="fas fa-tools"></i> Service</a>
+        <a href="amc.html"><i class="fas fa-file-contract"></i> AMC</a>
+        <a href="reviews.html"><i class="fab fa-google"></i> Reviews</a>
         <a href="cart.html"><i class="fas fa-shopping-bag"></i> Cart</a>
         <a href="contact.html"><i class="fas fa-address-card"></i> Contact</a>
       </nav>
@@ -62,7 +65,9 @@
   </div>
 
   <script>
-    let cart = JSON.parse(localStorage.getItem('cctech_cart')) || [];
+    function readCart() { try { const value=JSON.parse(localStorage.getItem('cctech_cart')||'[]'); return Array.isArray(value) ? value.filter(item=>item&&Number.isFinite(Number(item.price))&&Number(item.price)>=0&&Number.isFinite(Number(item.qty))&&Number(item.qty)>0) : []; } catch { return []; } }
+    let cart = readCart();
+    function escapeHtml(value) { return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
     
     function renderCart() {
       const box = document.getElementById('cartBox');
@@ -73,12 +78,12 @@
       let total = 0, html = '';
       cart.forEach((item, index) => {
         const itemTotal = item.price * item.qty; total += itemTotal;
-        html += `<div class="item"><div class="item-info"><h3>${item.name}</h3><p>${item.mainCategory || item.category} • ${item.brand || 'Product'}</p><p style="color:#666;">₹${item.price.toLocaleString()} each</p><div class="price">Subtotal: ₹${itemTotal.toLocaleString()}</div></div><div style="display:flex; align-items:center; flex-wrap:wrap;"><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(${index}, -1)">-</button><span class="qty-display">${item.qty}</span><button class="qty-btn" onclick="changeQty(${index}, 1)">+</button></div><span class="remove" onclick="removeItem(${index})"><i class="fas fa-trash"></i> Remove</span></div></div>`;
+        html += `<div class="item"><div class="item-info"><h3>${escapeHtml(item.name || 'Product')}</h3><p>${escapeHtml(item.mainCategory || item.category || 'Product')} • ${escapeHtml(item.brand || 'Product')}</p><p>₹${Number(item.price).toLocaleString()} each</p><div class="price">Subtotal: ₹${itemTotal.toLocaleString()}</div></div><div style="display:flex; align-items:center; flex-wrap:wrap;"><div class="qty-ctrl"><button class="qty-btn" type="button" aria-label="Decrease ${escapeHtml(item.name)} quantity" onclick="changeQty(${index}, -1)">−</button><span class="qty-display">${Number(item.qty)}</span><button class="qty-btn" type="button" aria-label="Increase ${escapeHtml(item.name)} quantity" onclick="changeQty(${index}, 1)">+</button></div><button class="remove" type="button" onclick="removeItem(${index})"><i class="fas fa-trash"></i> Remove</button></div></div>`;
       });
       html += `<div class="total-section"><div class="total">Total: ₹${total.toLocaleString()}</div><button class="checkout-btn" onclick="location.href='checkout.html'"><i class="fas fa-credit-card"></i> Proceed to Checkout</button><a href="sales-dynamic.html" class="continue"><i class="fas fa-arrow-left"></i> Continue Shopping</a></div>`;
       box.innerHTML = html;
     }
-    function changeQty(index, change) { cart[index].qty += change; if(cart[index].qty <= 0) cart.splice(index, 1); localStorage.setItem('cctech_cart', JSON.stringify(cart)); renderCart(); }
+    function changeQty(index, change) { if(!cart[index]) return; cart[index].qty = Number(cart[index].qty) + change; if(cart[index].qty <= 0) cart.splice(index, 1); localStorage.setItem('cctech_cart', JSON.stringify(cart)); renderCart(); }
     function removeItem(index) { cart.splice(index, 1); localStorage.setItem('cctech_cart', JSON.stringify(cart)); renderCart(); }
     renderCart();
   </script>

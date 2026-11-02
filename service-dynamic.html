@@ -36,6 +36,7 @@
     @media(max-width:1024px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
     @media(max-width:768px) { .header-wrap { flex-direction: column; text-align: center; } header { padding: .8rem 1rem; } nav { justify-content: center; gap: .25rem; } nav a { padding: .45rem .6rem; font-size: .9rem; } .hero { padding: 2.2rem 1rem; } .hero h1 { font-size: 2rem; } .container { padding: 1.25rem 1rem; } .grid { grid-template-columns: 1fr; gap: 1rem; } .card-body { padding: 1rem; } .filters { gap: .65rem; } .filter-select { width: 100%; min-height: 44px; } }
   </style>
+  <link rel="stylesheet" href="site-ui.css">
 </head>
 <body>
   <header>
@@ -45,7 +46,7 @@
         <a href="index.html"><i class="fas fa-home"></i> Home</a>
         <a href="sales-dynamic.html"><i class="fas fa-shopping-cart"></i> Sales</a>
         <a href="service-dynamic.html"><i class="fas fa-tools"></i> Service</a>
-        <a href="amc.html" target="_blank" rel="noopener"><i class="fas fa-file-contract"></i> AMC</a>
+        <a href="amc.html"><i class="fas fa-file-contract"></i> AMC</a>
         <a href="reviews.html"><i class="fab fa-google"></i> Reviews</a>
         <a href="cart.html"><i class="fas fa-shopping-bag"></i> Cart</a>
         <a href="contact.html"><i class="fas fa-address-card"></i> Contact</a>
@@ -102,7 +103,7 @@
         
         const categories = [...new Set(items.map(s => s.category))];
         document.getElementById('serviceFilter').innerHTML = '<option value="ALL">All Services</option>' + 
-          categories.map(cat => `<option value="${cat}">${cat}</option>`).join('');
+          categories.map(cat => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`).join('');
         
         renderServices();
       } catch(error) {
@@ -122,23 +123,30 @@
       
       grid.innerHTML = filtered.map(s => `
         <div class="card">
-          <div class="card-img"><img src="${s.image || defaultServiceImage}" onerror="this.src='${defaultServiceImage}'" alt="${s.name}"></div>
+          <div class="card-img"><img src="${escapeHtml(s.image || defaultServiceImage)}" onerror="this.src='${defaultServiceImage}'" alt="${escapeHtml(s.name)}"></div>
           <div class="card-body">
-            <span class="category-tag">${s.category}</span>
-            <h3>${s.name}</h3>
-            <p>${s.desc}</p>
-            <div class="price">₹${s.price.toLocaleString()}</div>
-            <button class="btn" onclick="bookService('${s.name.replace(/'/g, "\\'")}', ${s.price}, '${s.category}')">
+            <span class="category-tag">${escapeHtml(s.category)}</span>
+            <h3>${escapeHtml(s.name)}</h3>
+            <p>${escapeHtml(s.desc)}</p>
+            <div class="price">₹${Number(s.price || 0).toLocaleString()}</div>
+            <button class="btn" type="button" data-book-service="${items.indexOf(s)}">
               <i class="fab fa-whatsapp"></i> Book Service
             </button>
           </div>
         </div>
       `).join('');
+      grid.querySelectorAll('[data-book-service]').forEach(button => button.addEventListener('click', () => {
+        const service = items[Number(button.dataset.bookService)];
+        if (service) bookService(service.name, service.price, service.category);
+      }));
     }
 
     function bookService(name, price, category) {
-      window.open(`https://wa.me/${CCData.whatsapp}?text=Hi CCTech IT Solutions! I want to book:%0A*${name}*%0ACategory: ${category}%0APrice: ₹${price}%0APlease confirm availability & schedule.`, '_blank');
+      const message = `Hi CCTech IT Solutions! I want to book:\n${name}\nCategory: ${category}\nListed price: ₹${Number(price).toLocaleString()}\nPlease confirm availability and schedule.`;
+      window.open(`https://wa.me/${CCData.whatsapp}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
     }
+
+    function escapeHtml(value) { return String(value ?? '').replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character])); }
 
     document.getElementById('serviceFilter').addEventListener('change', function() {
       activeCategory = this.value;

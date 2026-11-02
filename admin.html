@@ -45,6 +45,7 @@
     .success-msg { background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 8px; margin: 1rem 0; display: none; border-left: 4px solid #25d366; }
     @media(max-width:768px) { .dashboard { padding: 1rem; } .admin-header { flex-direction: column; text-align: center; padding: 1rem; } .tabs { gap: .5rem; } .tab { flex: 1 1 30%; padding: .7rem .6rem; } .panel { padding: 1rem; } .panel > div[style*="display:grid"] { grid-template-columns: 1fr !important; } .panel .btn { width: 100%; margin: .25rem 0; } .actions { width: 100%; flex-wrap: wrap; } .actions .btn { flex: 1 1 100%; } }
   </style>
+  <link rel="stylesheet" href="site-ui.css">
 </head>
 <body>
   <div class="dashboard" id="dashboard" style="display:block">
@@ -52,20 +53,21 @@
       <h2><i class="fas fa-cogs"></i> CCTech IT Solutions Admin</h2>
       <div>
         <button class="btn" onclick="exportDatabase()"><i class="fas fa-download"></i> Export DB</button>
+        <a class="btn btn-green" href="index.html"><i class="fas fa-external-link-alt"></i> View website</a>
         <button class="btn btn-red" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
       </div>
     </div>
 
     <div class="stats" id="stats"></div>
     <div class="success-msg" id="successMsg"></div>
-    <div style="background:#eaf4ff;color:#16466a;padding:1rem 1.2rem;border-left:4px solid #2196f3;border-radius:8px;margin-bottom:1.5rem;line-height:1.6;">
+    <div class="catalog-notice">
       <strong>Catalog changes are saved in this browser.</strong> To publish changes for everyone, choose <em>Export database.js</em>, then replace the existing <code>database.js</code> in your GitHub repository and commit the update. Uploaded pictures are resized and included in that file. This static website has no shared admin database, so other devices cannot see local edits until you publish the export.
     </div>
 
     <div class="tabs">
-      <button class="tab active" onclick="showTab('products')">Products</button>
-      <button class="tab" onclick="showTab('categories')">Categories</button>
-      <button class="tab" onclick="showTab('services')">Services</button>
+      <button class="tab active" type="button" onclick="showTab('products', this)" aria-controls="productsPanel" aria-selected="true">Products</button>
+      <button class="tab" type="button" onclick="showTab('categories', this)" aria-controls="categoriesPanel" aria-selected="false">Categories</button>
+      <button class="tab" type="button" onclick="showTab('services', this)" aria-controls="servicesPanel" aria-selected="false">Services</button>
     </div>
 
     <div class="panel active" id="productsPanel">
@@ -73,8 +75,8 @@
       <input type="hidden" id="editProdId" value="">
       <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1rem;">
         <div class="form-group"><label>Product Name *</label><input type="text" id="prodName" placeholder="e.g., HP Laptop 15s"></div>
-        <div class="form-group"><label>Main Category *</label><input type="text" id="prodMainCat" placeholder="e.g., Computers & Servers"></div>
-        <div class="form-group"><label>Subcategory *</label><input type="text" id="prodSubCat" placeholder="e.g., Laptops"></div>
+        <div class="form-group"><label>Main Category *</label><input type="text" id="prodMainCat" list="categoryNames" placeholder="Choose or enter a main category"></div>
+        <div class="form-group"><label>Subcategory *</label><input type="text" id="prodSubCat" list="categoryNames" placeholder="Choose or enter a subcategory"></div>
         <div class="form-group"><label>Brand *</label><input type="text" id="prodBrand" placeholder="e.g., HP"></div>
         <div class="form-group"><label>Condition *</label><select id="prodCondition"><option value="NEW">NEW</option><option value="REFURBISHED">REFURBISHED</option></select></div>
         <div class="form-group"><label>Price (₹) *</label><input type="number" id="prodPrice" placeholder="e.g., 42999"></div>
@@ -148,7 +150,7 @@
     wireImageUpload('prodImageFile','prodImage','prodImagePreview');
     wireImageUpload('catImageFile','catImage','catImagePreview');
     wireImageUpload('serviceImageFile','serviceImage','serviceImagePreview');
-    function showTab(tab) { document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById(tab+'Panel').classList.add('active'); event.target.classList.add('active'); }
+    function showTab(tab, button) { document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.tab').forEach(t=>{t.classList.remove('active');t.setAttribute('aria-selected','false');}); const panel=document.getElementById(tab+'Panel'); if(!panel||!button)return; panel.classList.add('active');button.classList.add('active');button.setAttribute('aria-selected','true'); }
     function updateStats() {
       const categoryCount = Array.isArray(DB.categories) ? DB.categories.length : 0;
       document.getElementById('stats').innerHTML=`<div class="stat-card"><h3>${DB.products.length}</h3><p>Products</p></div><div class="stat-card"><h3>${categoryCount}</h3><p>Categories</p></div><div class="stat-card"><h3>${DB.services.length}</h3><p>Services</p></div>`;
@@ -161,6 +163,7 @@
       const cat={id:editId?Number(editId):Date.now(), name:document.getElementById('catName').value.trim(), parentCategory:document.getElementById('catParent').value.trim(), image:document.getElementById('catImage').value.trim(), description:document.getElementById('catDesc').value.trim()};
       if(!cat.name){alert('Category name is required!');return;}
       if(!Array.isArray(DB.categories)) DB.categories=[];
+      if(DB.categories.some(item=>item.name.trim().toLowerCase()===cat.name.toLowerCase()&&String(item.id)!==String(editId))){alert('A category with this name already exists.');return;}
       if(editId){const i=DB.categories.findIndex(x=>x.id==editId);if(i!==-1)DB.categories[i]=cat;showSuccess('Category updated!');cancelCategoryEdit();}else{DB.categories.push(cat);showSuccess('Category added!');['catName','catParent','catImage','catDesc'].forEach(id=>document.getElementById(id).value='');}
       persistDatabase();init();
     }
@@ -168,14 +171,14 @@
       const editId=document.getElementById('editProdId').value;
       const existing=editId?DB.products.find(x=>x.id==editId)||{}:{};
       const p={...existing,id:editId?Number(editId):Date.now(), name:document.getElementById('prodName').value.trim(), mainCategory:document.getElementById('prodMainCat').value.trim(), subCategory:document.getElementById('prodSubCat').value.trim(), brand:document.getElementById('prodBrand').value.trim(), condition:document.getElementById('prodCondition').value, price:Number(document.getElementById('prodPrice').value), type:document.getElementById('prodType').value.trim(), image:document.getElementById('prodImage').value.trim(), config:document.getElementById('prodConfig').value.trim(), desc:document.getElementById('prodDesc').value.trim()};
-      if(!p.name||!p.mainCategory||!p.price){alert('Fill required fields!');return;}
+      if(!p.name||!p.mainCategory||!p.subCategory||!p.brand||!Number.isFinite(p.price)||p.price<0){alert('Enter a product name, main category, subcategory, brand, and a valid non-negative price.');return;}
       if(editId){const i=DB.products.findIndex(x=>x.id==editId);if(i!==-1)DB.products[i]=p;showSuccess('Product updated!');cancelProductEdit();}else{DB.products.push(p);showSuccess('Product added!');['prodName','prodMainCat','prodSubCat','prodBrand','prodPrice','prodType','prodImage','prodConfig','prodDesc'].forEach(id=>document.getElementById(id).value='');}
       persistDatabase();init();
     }
     function saveService() {
       const editId=document.getElementById('editServId').value;
       const s={id:editId?Number(editId):Date.now(), name:document.getElementById('serviceName').value.trim(), category:document.getElementById('serviceCategory').value.trim(), price:Number(document.getElementById('servicePrice').value), image:document.getElementById('serviceImage').value.trim(), desc:document.getElementById('serviceDesc').value.trim()};
-      if(!s.name||!s.category||!s.price){alert('Fill required fields!');return;}
+      if(!s.name||!s.category||!Number.isFinite(s.price)||s.price<0){alert('Enter a service name, category, and a valid non-negative price.');return;}
       if(editId){const i=DB.services.findIndex(x=>x.id==editId);if(i!==-1)DB.services[i]=s;showSuccess('Service updated!');cancelServiceEdit();}else{DB.services.push(s);showSuccess('Service added!');['serviceName','serviceCategory','servicePrice','serviceImage','serviceDesc'].forEach(id=>document.getElementById(id).value='');}
       persistDatabase();init();
     }

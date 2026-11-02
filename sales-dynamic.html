@@ -139,6 +139,7 @@
     .cart-link .cart-count { position:absolute; top:-3px; right:1px; min-width:18px; height:18px; padding:0 4px; border-radius:10px; background:#f44336; color:white; font-size:.7rem; line-height:18px; text-align:center; }
     @media(max-width:768px) { .header-wrap { flex-direction: column; text-align: center; } header { padding: .8rem 1rem; } nav { justify-content: center; gap: .25rem; } nav a { padding: .45rem .6rem; font-size: .9rem; } .hero { padding: 2.2rem 1rem; } .hero h1 { font-size: 2rem; } .container { padding: 1.25rem 1rem; } .category-grid, .product-grid { grid-template-columns: 1fr; gap: 1rem; } .category-image { height: 180px; } .product-image { height: 180px; } .category-info, .product-body { padding: 1rem; } .filters { gap: .65rem; } .filter-group { width: 100%; align-items: stretch; flex-direction: column; gap: .25rem; } .filter-select { width: 100%; min-height: 44px; } .price { font-size: 1.45rem; } .btn { min-height: 46px; } .btn-group { flex-direction:column; } }
   </style>
+  <link rel="stylesheet" href="site-ui.css">
 </head>
 <body>
   <header>
@@ -148,7 +149,7 @@
         <a href="index.html"><i class="fas fa-home"></i> Home</a>
         <a href="sales-dynamic.html"><i class="fas fa-shopping-cart"></i> Sales</a>
         <a href="service-dynamic.html"><i class="fas fa-tools"></i> Service</a>
-        <a href="amc.html" target="_blank" rel="noopener"><i class="fas fa-file-contract"></i> AMC</a>
+        <a href="amc.html"><i class="fas fa-file-contract"></i> AMC</a>
         <a href="reviews.html"><i class="fab fa-google"></i> Reviews</a>
         <a href="contact.html"><i class="fas fa-address-card"></i> Contact</a>
         <a class="cart-link" href="cart.html" aria-label="Shopping cart"><i class="fas fa-shopping-bag"></i> Cart <span class="cart-count" id="cartCount">0</span></a>
@@ -252,10 +253,16 @@
         }
         
         renderCategories();
+        const requestedCategory = new URLSearchParams(window.location.search).get('category');
+        if (requestedCategory && categoriesContain(requestedCategory)) showProducts(requestedCategory);
       } catch(error) {
         console.error('Initialization error:', error);
         showError('Error loading products: ' + error.message);
       }
+    }
+
+    function categoriesContain(name) {
+      return items.some(product => product.mainCategory === name || (!items.some(item => item.mainCategory === name) && product.subCategory === name));
     }
 
     function showError(message) {
