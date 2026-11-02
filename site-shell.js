@@ -3,6 +3,13 @@
   const navigation = document.getElementById('ccSiteNav');
 
   if (menu && navigation) {
+    if (!navigation.querySelector('a[href="laptop-inspector.html"]')) {
+      const inspectorLink = document.createElement('a');
+      inspectorLink.href = 'laptop-inspector.html';
+      inspectorLink.textContent = 'Laptop Inspector';
+      const cta = navigation.querySelector('.cc-nav-cta');
+      navigation.insertBefore(inspectorLink, cta || null);
+    }
     menu.addEventListener('click', () => {
       const isOpen = navigation.classList.toggle('open');
       menu.setAttribute('aria-expanded', String(isOpen));

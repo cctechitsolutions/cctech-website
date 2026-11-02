@@ -48,7 +48,7 @@
     .success-msg { background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 8px; margin: 1rem 0; display: none; border-left: 4px solid #25d366; }
     @media(max-width:768px) { .dashboard { padding: 1rem; } .admin-header { flex-direction: column; text-align: center; padding: 1rem; } .tabs { gap: .5rem; } .tab { flex: 1 1 30%; padding: .7rem .6rem; } .panel { padding: 1rem; } .panel > div[style*="display:grid"] { grid-template-columns: 1fr !important; } .panel .btn { width: 100%; margin: .25rem 0; } .actions { width: 100%; flex-wrap: wrap; } .actions .btn { flex: 1 1 100%; } }
   </style>
-  <link rel="stylesheet" href="site-ui.css">
+  <link rel="stylesheet" href="site-ui.css?v=1.1">
 </head>
 <body>
   <div class="cc-topline"><div class="cc-topline-inner"><span><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Bengaluru, Karnataka</span><span>Local expertise. Business ready. <a href="https://share.google/HofWDnhGpC6pYELFV" target="_blank" rel="noopener">Find us on Google <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a></span></div></div>
@@ -219,6 +219,6 @@ if(typeof window !== 'undefined') {
       const blob=new Blob([dataStr],{type:'text/javascript'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='database.js';a.click();URL.revokeObjectURL(a.href);alert('Exported! Replace database.js in GitHub.');}
     init();
   </script>
-  <script src="site-shell.js?v=1.0"></script>
+  <script src="site-shell.js?v=1.1"></script>
 </body>
 </html>
