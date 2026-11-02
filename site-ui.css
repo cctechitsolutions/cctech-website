@@ -5,6 +5,8 @@ body { background:var(--site-bg)!important; color:var(--site-text)!important; }
 header { background:rgba(9,18,29,.94)!important; color:var(--site-text)!important; border-bottom:1px solid var(--site-line); box-shadow:0 8px 30px #0004!important; backdrop-filter:blur(16px); }
 header a, nav a { color:var(--site-text)!important; }
 nav a:hover, header a:hover { color:var(--site-mint)!important; background:#52e2c014!important; }
+header a.nav-cta, header a.nav-cta:hover { color:#07151c!important; background:var(--site-mint)!important; }
+nav.navlinks a[aria-current="page"], nav.navlinks a:hover { color:var(--site-mint)!important; }
 .hero { background:radial-gradient(ellipse at 72% 30%,#19404b,#111f2d 44%,#09121d 78%)!important; color:var(--site-text)!important; border-bottom:1px solid var(--site-line); }
 .hero h1, h1, h2, h3, .card h3, .item-info h3, .item-info h4, .empty h2 { color:var(--site-text)!important; }
 .container, main { color:var(--site-text); }
