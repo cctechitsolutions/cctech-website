@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CCTech Catalogue Migration Tool</title>
+<style>
+body{font:15px/1.5 Segoe UI,Arial,sans-serif;background:#f3f6fa;color:#203044;margin:0;padding:24px}
+main{max-width:820px;margin:auto;background:#fff;border-radius:14px;padding:24px;box-shadow:0 8px 30px #10243a12}
+h1{color:#0d4a6b}label{display:block;font-weight:600;margin:14px 0 6px}
+input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #ccd5df;border-radius:8px}
+button{margin:16px 8px 0 0;padding:12px 18px;border:0;border-radius:8px;background:#0d4a6b;color:#fff;font-weight:600;cursor:pointer}
+button:disabled{opacity:.5;cursor:not-allowed}
+pre{white-space:pre-wrap;background:#101d2b;color:#d8e6f5;padding:16px;border-radius:8px;min-height:100px}
+.warning{background:#fff4df;border-left:4px solid #e3a008;padding:12px}
+</style>
+</head>
+<body><main>
+<h1>CCTech catalogue migration</h1>
+<p>This one-time tool imports the existing static catalogue into the NEW Supabase development project. It does not delete or modify database.js or the live website.</p>
+<p class="warning"><strong>Important:</strong> Sign in with a Supabase user whose profile role is super_admin or manager. Do not use a service-role key in this page. Review the target project before importing.</p>
+<label>Supabase project URL</label><input id="url" placeholder="https://your-project.supabase.co">
+<label>Supabase public anon / publishable key</label><input id="key" type="password" autocomplete="off" placeholder="Public key only">
+<label>Staff email</label><input id="email" type="email" autocomplete="username">
+<label>Password</label><input id="password" type="password" autocomplete="current-password">
+<button id="login">Sign in</button><button id="import" disabled>Import catalogue</button>
+<pre id="log">Ready. No data has been imported.</pre>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../database.js"></script>
+<script>
+const logEl=document.getElementById('log');
+const log=(m)=>{logEl.textContent+= "\n"+m;};
+let client=null;
+document.getElementById('login').onclick=async()=>{
+  try{
+    const url=document.getElementById('url').value.trim();
+    const key=document.getElementById('key').value.trim();
+    client=window.supabase.createClient(url,key);
+    const {data,error}=await client.auth.signInWithPassword({
+      email:document.getElementById('email').value.trim(),
+      password:document.getElementById('password').value
+    });
+    if(error) throw error;
+    const {data:profile,error:profileError}=await client.from('profiles').select('role,is_active').eq('id',data.user.id).single();
+    if(profileError) throw profileError;
+    if(!profile.is_active||!['super_admin','manager'].includes(profile.role)) throw new Error('This account does not have catalogue-management permission.');
+    document.getElementById('import').disabled=false;
+    logEl.textContent='Signed in as '+data.user.email+' ('+profile.role+'). Ready to import.';
+  }catch(e){log('ERROR: '+e.message);}
+};
+document.getElementById('import').onclick=async()=>{
+  const button=document.getElementById('import');button.disabled=true;
+  try{
+    if(!window.CCData||!Array.isArray(CCData.products)) throw new Error('database.js catalogue not found.');
+    const slugify=s=>String(s||'').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'category';
+    const categories=(CCData.categories||[]).map(c=>({legacy_key:String(c.id),name:c.name,slug:slugify(c.name)+'-'+c.id,description:c.description||null,is_active:true}));
+    const services=(CCData.services||[]).map(s=>({legacy_id:s.id,name:s.name,category:s.category,description:s.desc||null,price:Number(s.price)||0,image_url:s.image||null,is_active:true}));
+    const products=CCData.products.map(p=>({
+      legacy_id:p.id,sku:p.sku||('CCT-LEGACY-'+p.id),name:p.name,description:p.desc||null,config:p.config||null,
+      brand:p.brand||null,condition:p.condition||null,main_category:p.mainCategory||null,sub_category:p.subCategory||null,
+      product_type:p.type||null,price:Number(p.price)||0,original_price:p.originalPrice==null?null:Number(p.originalPrice),
+      stock_quantity:Number.isInteger(p.stockQuantity)?p.stockQuantity:0,image_url:p.image||null,is_active:true
+    }));
+    logEl.textContent='Starting safe upsert…';
+    for(let i=0;i<categories.length;i+=100){
+      const {error}=await client.from('categories').upsert(categories.slice(i,i+100),{onConflict:'legacy_key'});if(error)throw error;
+      log('Categories imported: '+Math.min(i+100,categories.length)+' / '+categories.length);
+    }
+    for(let i=0;i<products.length;i+=100){
+      const {error}=await client.from('products').upsert(products.slice(i,i+100),{onConflict:'legacy_id'});if(error)throw error;
+      log('Products imported: '+Math.min(i+100,products.length)+' / '+products.length);
+    }
+    for(let i=0;i<services.length;i+=100){
+      const {error}=await client.from('service_catalog').upsert(services.slice(i,i+100),{onConflict:'legacy_id'});if(error)throw error;
+      log('Services imported: '+Math.min(i+100,services.length)+' / '+services.length);
+    }
+    log('SUCCESS: '+categories.length+' categories, '+products.length+' products and '+services.length+' services imported.');
+    log('Existing rows are matched by legacy IDs/keys; no existing database.js or GitHub branch was changed.');
+  }catch(e){log('IMPORT STOPPED: '+e.message);log('Resolve the error and run again. Upsert by legacy IDs makes retries safe.');}
+  finally{button.disabled=false;}
+};
+</script></body></html>
