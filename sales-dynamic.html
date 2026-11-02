@@ -203,6 +203,10 @@
     </div>
   </div>
 
+  <dialog class="model-dialog" id="productModelDialog" aria-labelledby="productModelTitle">
+    <div class="model-dialog-head"><div><h2 id="productModelTitle">Product in 3D</h2><p id="productModelStatus" role="status">Loading…</p></div><button type="button" class="model-dialog-close" aria-label="Close 3D viewer" onclick="document.getElementById('productModelDialog').close()">×</button></div>
+    <model-viewer id="productModelViewer" camera-controls touch-action="pan-y" shadow-intensity="1" auto-rotate></model-viewer>
+  </dialog>
   <script src="database.js?v=10.0"></script>
   <script>
     console.log('Sales page loaded');
@@ -300,7 +304,7 @@
           return `
             <div class="category-card" data-category="${esc(catName)}" role="button" tabindex="0">
               <div class="category-image">
-                <img src="${esc(cat.image)}" alt="${esc(catName)}" onerror="this.src='${defaultCategoryImage}'">
+                <img src="${esc(cat.image)}" alt="${esc(catName)}" loading="lazy" decoding="async" onerror="this.src='${defaultCategoryImage}'">
               </div>
               <div class="category-info">
                 <h3>${esc(catName)}</h3>
@@ -377,7 +381,7 @@
       }
       grid.innerHTML = list.map(p => `
         <div class="product-card">
-          <div class="product-image"><img src="${esc(p.image || CCData.categoryImages?.default || defaultProductImage)}" onerror="this.src='${defaultProductImage}'" alt="${esc(p.name)}"></div>
+          <div class="product-image"><img src="${esc(p.image || CCData.categoryImages?.default || defaultProductImage)}" onerror="this.src='${defaultProductImage}'" alt="${esc(p.name)}" loading="lazy" decoding="async"></div>
           <div class="product-body">
             <div class="tags">
               <span class="tag tag-brand">${esc(p.brand)}</span>
@@ -391,6 +395,7 @@
             <div class="btn-group">
               <button class="btn btn-cart" data-add-to-cart="${Number(p.id)}"><i class="fas fa-cart-plus"></i> Add to cart</button>
               <button class="btn btn-chat" data-chat="${Number(p.id)}"><i class="fab fa-whatsapp"></i> Get Latest Price</button>
+              ${p.model ? `<button class="btn btn-3d" type="button" data-model-id="${Number(p.id)}" data-model-src="${esc(p.model)}" data-model-name="${esc(p.name)}"><i class="fas fa-cube"></i> View 3D</button>` : ''}
             </div>
           </div>
         </div>
@@ -400,7 +405,42 @@
         const product = items.find(item => Number(item.id) === Number(button.dataset.chat));
         if(product) chatWA(product.name, product.brand, product.config || '');
       }));
+      grid.querySelectorAll('[data-model-id]').forEach(button => button.addEventListener('click', () => showProductModel(button.dataset.modelSrc, button.dataset.modelName)));
     }
+
+    let modelViewerLoad;
+    function ensureModelViewer() {
+      if(customElements.get('model-viewer')) return Promise.resolve();
+      if(!modelViewerLoad) modelViewerLoad = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/4.4.0/model-viewer.min.js';
+        script.onload = () => customElements.whenDefined('model-viewer').then(resolve);
+        script.onerror = () => reject(new Error('The 3D viewer could not be loaded. Check your internet connection.'));
+        document.head.appendChild(script);
+      });
+      return modelViewerLoad;
+    }
+
+    async function showProductModel(path, name) {
+      const dialog = document.getElementById('productModelDialog');
+      const viewer = document.getElementById('productModelViewer');
+      const status = document.getElementById('productModelStatus');
+      status.textContent = 'Loading the interactive 3D viewer…';
+      dialog.showModal();
+      try {
+        await ensureModelViewer();
+        viewer.alt = `Interactive 3D model of ${name}`;
+        viewer.addEventListener('load', () => { status.textContent = 'Drag to rotate. Use your scroll wheel or pinch to zoom.'; }, { once: true });
+        viewer.addEventListener('error', () => { status.textContent = 'This model could not be displayed. Check that the .glb path is correct and the file is committed to the repository.'; }, { once: true });
+        viewer.src = path;
+        status.textContent = 'Loading model…';
+      } catch (error) {
+        status.textContent = error.message;
+      }
+    }
+
+    document.getElementById('productModelDialog').addEventListener('close', () => document.getElementById('productModelViewer').removeAttribute('src'));
 
     function chatWA(name, brand, config) {
       const message = `Hi CCTech IT Solutions!%0AI'm interested in:%0A*${name}*%0ABrand: ${brand}%0AConfiguration: ${config || 'Please share available configuration.'}%0APlease share the latest price and availability.`;

@@ -31,6 +31,14 @@ button:hover, .btn:hover, .button:hover, .checkout-btn:hover, .whatsapp-btn:hove
 .catalog-notice { background:#10242a; color:#c9ddd8; padding:1rem 1.2rem; border-left:4px solid var(--site-mint); border-radius:8px; margin-bottom:1.5rem; line-height:1.6; }
 .btn-cart { background:var(--site-mint)!important; color:#07151c!important; }
 .btn-chat { background:#168b68!important; color:#fff!important; }
+.btn-3d { background:#2875a7!important; color:#fff!important; }
+.model-dialog { width:min(920px,calc(100% - 28px)); max-width:920px; max-height:calc(100dvh - 28px); padding:1.25rem; overflow:auto; color:var(--site-text); background:var(--site-panel); border:1px solid #ffffff30; border-radius:18px; box-shadow:0 25px 90px #000a; }
+.model-dialog::backdrop { background:#020912c9; backdrop-filter:blur(5px); }
+.model-dialog-head { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:.8rem; }
+.model-dialog-head h2 { margin:0 0 .25rem; }
+.model-dialog-head p { margin:0; color:var(--site-muted); }
+.model-dialog-close { width:42px; height:42px; border:1px solid var(--site-line); border-radius:10px; color:var(--site-text); background:#0b1723; font-size:1.5rem; cursor:pointer; }
+.model-dialog model-viewer { display:block; width:100%; height:min(65vh,620px); min-height:340px; border-radius:12px; background:radial-gradient(ellipse at center,#203a4a,#0b1723 75%); }
 .continue, .info-item a { color:var(--site-mint)!important; }
 .item, .item-row, .summary-item { border-color:var(--site-line)!important; }
 .item:hover { background:#ffffff08!important; }
@@ -41,4 +49,5 @@ button:hover, .btn:hover, .button:hover, .checkout-btn:hover, .whatsapp-btn:hove
 .danger, .btn-red, .remove { background:#3a2027!important; color:#ffb4bd!important; }
 footer { color:var(--site-muted); border-color:var(--site-line); }
 @media(max-width:768px) { .item-info { min-width:0; } .cart-box,.checkout-box { padding:1rem!important; } }
+@media(max-width:600px) { .model-dialog { padding:.85rem; } .model-dialog model-viewer { min-height:300px; height:55vh; } }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; } }
