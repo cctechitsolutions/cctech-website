@@ -210,5 +210,8 @@ for all to authenticated using (public.is_cctech_staff()) with check (public.is_
 
 grant usage on schema public to authenticated;
 grant select, insert, update, delete on public.profiles, public.suppliers, public.enquiries,
- public.enquiry_items, public.supplier_requests, public.supplier_offers,
- public.project_cost_lines, public.customer_quotes, public.customer_quote_lines to authenticated;
+ public.enquiry_items, public.supplier_offers, public.project_cost_lines,
+ public.customer_quotes, public.customer_quote_lines to authenticated;
+-- Suppliers may change only the response status on an assigned RFQ, not its scope or contents.
+grant select, insert, delete on public.supplier_requests to authenticated;
+grant update (status) on public.supplier_requests to authenticated;
