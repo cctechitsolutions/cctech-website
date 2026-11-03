@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vendor Sourcing Workspace | CCTech IT Solutions</title>
+<style>
+:root{--navy:#123b57;--blue:#176b91;--orange:#f39a28;--bg:#f3f6f9;--ink:#203040;--muted:#647586;--line:#dce4eb;--green:#16794a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Arial,sans-serif}
+header{background:linear-gradient(120deg,#10354e,#176b91);color:#fff;padding:22px max(18px,calc((100% - 1180px)/2));display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+header h1{font-size:21px;margin:0}header p{margin:3px 0 0;color:#d8e8f1;font-size:13px}
+.wrap{max-width:1180px;margin:22px auto;padding:0 16px}.notice{background:#fff7e8;border:1px solid #f2d39e;border-radius:10px;padding:12px 15px;margin-bottom:18px;color:#704c15}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}.stat,.panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:17px}.stat strong{display:block;font-size:25px;color:var(--navy)}.stat span{color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tab,button{border:0;border-radius:8px;padding:10px 14px;font-weight:700;cursor:pointer}.tab{background:#e5edf3;color:var(--navy)}.tab.active{background:var(--navy);color:#fff}.primary{background:var(--orange);color:#1f2933}.secondary{background:#e9f0f5;color:var(--navy)}.panel{display:none}.panel.active{display:block}.panel h2{margin:0 0 15px;color:var(--navy);font-size:19px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field label{display:block;font-weight:700;font-size:13px;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;padding:10px;border:1px solid #cbd6df;border-radius:7px;font:inherit;background:#fff}.field textarea{min-height:86px;resize:vertical}.wide{grid-column:1/-1}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+table{width:100%;border-collapse:collapse;margin-top:12px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.empty{padding:26px;text-align:center;color:var(--muted);border:1px dashed #cbd6df;border-radius:9px;margin-top:12px}
+.pill{display:inline-block;background:#e8f1f6;color:#28566e;padding:3px 8px;border-radius:20px;font-size:12px}.muted{color:var(--muted);font-size:13px}.request{border:1px solid var(--line);border-radius:9px;padding:13px;margin-top:10px}.request h3{margin:0 0 5px;font-size:16px}.right{margin-left:auto}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.wide{grid-column:auto}table{display:block;overflow-x:auto}}
+</style>
+</head>
+<body>
+<header><div><h1>CCTech IT Solutions · Vendor Sourcing</h1><p>Enquiries · Supplier matching · Offer comparison · Project costing</p></div><span class="pill">Development preview</span></header>
+<main class="wrap">
+<div class="notice"><strong>Prototype only — no business data is saved or sent.</strong> Entries remain in this page's memory and disappear when you refresh. Do not enter real customer details, supplier contacts, prices or credentials. Secure sign-in and database access are not connected yet.</div>
+<section class="stats">
+<div class="stat"><strong id="countEnquiries">0</strong><span>Demo enquiries created</span></div><div class="stat"><strong id="countSuppliers">0</strong><span>Suppliers added in this session</span></div><div class="stat"><strong id="countOffers">0</strong><span>Offers captured</span></div><div class="stat"><strong id="countQuotes">0</strong><span>Customer quotes prepared</span></div>
+</section>
+<nav class="tabs" aria-label="Workspace sections">
+<button class="tab active" data-tab="enquiries">Enquiries</button><button class="tab" data-tab="suppliers">Suppliers</button><button class="tab" data-tab="offers">Offer comparison</button><button class="tab" data-tab="projects">Project costing</button>
+</nav>
+<section class="panel active" id="enquiries">
+<h2>Create customer enquiry</h2>
+<div class="grid">
+<div class="field"><label for="customer">Customer / company (demo only)</label><input id="customer" placeholder="Example: Demo Customer"></div>
+<div class="field"><label for="channel">Received through</label><select id="channel"><option>WhatsApp</option><option>Website</option><option>Phone</option><option>Email</option><option>Walk-in</option><option>Social media</option></select></div>
+<div class="field"><label for="category">Category</label><select id="category"><option>Laptop / desktop / parts</option><option>Used / refurbished equipment</option><option>Servers / storage</option><option>Networking</option><option>CCTV / security</option><option>UPS / power backup</option><option>Batteries</option><option>Peripherals / accessories</option><option>AMC / IT support</option><option>Repair / data recovery</option><option>Access control / biometric</option><option>IT infrastructure / server room</option><option>Software / licensing</option><option>Installation / onsite project</option><option>Buyback / e-waste</option></select></div>
+<div class="field"><label for="mode">Pricing requirement</label><select id="mode"><option>Parts only</option><option>Parts + replacement</option><option>Complete equipment</option><option>Installation / project</option><option>AMC / on-call</option></select></div>
+<div class="field wide"><label for="spec">Required items, quantity and specifications</label><textarea id="spec" placeholder="List each item, quantity, brand/model, condition and required date."></textarea></div>
+<div class="field"><label for="urgency">Priority</label><select id="urgency"><option>Normal</option><option>Urgent</option><option>Critical</option></select></div>
+<div class="field"><label for="due">Required by</label><input id="due" type="date"></div>
+</div>
+<div class="actions"><button class="primary" id="createEnquiry">Create demo enquiry</button></div>
+<div id="enquiryList" class="empty">No enquiries created in this preview session.</div>
+</section>
+<section class="panel" id="suppliers">
+<h2>Supplier / service partner directory</h2>
+<p class="muted">Keep product vendors and service partners as separate capability types. In the live system, each supplier will only see their own requests and submitted offers.</p>
+<div class="grid">
+<div class="field"><label for="vendorName">Supplier / partner name</label><input id="vendorName" placeholder="Demo supplier name"></div>
+<div class="field"><label for="vendorType">Partner type</label><select id="vendorType"><option>Product vendor</option><option>Service partner</option><option>Hybrid</option></select></div>
+<div class="field"><label for="vendorCategories">Categories supported</label><input id="vendorCategories" placeholder="Servers, networking, CCTV"></div>
+<div class="field"><label for="vendorArea">Service / delivery area</label><input id="vendorArea" placeholder="Bengaluru North"></div>
+<div class="field"><label for="vendorBrands">Brands / specialities</label><input id="vendorBrands" placeholder="Dell, HP, Lenovo"></div>
+<div class="field"><label for="vendorCondition">Equipment condition</label><select id="vendorCondition"><option>New only</option><option>Used / refurbished only</option><option>New and used</option><option>Service only</option></select></div>
+</div>
+<div class="actions"><button class="primary" id="addVendor">Add demo supplier</button></div>
+<div id="vendorList" class="empty">No suppliers added in this preview session.</div>
+</section>
+<section class="panel" id="offers">
+<h2>Capture and compare supplier offers</h2>
+<div class="grid">
+<div class="field"><label for="offerEnquiry">Enquiry</label><select id="offerEnquiry"><option value="">Create an enquiry first</option></select></div>
+<div class="field"><label for="offerVendor">Supplier</label><select id="offerVendor"><option value="">Add a supplier first</option></select></div>
+<div class="field"><label for="offerItem">Quoted item / service</label><input id="offerItem" placeholder="Exact make, model and specification"></div>
+<div class="field"><label for="offerPrice">Unit price (₹, excluding GST)</label><input id="offerPrice" type="number" min="0" step=".01"></div>
+<div class="field"><label for="offerQty">Quantity</label><input id="offerQty" type="number" min="1" step="1" value="1"></div>
+<div class="field"><label for="offerStock">Stock status</label><select id="offerStock"><option>In stock</option><option>Limited stock</option><option>Backorder</option><option>To be confirmed</option></select></div>
+<div class="field"><label for="offerCondition">Condition</label><select id="offerCondition"><option>New</option><option>Refurbished</option><option>Used</option><option>Service / labour</option></select></div>
+<div class="field"><label for="offerWarranty">Warranty / service coverage</label><input id="offerWarranty" placeholder="Supplier-stated warranty"></div>
+<div class="field"><label for="offerDelivery">Delivery / completion</label><input id="offerDelivery" placeholder="Supplier-stated lead time"></div>
+<div class="field"><label for="offerValidity">Offer validity</label><input id="offerValidity" type="date"></div>
+<div class="field wide"><label for="offerEvidence">Evidence / notes</label><textarea id="offerEvidence" placeholder="Photo evidence, battery health, grade, test report, exclusions, GST and transport notes. Mark unknown details as unconfirmed."></textarea></div>
+</div>
+<div class="actions"><button class="primary" id="addOffer">Capture demo offer</button></div>
+<div id="offerList" class="empty">No offers captured. Offers will appear here for comparison.</div>
+<p class="muted">Comparison should consider total landed cost, exact suitability, condition evidence, warranty, stock, delivery and supplier reliability — not only the lowest price.</p>
+</section>
+<section class="panel" id="projects">
+<h2>Project cost build-up</h2>
+<div class="grid">
+<div class="field"><label for="projectName">Project name</label><input id="projectName" placeholder="Demo CCTV installation"></div>
+<div class="field"><label for="projectType">Project type</label><select id="projectType"><option>CCTV / security</option><option>Network cabling</option><option>Server room</option><option>IT infrastructure</option><option>Other</option></select></div>
+<div class="field"><label for="costType">Cost line type</label><select id="costType"><option>Material / equipment</option><option>Labour / installation</option><option>Configuration</option><option>Transport</option><option>AMC / support</option><option>Other</option></select></div>
+<div class="field"><label for="costDesc">Description</label><input id="costDesc" placeholder="Cable, camera, technician visit..."></div>
+<div class="field"><label for="costAmount">Base cost (₹)</label><input id="costAmount" type="number" min="0" step=".01"></div>
+<div class="field"><label for="costQty">Quantity</label><input id="costQty" type="number" min="1" value="1"></div>
+</div>
+<div class="actions"><button class="primary" id="addCost">Add cost line</button></div>
+<div id="costList" class="empty">No project cost lines added.</div>
+<p class="muted">GST and margin are deliberately not hard-coded. The live workflow will apply configurable category rules and allow an authorised manual override.</p>
+</section>
+</main>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);const state={enquiries:[],vendors:[],offers:[],costs:[],quotes:[]};
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab));}));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function stats(){$('countEnquiries').textContent=state.enquiries.length;$('countSuppliers').textContent=state.vendors.length;$('countOffers').textContent=state.offers.length;$('countQuotes').textContent=state.quotes.length;}
+function refreshSelects(){const fill=(id,items,placeholder)=>{$(id).innerHTML=items.length?items.map(x=>'<option value="'+esc(x.id)+'">'+esc(x.label)+'</option>').join(''):'<option value="">'+placeholder+'</option>';};fill('offerEnquiry',state.enquiries.map(x=>({id:x.id,label:x.id+' · '+x.customer+' · '+x.category})),'Create an enquiry first');fill('offerVendor',state.vendors.map(x=>({id:x.id,label:x.name+' · '+x.type})),'Add a supplier first');}
+$('createEnquiry').addEventListener('click',()=>{const customer=$('customer').value.trim(),spec=$('spec').value.trim();if(!customer||!spec){alert('Enter a demo customer label and item requirements.');return;}const x={id:'ENQ-'+String(state.enquiries.length+1).padStart(3,'0'),customer,channel:$('channel').value,category:$('category').value,mode:$('mode').value,spec,urgency:$('urgency').value,due:$('due').value};state.enquiries.push(x);$('enquiryList').className='';$('enquiryList').innerHTML=state.enquiries.map(e=>'<article class="request"><h3>'+esc(e.id)+' · '+esc(e.customer)+'</h3><span class="pill">'+esc(e.urgency)+'</span> <span class="pill">'+esc(e.category)+'</span><p>'+esc(e.spec)+'</p><p class="muted">'+esc(e.channel)+' · '+esc(e.mode)+' · Required by '+esc(e.due||'Not specified')+'</p></article>').join('');$('customer').value='';$('spec').value='';refreshSelects();stats();});
+$('addVendor').addEventListener('click',()=>{const name=$('vendorName').value.trim();if(!name){alert('Enter a demo supplier name.');return;}state.vendors.push({id:'SUP-'+String(state.vendors.length+1).padStart(3,'0'),name,type:$('vendorType').value,categories:$('vendorCategories').value,area:$('vendorArea').value,brands:$('vendorBrands').value,condition:$('vendorCondition').value});$('vendorList').className='';$('vendorList').innerHTML=state.vendors.map(v=>'<article class="request"><h3>'+esc(v.name)+' <span class="pill">'+esc(v.type)+'</span></h3><p>'+esc(v.categories)+' · '+esc(v.brands)+'</p><p class="muted">'+esc(v.area)+' · '+esc(v.condition)+'</p></article>').join('');$('vendorName').value='';refreshSelects();stats();});
+$('addOffer').addEventListener('click',()=>{const enquiry=state.enquiries.find(x=>x.id===$('offerEnquiry').value),vendor=state.vendors.find(x=>x.id===$('offerVendor').value),item=$('offerItem').value.trim(),price=Number($('offerPrice').value),qty=Number($('offerQty').value);if(!enquiry||!vendor||!item||!Number.isFinite(price)||price<0||!Number.isInteger(qty)||qty<1){alert('Select an enquiry and supplier, and enter valid item, price and quantity.');return;}state.offers.push({enquiry:enquiry.id,vendor:vendor.name,item,price,qty,stock:$('offerStock').value,condition:$('offerCondition').value,warranty:$('offerWarranty').value,delivery:$('offerDelivery').value,validity:$('offerValidity').value,evidence:$('offerEvidence').value});$('offerList').className='';$('offerList').innerHTML='<table><thead><tr><th>Enquiry / supplier</th><th>Item</th><th>Qty</th><th>Unit price</th><th>Extended cost</th><th>Condition / stock</th><th>Warranty / delivery / evidence</th></tr></thead><tbody>'+state.offers.map(o=>'<tr><td>'+esc(o.enquiry)+'<br>'+esc(o.vendor)+'</td><td>'+esc(o.item)+'</td><td>'+o.qty+'</td><td>₹'+o.price.toLocaleString('en-IN')+'</td><td>₹'+(o.price*o.qty).toLocaleString('en-IN')+'</td><td>'+esc(o.condition)+'<br>'+esc(o.stock)+'</td><td>'+esc(o.warranty)+'<br>'+esc(o.delivery)+'<br>'+esc(o.evidence)+'<br><small>Valid to: '+esc(o.validity||'Not stated')+'</small></td></tr>').join('')+'</tbody></table>';stats();});
+$('addCost').addEventListener('click',()=>{const desc=$('costDesc').value.trim(),amount=Number($('costAmount').value),qty=Number($('costQty').value);if(!desc||!Number.isFinite(amount)||amount<0||!Number.isInteger(qty)||qty<1){alert('Enter a description, valid base cost and quantity.');return;}state.costs.push({project:$('projectName').value||'Untitled demo project',type:$('costType').value,desc,amount,qty});$('costList').className='';$('costList').innerHTML='<table><thead><tr><th>Project</th><th>Type</th><th>Description</th><th>Qty</th><th>Base total</th></tr></thead><tbody>'+state.costs.map(c=>'<tr><td>'+esc(c.project)+'</td><td>'+esc(c.type)+'</td><td>'+esc(c.desc)+'</td><td>'+c.qty+'</td><td>₹'+(c.amount*c.qty).toLocaleString('en-IN')+'</td></tr>').join('')+'</tbody></table>';});
+stats();refreshSelects();
+})();
+</script>
+</body></html>
