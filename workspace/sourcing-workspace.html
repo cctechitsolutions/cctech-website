@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src https://mjdgcytomlpciemjhcqc.supabase.co; img-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>CCTech | Sourcing workspace</title>
+  <link rel="stylesheet" href="sourcing-workspace.css">
+  <script type="module" src="sourcing-workspace.mjs"></script>
+</head>
+<body>
+  <header><div><span class="eyebrow">CCTECH IT SOLUTIONS</span><h1>Sourcing workspace</h1><p>Your customers. Your supplier network. One place to start.</p></div></header>
+  <main>
+    <p id="message" role="status" aria-live="polite">Sign in with your CCTech staff account. First-time access requires database setup and owner account activation.</p>
+    <section id="loginPanel" class="card">
+      <h2>Staff sign-in</h2><p>Use your CCTech staff email and password. You will need to sign in again after closing or refreshing this page.</p>
+      <form id="loginForm">
+        <label>Staff email<input name="email" type="email" required autocomplete="username"></label>
+        <label>Password<input name="password" type="password" required autocomplete="current-password"></label>
+        <button>Sign in</button>
+      </form>
+      <p class="small">Setup: <a href="docs/supabase-setup.md">Read the setup guide</a>. No paid messaging or AI service is connected.</p>
+    </section>
+    <div id="workspace" hidden>
+      <div class="toolbar"><p id="identity"></p><div><button id="refresh" class="secondary">Refresh records</button> <button id="signOut" class="secondary">Sign out</button></div></div>
+      <section class="card"><h2>WhatsApp, Facebook and Instagram inbox</h2><p id="whatsappStatus" class="small">Official channel connections are not activated yet.</p><div id="whatsappInbox" class="records"></div></section>
+      <div class="columns">
+        <section class="card"><h2>New enquiry</h2>
+          <form id="enquiryForm">
+            <label>Customer / company<input name="customer_name" required maxlength="200"></label>
+            <label>Customer contact<input name="customer_contact" maxlength="200"></label>
+            <label>Category<select name="category" id="enquiryCategory"></select></label>
+            <label>Requirement<select name="pricing_mode"><option value="parts_only">Parts only — no replacement labour</option><option value="parts_plus_replacement">Parts + replacement</option><option value="complete_equipment">Complete equipment</option><option value="installation_project">Installation / project</option><option value="amc_on_call">AMC / on-call</option></select></label>
+            <label>Received through<select name="source_channel"><option value="whatsapp">WhatsApp</option><option value="facebook">Facebook</option><option value="instagram">Instagram</option><option value="phone">Phone</option><option value="website">Website</option><option value="email">Email</option><option value="walk_in">Walk-in</option><option value="social">Other social media</option><option value="other">Other</option></select></label>
+            <label>Priority<select name="priority"><option value="normal">Normal</option><option value="urgent">Urgent</option><option value="critical">Critical</option></select></label>
+            <label>Required by<input name="required_by" type="date"></label>
+            <label>Items, quantity and specifications<textarea name="requirements" required maxlength="10000" rows="4"></textarea></label>
+            <button>Save enquiry</button>
+          </form>
+        </section>
+        <section class="card"><h2>Add supplier / service partner</h2>
+          <form id="supplierForm">
+            <label>Business name<input name="name" required maxlength="200"></label>
+            <label>Partner type<select name="partner_type"><option value="product_vendor">Product vendor</option><option value="service_partner">Service partner</option><option value="hybrid">Products and services</option></select></label>
+            <fieldset><legend>Categories supplied</legend><div id="supplierCategories" class="checks"></div></fieldset>
+            <label>Brands (comma separated)<input name="brands" maxlength="1000"></label>
+            <label>Service / delivery areas (comma separated)<input name="service_areas" maxlength="1000"></label>
+            <label>Condition supplied<select name="condition"><option value="new">New</option><option value="used,refurbished">Used / refurbished</option><option value="new,used,refurbished">New and used</option><option value="service">Service only</option></select></label>
+            <button>Save supplier</button>
+          </form>
+        </section>
+      </div>
+      <section class="card" id="sourcingPanel">
+        <h2>Request vendor prices</h2>
+        <details>
+          <summary>What should I ask the customer on WhatsApp?</summary>
+          <p>Copy this message for laptop parts. You can also use it on Instagram or Facebook.</p>
+          <textarea id="customerPartMessage" readonly rows="9" aria-label="Customer message for laptop parts"></textarea>
+          <button type="button" id="copyCustomerMessage" class="secondary">Copy customer message</button>
+          <p class="small">Forward any useful part photo separately in WhatsApp. Keep the customer's name and number private.</p>
+        </details>
+        <p>Choose a customer enquiry, select relevant vendors and prepare individual requests. Review the message in WhatsApp and press Send there.</p>
+        <form id="rfqForm">
+          <label>Customer enquiry<select id="rfqEnquiry" required><option value="">Save an enquiry first</option></select></label>
+          <p id="rfqDetails" class="small"></p>
+          <label>Part and laptop details to send to vendors<textarea id="rfqRequirement" maxlength="2000" rows="4" required placeholder="Part: Display&#10;Laptop: HP ProBook 440 G3&#10;Details: 14-inch (if known)"></textarea></label>
+          <fieldset><legend>Matching vendors and service partners</legend><div id="rfqSuppliers" class="checks"></div></fieldset>
+          <button>Prepare requests for selected vendors</button>
+        </form>
+        <p class="small">Matching uses category and partner type. Check brand, model, area and availability before sending. Existing requests are retained to avoid duplicates.</p>
+        <div id="rfqList" class="records"></div>
+      </section>
+      <section class="card" id="orderWorkflow">
+        <h2>Offers, customer choice and orders</h2>
+        <p id="orderWorkflowStatus" class="small">Loading order workflow…</p>
+        <label>Customer enquiry<select id="orderEnquiry"><option value="">Select customer enquiry</option></select></label>
+        <div class="columns">
+          <section><h3>Vendor reply</h3>
+            <form id="offerForm">
+              <label>Vendor request<select id="replyRequest" required></select></label>
+              <label>Part / item and model<input id="replyItem" required maxlength="500"></label>
+              <label>Part type / equipment condition<select id="replyQuality" required><option value="">Confirm type</option><option>OEM Original</option><option>Second Copy</option><option>Compatible</option><option>New</option><option>Used</option><option>Refurbished</option><option>Service</option></select></label>
+              <label>Vendor unit price (₹)<input id="replyPrice" type="number" min="0" step="0.01" required></label>
+              <label>Quantity available<input id="replyQty" type="number" min="1" step="1" value="1" required></label>
+              <label>Vendor tax statement<select id="replyTax" required><option value="">Confirm tax treatment</option><option>GST included</option><option>GST excluded</option><option>Not confirmed</option></select></label>
+              <label>Vendor warranty<input id="replyWarranty" maxlength="300" required placeholder="Example: 3 months replacement warranty"></label>
+              <label>Valid until<input id="replyExpiry" type="date"></label>
+              <label class="checkline"><input id="replyFit" type="checkbox">Exact part / model compatibility confirmed</label>
+              <label class="checkline"><input id="replyStock" type="checkbox">Available now</label>
+              <label>Original vendor reply<textarea id="replyOriginal" rows="3" maxlength="10000"></textarea></label>
+              <button type="submit">Save vendor offer</button>
+            </form>
+          </section>
+          <section><h3>Compare vendor offers</h3><p class="small">Compare the same part and type. Confirm fit and availability before quoting.</p><div id="offerComparison" class="records"></div></section>
+        </div>
+        <h3>Delivery or fitting at CCTech store</h3>
+        <form id="orderForm">
+          <label>Confirmed vendor offer<select id="orderOffer" required></select></label>
+          <div class="grid-fields">
+            <label>Quantity<input id="orderQty" type="number" min="1" step="1" value="1" required></label>
+            <label>Margin type<select id="orderMarginMode"><option value="percentage">Percentage of vendor cost</option><option value="fixed">Fixed amount per unit (₹)</option></select></label>
+            <label>Margin value<input id="orderMargin" type="number" min="0" step="0.01" value="15" required></label>
+            <label>Customer budget (₹, optional)<input id="orderBudget" type="number" min="0.01" step="0.01" placeholder="Aim within budget; up to 5% higher"></label>
+            <label>Delivery provider<input id="orderCarrier" placeholder="Porter, Rapido or other"></label>
+            <p class="small">Customer pays the courier directly. Delivery quotes collect 100% of the product amount. Store fitting collects 50% advance. Prices add 18% GST, then round up to the next ₹100.</p>
+            <label>Store fitting: ₹600 for one item; enter total for multiple items<input id="orderFitting" type="number" min="0" step="0.01" placeholder="Team decides multi-item fitting charge"></label>
+          </div>
+          <button type="button" id="previewChoice" class="secondary">Prepare both options for customer</button>
+          <label>Customer message<textarea id="choicePreview" readonly rows="8"></textarea></label>
+          <label>Customer selected<select id="orderRoute" required><option value="delivery">Part delivery</option><option value="store_fitting">Fitting at CCTech store</option></select></label>
+          <label>Delivery address (required for delivery)<textarea id="orderAddress" rows="2" maxlength="2000"></textarea></label>
+          <label class="checkline"><input id="customerChoiceConfirmed" type="checkbox" required>Customer confirmed this option and the final price</label>
+          <button type="submit">Prepare quotation for owner / staff approval</button>
+          <p id="orderSummary" role="status"></p>
+        </form>
+        <h3>Orders and verified payments</h3><div id="orderList" class="records"></div>
+        <h3>Messages waiting for channel connection</h3><p class="small">Queued messages have not been sent. Meta activation will be handled later.</p><div id="notificationList" class="records"></div>
+        <details><summary>Payment instructions and review link</summary>
+          <form id="workflowSettingsForm">
+            <label>Payment instructions for customers<textarea id="paymentInstructions" rows="3" maxlength="2000" placeholder="Your business UPI ID or payment instructions"></textarea></label>
+            <label>Business review link<input id="reviewUrl" type="url" placeholder="https://…"></label>
+            <label>Hosted workspace URL for customer completion links<input id="publicWorkspaceUrl" type="url" placeholder="https://your-hosted-workspace.example"></label>
+            <button type="submit">Save settings</button>
+          </form>
+        </details>
+        <h3>Owner and staff alerts</h3><div id="teamAlerts" class="records"></div>
+        <h3>Channel connections</h3><p class="small">Add only Meta account IDs here. Access tokens and app secrets must be configured in server secrets. Saving an ID does not authorise or activate a channel.</p><div id="channelConnections" class="records"></div>
+        <h3>Automatic send queue</h3><div id="channelQueue" class="records"></div>
+      </section>
+      <section class="card"><h2>Recent enquiries</h2><p class="small">Most recent 100 records. Private staff access.</p><div id="enquiryList" class="records"></div></section>
+      <section class="card"><h2>Supplier directory</h2><p class="small">Most recent 100 records.</p><div id="supplierList" class="records"></div></section>
+    </div>
+  </main>
+</body>
+</html>
